@@ -12,7 +12,7 @@
 - Open a **Pull Request** for review.
 - Managed by: **Osama & Waleed**
 
-## 👥 Team
+## Team
 - **DevOps:** Osama & waleed
 - **Mobile:** Yousry
 - **Backend:** Mngy & Eyad & menna
