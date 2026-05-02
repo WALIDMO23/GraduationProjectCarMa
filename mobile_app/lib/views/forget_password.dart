@@ -17,7 +17,6 @@ class ForgetPassword extends StatelessWidget {
           color: Theme.of(context).colorScheme.onSurface,
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          fontFamily: 'Inter',
           height: 32,
           letterSpacing: 0,
         ),

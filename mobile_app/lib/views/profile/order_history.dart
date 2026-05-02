@@ -22,7 +22,6 @@ class OrderHistoryPage extends StatelessWidget {
             indicatorColor: AppTheme.primaryColor,
             labelStyle: TextStyle(
               fontWeight: FontWeight.bold,
-              fontFamily: 'Inter',
               fontSize: 16,
             ),
             tabs: [Tab(text: 'الحالية'), Tab(text: 'السابقة')],
@@ -131,7 +130,6 @@ class _OrderList extends StatelessWidget {
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 14,
-                  fontFamily: 'Inter',
                 ),
               ),
               Container(
@@ -149,7 +147,6 @@ class _OrderList extends StatelessWidget {
                     color: statusColor,
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    fontFamily: 'Inter',
                   ),
                 ),
               ),
@@ -177,7 +174,6 @@ class _OrderList extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Inter',
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -186,7 +182,6 @@ class _OrderList extends StatelessWidget {
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                         fontSize: 12,
-                        fontFamily: 'Inter',
                       ),
                     ),
                   ],
@@ -198,7 +193,6 @@ class _OrderList extends StatelessWidget {
                   color: AppTheme.primaryColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Inter',
                 ),
               ),
             ],
@@ -216,7 +210,6 @@ class _OrderList extends StatelessWidget {
                     color: AppTheme.primaryColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    fontFamily: 'Inter',
                   ),
                 ),
                 SizedBox(width: 8),
