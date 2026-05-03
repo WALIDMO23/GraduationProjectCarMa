@@ -8,11 +8,13 @@ COPY . .
 RUN dotnet publish "CarMaintenance.csproj" -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-jammy AS final
+# هنرجع للنسخة اللي بتفتح معانا عادي
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# تريكة لتعطيل الـ Globalization لو هي السبب في الكراش
+# السطر ده هو اللي هيمنع الـ Segmentation Fault (139) 
+# بيخلي الدوت نت يتخطى مكتبات اللغات اللي بتعمل كراش في اللينكس
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 EXPOSE 8080
