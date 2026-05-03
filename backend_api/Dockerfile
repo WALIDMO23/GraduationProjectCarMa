@@ -10,14 +10,11 @@ RUN dotnet publish "CarMaintenance.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim AS final
 WORKDIR /app
-RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev
+
 COPY --from=build /app/publish .
 
 
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
-
-RUN rm -f CarMaintenance.db
-
 
 ENTRYPOINT ["dotnet", "CarMaintenance.dll"]
