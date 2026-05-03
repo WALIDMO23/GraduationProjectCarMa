@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using CarMaintenance.Hubs;
 using System.Text;
+using CarMaintenance.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +78,7 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=CarMaintenance.db")
 );
+
 // ======================
 // JWT
 // ======================
@@ -105,6 +107,28 @@ builder.Services.AddSignalR();
 var app = builder.Build();
 
 // ======================
+// SEED ADMIN 
+// ======================
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    if (!context.Users.Any(u => u.Role == "admin"))
+    {
+        context.Users.Add(new User
+        {
+            Name = "Abdlerahman",
+            Email = "Elmongy@gmail.com",
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword("1122"),
+            PhoneNumber = "01000000000",
+            Role = "admin"
+        });
+
+        context.SaveChanges();
+    }
+}
+
+// ======================
 // PIPELINE
 // ======================
 app.UseSwagger();
@@ -117,4 +141,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<NotificationHub>("/hubs/notifications");
+
 app.Run();

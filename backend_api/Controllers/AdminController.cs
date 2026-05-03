@@ -18,7 +18,7 @@ public class AdminController : ControllerBase
         _context = context;
     }
 
-    // 📊 DASHBOARD (REAL DATABASE)
+    //  DASHBOARD (REAL DATABASE)
     [HttpGet("dashboard")]
     [SwaggerOperation(Summary = "Get Admin Dashboard")]
     public async Task<IActionResult> GetDashboard()
@@ -77,7 +77,7 @@ public class AdminController : ControllerBase
         return Ok(data);
     }
 
-    // 🔎 GLOBAL SEARCH (Search Bar)
+    //  GLOBAL SEARCH (Search Bar)
     [HttpGet("search")]
     public async Task<IActionResult> GlobalSearch(string keyword)
     {

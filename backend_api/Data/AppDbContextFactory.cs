@@ -9,7 +9,7 @@ namespace CarMaintenance.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             
-            // التعديل هنا: نغير السيرفر لـ Sqlite
+
             optionsBuilder.UseSqlite("Data Source=CarMaintenance.db");
 
             return new AppDbContext(optionsBuilder.Options);
