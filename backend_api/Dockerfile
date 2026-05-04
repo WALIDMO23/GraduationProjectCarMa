@@ -1,20 +1,14 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+# مرحلة الـ build هتبقى ubuntu
+FROM mcr.microsoft.com/dotnet/sdk:9.0-jammy AS build
 WORKDIR /src
+# ... باقي الخطوات المعتادة ...
 
-COPY ["CarMaintenance.csproj", "./"]
-RUN dotnet restore "CarMaintenance.csproj"
-
-COPY . .
-RUN dotnet publish "CarMaintenance.csproj" -c Release -o /app/publish
-
-
-# هنرجع للنسخة اللي بتفتح معانا عادي
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-bookworm-slim AS final
+# مرحلة الـ final هتبقى ubuntu jammy الكاملة
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-jammy AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# السطر ده هو اللي هيمنع الـ Segmentation Fault (139) 
-# بيخلي الدوت نت يتخطى مكتبات اللغات اللي بتعمل كراش في اللينكس
+# السطر ده إجباري المرة دي
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 EXPOSE 8080
