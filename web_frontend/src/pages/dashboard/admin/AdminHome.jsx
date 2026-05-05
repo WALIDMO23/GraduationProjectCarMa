@@ -85,7 +85,7 @@ const AdminHome = () => {
     },
     {
       title: 'إجمالي الطلبات',
-      value: data?.stats?.totalRequests ? data.stats.totalRequests.toLocaleString() : '0',
+      value: data?.stats?.totalOrders ? data.stats.totalOrders.toLocaleString() : '0',
       trend: '+12.5%',
       trendUp: true,
       icon: TrendingUp,

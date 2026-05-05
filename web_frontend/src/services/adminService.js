@@ -2,11 +2,21 @@ import api from "./api";
 
 /**
  * Fetch Admin Dashboard data.
- * GET /admin
+ * GET /api/admin/dashboard
  * @returns {Promise<import("axios").AxiosResponse>}
  */
 export const getAdminDashboard = () => {
-  return api.get("/admin");
+  return api.get("/api/admin/dashboard");
+};
+
+/**
+ * Global search for users and orders.
+ * GET /api/admin/search?keyword={keyword}
+ * @param {string} keyword
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const globalSearch = (keyword) => {
+  return api.get(`/api/admin/search?keyword=${keyword}`);
 };
 
 /**
@@ -19,12 +29,21 @@ export const getAdminNotifications = () => {
 };
 
 /**
- * Search/Fetch all orders.
- * GET /searchOrders
+ * Fetch current admin account info.
+ * GET /api/admin/me
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getAccountInfo = () => {
+  return api.get("/api/admin/me");
+};
+
+/**
+ * Fetch all orders.
+ * GET /api/orders
  * @returns {Promise<import("axios").AxiosResponse>}
  */
 export const searchOrders = () => {
-  return api.get("/searchOrders");
+  return api.get("/api/orders");
 };
 
 /**

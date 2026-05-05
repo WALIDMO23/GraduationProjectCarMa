@@ -15,7 +15,7 @@ export default function DashboardLayout() {
       <div className="flex-1 flex flex-col min-w-0">
         {/* Mobile Header Toggle */}
         <div className="md:hidden flex items-center justify-between p-4 bg-primary-dark text-white shadow-md">
-          <h1 className="text-xl font-black">كار سيرفس</h1>
+          <h1 className="text-xl font-black">CarMa</h1>
           <button 
             onClick={() => setSidebarOpen(true)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"
