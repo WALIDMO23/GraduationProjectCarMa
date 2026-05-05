@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       {/* Sidebar Header */}
       <div className="p-8 flex items-center justify-between">
         <div className="flex flex-col">
-          <h1 className="text-3xl font-black tracking-tight">كار سيرفس</h1>
+          <h1 className="text-3xl font-black tracking-tight">CarMa</h1>
           <p className="text-sm text-blue-300/80 font-medium mt-1">لوحة التحكم الإدارية</p>
         </div>
         <button onClick={onClose} className="md:hidden p-2 hover:bg-white/10 rounded-xl transition-colors">

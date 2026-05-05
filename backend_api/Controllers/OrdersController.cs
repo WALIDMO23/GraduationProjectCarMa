@@ -58,6 +58,21 @@ if (service == null)
     });
 }
 
+        // ================= UPDATE ORDER STATUS =================
+        [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateOrderStatusDto dto)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null)
+                return NotFound(new { message = "Order not found" });
+
+            order.OrderStatus = dto.OrderStatus;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Order status updated", order });
+        }
+
         // ================= NOTIFICATIONS =================
         [HttpGet("/api/notifications")]
         public async Task<IActionResult> GetNotifications()
