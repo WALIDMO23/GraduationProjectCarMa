@@ -9,6 +9,7 @@ import 'package:graduation_project/data/models/order_model.dart';
 import 'package:graduation_project/views/home/order_details_page.dart';
 import 'package:provider/provider.dart';
 
+
 class ActiveOrderCard extends StatelessWidget {
   const ActiveOrderCard({super.key});
 
@@ -28,9 +29,8 @@ class ActiveOrderCard extends StatelessWidget {
 
         final activeOrder = ordersProvider.orders.first;
 
-        // Only show card for active orders (not completed/canceled)
-        if (activeOrder.orderStatus == OrderStatus.completed ||
-            activeOrder.orderStatus == OrderStatus.canceled) {
+        // Only show card for active orders (not completed/rejected)
+        if (activeOrder.isCompleted || activeOrder.isRejected) {
           return const SizedBox.shrink();
         }
 
@@ -38,16 +38,12 @@ class ActiveOrderCard extends StatelessWidget {
         String subtitle = s.orderPendingSub;
         Color statusColor = AppTheme.warningColor;
 
-        if (activeOrder.orderStatus == OrderStatus.onTheWay) {
+        if (activeOrder.isAccepted || activeOrder.isInProgress) {
           title    = s.orderOnTheWay;
-          subtitle = activeOrder.technicianName != null
+          subtitle = activeOrder.hasTechnician
               ? '${activeOrder.technicianName} ${s.isArabic ? "في الطريق إليك" : "is on the way"}'
               : s.orderOnTheWaySub;
           statusColor = AppTheme.successColor;
-        } else if (activeOrder.orderStatus == OrderStatus.underProcess) {
-          title    = s.orderUnderProcess;
-          subtitle = s.orderUnderProcessSub;
-          statusColor = AppTheme.primaryColor;
         }
 
         return Transform.translate(
@@ -86,7 +82,7 @@ class ActiveOrderCard extends StatelessWidget {
                       ),
                       child: ordersProvider.imagePathForOrder(activeOrder.id) == null
                           ? Icon(
-                              activeOrder.orderStatus == OrderStatus.onTheWay
+                              activeOrder.isAccepted || activeOrder.isInProgress
                                   ? Icons.directions_car_rounded
                                   : Icons.access_time_filled,
                               color: statusColor,
