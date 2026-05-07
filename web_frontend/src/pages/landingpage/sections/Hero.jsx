@@ -32,7 +32,7 @@ export default function Hero() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               صيانة عربيتك
               <br />
-              <span className="text-blue-200">في أي مكان</span>
+              <span className="text-premium-gold">في أي مكان</span>
             </h1>
 
             <p className="text-blue-100 text-lg leading-relaxed mb-8 max-w-lg">
@@ -43,7 +43,7 @@ export default function Hero() {
             <div className="flex flex-wrap gap-4">
               <a
                 href="#cta"
-                className="inline-flex items-center gap-2 bg-white text-primary font-bold px-8 py-4 rounded-xl hover:bg-blue-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm"
+                className="inline-flex items-center gap-2 bg-premium-gold text-midnight font-bold px-8 py-4 rounded-xl hover:bg-gold-light transition-all duration-300 shadow-[0_0_20px_rgba(255,195,0,0.3)] hover:shadow-[0_0_30px_rgba(255,195,0,0.5)] hover:-translate-y-0.5 text-sm"
               >
                 <HiOutlineArrowDownTray size={18} />
                 حمّل التطبيق الآن
@@ -59,7 +59,7 @@ export default function Hero() {
               ].map((stat, i) => (
                 <div key={i} className="text-center">
                   <div className="text-2xl font-black text-white">{stat.value}</div>
-                  <div className="text-blue-200 text-xs mt-1">{stat.label}</div>
+                  <div className="text-premium-gold text-xs mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>
