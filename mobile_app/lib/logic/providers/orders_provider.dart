@@ -120,7 +120,7 @@ class OrdersProvider extends ChangeNotifier {
   // ── Polling: check order status every 5 seconds ───────────────
   void startPolling(int orderId) {
     stopPolling(); // cancel any existing timer
-    _lastKnownStatus = OrderStatus.newOrder;
+    _lastKnownStatus = OrderStatus.pending;
 
     _pollingTimer = Timer.periodic(const Duration(seconds: 5), (_) {
       _checkOrderStatus(orderId);
@@ -150,16 +150,15 @@ class OrdersProvider extends ChangeNotifier {
             _orders[idx] = updatedOrder;
           }
 
-          // If status just changed to OnTheWay — fire callback!
-          if (_lastKnownStatus != OrderStatus.onTheWay &&
-              updatedOrder.orderStatus == OrderStatus.onTheWay) {
+          // If status just changed to Accepted — fire callback!
+          if (_lastKnownStatus != OrderStatus.accepted &&
+              updatedOrder.orderStatus == OrderStatus.accepted) {
             onOrderAccepted?.call(updatedOrder);
             stopPolling(); // stop after accepted
           }
 
           // Stop polling if terminal status
-          if (updatedOrder.orderStatus == OrderStatus.completed ||
-              updatedOrder.orderStatus == OrderStatus.canceled) {
+          if (updatedOrder.isCompleted || updatedOrder.isRejected) {
             stopPolling();
           }
 

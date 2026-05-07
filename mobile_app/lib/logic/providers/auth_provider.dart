@@ -5,6 +5,25 @@ import 'package:graduation_project/data/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
+  // Call once in main.dart / SplashScreen to restore session from saved token
+  Future<void> loadCurrentUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('auth_token');
+    if (token == null) return;
+
+    try {
+      final response = await _apiClient.dio.get('/admin/me');
+      if (response.statusCode == 200) {
+        final data = response.data as Map<String, dynamic>;
+        data['token'] = token;
+        _currentUser = UserModel.fromJson(data);
+        notifyListeners();
+      }
+    } catch (_) {
+      // Token expired or server down — silently ignore, user stays logged out
+    }
+  }
+
   final ApiClient _apiClient = ApiClient();
   UserModel? _currentUser;
   bool _isLoading = false;
