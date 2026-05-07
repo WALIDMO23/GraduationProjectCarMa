@@ -1,120 +1,203 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using CarMaintenance.Data;
+using CarMaintenance.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
+using CarMaintenance.Hubs;
+using CarMaintenance.DTOs;
 
-namespace CarServiceAPI.Controllers
+namespace CarMaintenance.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/orders")]
     public class OrdersController : ControllerBase
     {
-        public class Order
+        private readonly AppDbContext _context;
+        private readonly IHubContext<NotificationHub> _hub;
+
+        public OrdersController(AppDbContext context, IHubContext<NotificationHub> hub)
         {
-            public string OrderNumber { get; set; }
-            public string Service { get; set; }
-            public string Icon { get; set; }
-            public string CustomerName { get; set; }
-            public double Rating { get; set; }
-            public string Location { get; set; }
-            public string DateTime { get; set; }
-            public string Status { get; set; }
-            public string PaymentStatus { get; set; }
-            public int Price { get; set; }
-            public string Action { get; set; }
+            _context = context;
+            _hub = hub;
         }
 
-        private static List<Order> orders = new List<Order>
-        {
-            new Order { 
-                OrderNumber = "#12849", Service = "تغيير الزيت", Icon = "oil", CustomerName = "محمد أحمد علي", 
-                Rating = 4.8, Location = "القاهرة، مدينة نصر، شارع عباس العقاد 45", DateTime = "31 مارس 2026 - 02:30 م", 
-                Status = "قيد المراجعة", PaymentStatus = "لم يدفع", Price = 350, Action = "عرض" 
-            },
-            new Order { 
-                OrderNumber = "#12848", Service = "تغيير البطارية", Icon = "battery", CustomerName = "أحمد محمود حسن", 
-                Rating = 4.5, Location = "الجيزة، المهندسين، شارع السودان 23", DateTime = "31 مارس 2026 - 03:00 م", 
-                Status = "تمت الموافقة", PaymentStatus = "مدفوع", Price = 500, Action = "عرض" 
-            },
-            new Order { 
-                OrderNumber = "#12847", Service = "خدمة الإطارات", Icon = "tire", CustomerName = "خالد عبد الله", 
-                Rating = 4.9, Location = "القاهرة، التجمع الخامس، شارع جنوب الأكاديمية", DateTime = "31 مارس 2026 - 04:00 م", 
-                Status = "جاري التنفيذ", PaymentStatus = "مدفوع", Price = 250, Action = "عرض" 
-            },
-            new Order { 
-                OrderNumber = "#12846", Service = "غسيل السيارة", Icon = "wash", CustomerName = "عمر سعيد", 
-                Rating = 4.3, Location = "القاهرة، النزهة، شارع الطيران", DateTime = "31 مارس 2026 - 01:15 م", 
-                Status = "مكتمل", PaymentStatus = "مدفوع", Price = 200, Action = "عرض" 
-            },
-            new Order { 
-                OrderNumber = "#12845", Service = "صيانة فرامل", Icon = "brakes", CustomerName = "ياسين محمد", 
-                Rating = 4.7, Location = "الإسكندرية، سموحة، طريق الحرية", DateTime = "31 مارس 2026 - 10:00 ص", 
-                Status = "مرفوض", PaymentStatus = "لم يدفع", Price = 400, Action = "عرض" 
-            }
-        };
-
+        // ================= GET ORDERS WITH STATS, SEARCH & ICONS =================
         [HttpGet]
-        public IActionResult GetAll(string? search, string? status)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> GetAll([FromQuery] string? search = null, [FromQuery] string? status = null)
         {
-            var result = orders.AsQueryable();
-
-            if (!string.IsNullOrEmpty(search))
+            var stats = new
             {
-                result = result.Where(o => 
-                    o.CustomerName.Contains(search) || 
-                    o.Service.Contains(search) || 
-                    o.OrderNumber.Contains(search));
+                total = await _context.Orders.CountAsync(),
+                pending = await _context.Orders.CountAsync(o => o.OrderStatus == OrderStatus.Pending),
+                underStudy = await _context.Orders.CountAsync(o => o.OrderStatus == OrderStatus.Accepted),
+                inProgress = await _context.Orders.CountAsync(o => o.OrderStatus == OrderStatus.InProgress),
+                completed = await _context.Orders.CountAsync(o => o.OrderStatus == OrderStatus.Completed),
+                rejected = await _context.Orders.CountAsync(o => o.OrderStatus == OrderStatus.Rejected)
+            };
+
+            var query = _context.Orders
+                .Include(o => o.Service)
+                .Include(o => o.User)
+                .AsQueryable();
+
+            
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(o => 
+                    o.Id.ToString().Contains(search) || 
+                    o.User.Name.Contains(search) || 
+                    o.Service.Name.Contains(search) ||
+                    (o.TechnicianName != null && o.TechnicianName.Contains(search)));
             }
 
-            if (!string.IsNullOrEmpty(status) && status != "الكل")
+            if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
             {
-                result = result.Where(o => o.Status == status);
+                query = query.Where(o => o.OrderStatus.ToString() == status);
             }
 
-            return Ok(result.ToList());
+            var orders = await query
+                .OrderByDescending(o => o.CreatedAt)
+                .Select(o => new
+                {
+                    id = "#" + o.Id,
+                    service = new {
+                        name = o.Service.Name,
+                        icon = o.Service.Name.Contains("زيت") ? "oil-icon" :
+                               o.Service.Name.Contains("بطارية") ? "battery-icon" :
+                               o.Service.Name.Contains("غسيل") ? "wash-icon" :
+                               o.Service.Name.Contains("طارئة") ? "emergency-icon" :
+                               o.Service.Name.Contains("ونش") ? "towing-icon" :
+                               o.Service.Name.Contains("إطار") ? "tire-icon" : "default-icon",
+                        color = o.Service.Name.Contains("زيت") ? "#FFB300" : // أصفر
+                                o.Service.Name.Contains("بطارية") ? "#1E88E5" : // أزرق
+                                o.Service.Name.Contains("غسيل") ? "#8E24AA" : // بنفسجي
+                                o.Service.Name.Contains("طارئة") ? "#E53935" : // أحمر
+                                o.Service.Name.Contains("ونش") ? "#FB8C00" : // برتقالي
+                                "#43A047" // أخضر للإطارات
+                    },
+                    customer = new {
+                        name = o.User.Name,
+                        rating = 4.8, 
+                    },
+                    location = o.Address,
+                    dateTime = o.CreatedAt.ToString("yyyy/MM/dd | hh:mm tt"),
+                    status = new {
+                        label = o.OrderStatus == OrderStatus.Pending ? "قيد المراجعة" :
+                                o.OrderStatus == OrderStatus.Accepted ? "تمت الموافقة" :
+                                o.OrderStatus == OrderStatus.InProgress ? "جاري التنفيذ" : "مكتمل",
+                        value = o.OrderStatus.ToString()
+                    },
+                    technician = o.TechnicianName ?? "غير معين",
+                    paymentStatus = o.IsPaid ? "مدفوع" : "لم يدفع",
+                    price = o.Price.ToString("N0") + " جنيه"
+                }).ToListAsync();
+
+            return Ok(new { stats, orders });
         }
 
-        [HttpGet("summary")]
-        public IActionResult GetSummary()
-        {
-            return Ok(new
-            {
-                total = orders.Count,
-                reviewing = orders.Count(x => x.Status == "قيد المراجعة"),
-                approved = orders.Count(x => x.Status == "تمت الموافقة"),
-                inProgress = orders.Count(x => x.Status == "جاري التنفيذ"),
-                completed = orders.Count(x => x.Status == "مكتمل"),
-                rejected = orders.Count(x => x.Status == "مرفوض")
-            });
-        }
-
-        [HttpGet("{orderNumber}")]
-        public IActionResult GetByNumber(string orderNumber)
-        {
-            var order = orders.FirstOrDefault(x => x.OrderNumber == orderNumber);
-            return order == null ? NotFound() : Ok(order);
-        }
-
+        // ================= CREATE ORDER =================
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] Order newOrder)
+        public async Task<IActionResult> Create(CreateOrderDto dto)
         {
-            orders.Add(newOrder);
-            return CreatedAtAction(nameof(GetByNumber), new { orderNumber = newOrder.OrderNumber }, newOrder);
+            var service = await _context.Services.FindAsync(dto.ServiceId);
+            if (service == null) return BadRequest("Service not found");
+
+            var order = new Order
+            {
+                UserId = dto.UserId,
+                ServiceId = dto.ServiceId,
+                Address = dto.Address,
+                PhoneNumber = dto.PhoneNumber,
+                Price = service.Price,
+                OrderStatus = OrderStatus.Pending,
+                CreatedAt = DateTime.UtcNow,
+                IsPaid = false
+            };
+
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+            return Ok(new { message = "Order created", order });
         }
 
-        [HttpPut("{orderNumber}/status")]
-        public IActionResult UpdateStatus(string orderNumber, [FromBody] string newStatus)
+        // ================= ACCEPT ORDER =================
+        [HttpPost("{id}/accept")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> AcceptOrder(int id)
         {
-            var order = orders.FirstOrDefault(x => x.OrderNumber == orderNumber);
+            var order = await _context.Orders.FindAsync(id);
             if (order == null) return NotFound();
-            order.Status = newStatus;
-            return NoContent();
+            
+            order.OrderStatus = OrderStatus.Accepted;
+            await _context.SaveChangesAsync();
+            
+            await _hub.Clients.All.SendAsync("OrderUpdated", new { orderId = id, status = "Accepted" });
+            
+            return Ok(new { message = "Order accepted" });
         }
 
-        [HttpDelete("{orderNumber}")]
-        public IActionResult DeleteOrder(string orderNumber)
+        // ================= REJECT ORDER =================
+        [HttpPost("{id}/reject")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> RejectOrder(int id)
         {
-            var order = orders.FirstOrDefault(x => x.OrderNumber == orderNumber);
+            var order = await _context.Orders.FindAsync(id);
             if (order == null) return NotFound();
-            orders.Remove(order);
-            return NoContent();
+            
+            order.OrderStatus = OrderStatus.Rejected;
+            await _context.SaveChangesAsync();
+            
+            await _hub.Clients.All.SendAsync("OrderUpdated", new { orderId = id, status = "Rejected" });
+            
+            return Ok(new { message = "Order rejected" });
+        }
+           [HttpGet("user/{userId}")]
+public async Task<IActionResult> GetUserOrders(int userId)
+{
+    var orders = await _context.Orders
+        .Where(o => o.UserId == userId)
+        .OrderByDescending(o => o.CreatedAt)
+        .ToListAsync();
+
+    return Ok(new
+    {
+        success = true,
+        data = orders
+    });
+}
+
+    [HttpGet("{id}")]
+public async Task<IActionResult> GetOrderById(int id)
+{
+    var order = await _context.Orders
+        .Include(o => o.User)
+        .FirstOrDefaultAsync(o => o.Id == id);
+
+    if (order == null)
+    {
+        return NotFound(new
+        {
+            success = false,
+            message = "Order not found"
+        });
+    }
+
+    return Ok(new
+    {
+        success = true,
+        data = order
+    });
+}
+
+        // ================= NOTIFICATIONS =================
+        [HttpGet("/api/notifications")]
+        public async Task<IActionResult> GetNotifications()
+        {
+            var data = await _context.Notifications
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
+            return Ok(data);
         }
     }
 }
