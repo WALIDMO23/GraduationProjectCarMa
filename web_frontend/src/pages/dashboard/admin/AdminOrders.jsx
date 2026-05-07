@@ -15,15 +15,26 @@ import {
   Wrench,
   Briefcase
 } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
 import { searchOrders } from '../../../services/adminService';
 
 const AdminOrders = () => {
+  const [searchParams] = useSearchParams();
+  const orderIdFromUrl = searchParams.get('id');
+  
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(orderIdFromUrl || '');
   const [filterStatus, setFilterStatus] = useState('all');
+
+  useEffect(() => {
+    // If URL has an ID, make sure it's reflected in the search term
+    if (orderIdFromUrl) {
+      setSearchTerm(orderIdFromUrl);
+    }
+  }, [orderIdFromUrl]);
 
   useEffect(() => {
     const fetchOrders = async () => {

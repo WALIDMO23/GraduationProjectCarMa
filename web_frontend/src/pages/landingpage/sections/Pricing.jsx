@@ -45,7 +45,7 @@ const PLANS = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="landing-section bg-white">
+    <section id="pricing" className="landing-section premium-dark-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div data-aos="fade-up">
           <span className="section-badge flex items-center justify-center gap-2 w-fit mx-auto">
