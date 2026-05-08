@@ -57,12 +57,12 @@ export default function Login() {
     <div className="relative flex flex-col items-center justify-center font-sans select-none" dir="rtl">
 
       <div className="text-center mb-8">
-        <h1 className="text-6xl font-black text-white italic tracking-tighter drop-shadow-md flip-animation">CarMA</h1>
-        <p className="text-sm text-white/80 font-bold tracking-[0.2em] mt-2 mr-1 text-center">خدمة صيانة السيارات</p>
+        <h1 className="text-6xl font-black text-premium-gold italic tracking-tighter drop-shadow-md flip-animation">CarMa</h1>
+        <p className="text-sm text-premium-gold/80 font-bold tracking-[0.2em] mt-2 mr-1 text-center">خدمة صيانة السيارات</p>
       </div>
 
-      <div className="glass3d w-full max-w-[500px] rounded-[40px] overflow-hidden px-8 py-16 lg:px-12 lg:py-24 border border-white/30 shadow-[0_0_80px_0_rgba(0,0,0,0.5)]">
-      <h2 className="text-3xl font-black text-white text-center mb-4 drop-shadow-sm">مرحباً Super Admin</h2>
+      <div className="glass3d w-full max-w-[500px] rounded-[40px] overflow-hidden px-8 py-16 lg:px-12 lg:py-24 border border-premium-gold/30 shadow-[0_0_80px_0_rgba(0,0,0,0.5)]">
+      <h2 className="text-3xl font-black text-premium-gold text-center mb-4 drop-shadow-sm">مرحباً Super Admin</h2>
       <p className="text-white/70 text-sm text-center mb-8 font-medium">سجل دخولك للوصول إلى حسابك</p>
 
       {error && (
@@ -75,7 +75,7 @@ export default function Login() {
         <Input
           label="البريد الإلكتروني"
           labelClassName="text-white/90"
-          icon={<HiOutlineEnvelope className="text-slate-700" size={20} />}
+          icon={<HiOutlineEnvelope className="text-premium-gold/70" size={20} />}
           placeholder="example@mail.com"
           type="email"
           value={email}
@@ -87,7 +87,7 @@ export default function Login() {
             label="كلمة المرور"
             labelClassName="text-white/90"
             type={showPassword ? "text" : "password"}
-            icon={<HiOutlineLockClosed className="text-slate-700" size={20} />}
+            icon={<HiOutlineLockClosed className="text-premium-gold/70" size={20} />}
             placeholder="********"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -96,7 +96,7 @@ export default function Login() {
             <button 
               type="button" 
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute left-4 top-[45px] text-slate-700 transition-colors"
+              className="absolute left-4 top-[45px] text-premium-gold/60 transition-colors"
             >
               {showPassword ? <HiOutlineEye size={18} /> : <HiOutlineEyeSlash size={18} />}
             </button>
@@ -115,7 +115,7 @@ export default function Login() {
           type="submit"
           disabled={loading}
           variant="custom"
-          className="w-full bg-white text-[#3b82f6] hover:bg-blue-600 hover:text-white h-14 rounded-2xl shadow-xl shadow-blue-900/20 text-lg font-bold mt-4 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed transform hover:-translate-y-1"
+          className="w-full bg-premium-gold text-black hover:bg-gold-light h-14 rounded-2xl shadow-xl shadow-premium-gold/20 text-lg font-bold mt-4 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed transform hover:-translate-y-1"
         >
           {loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
         </Button> 

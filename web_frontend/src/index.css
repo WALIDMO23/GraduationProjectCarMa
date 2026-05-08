@@ -61,7 +61,7 @@
 
 .noise-gradient-bg {
   background: 
-    linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #172554 100%),
+    linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%),
     url("https://www.transparenttextures.com/patterns/fabric-1-light.png");
   background-blend-mode: soft-light;
   position: relative;
@@ -87,7 +87,7 @@
 
 .glass3d { 
   
-  --color-glass3d: rgb(30 58 138 / 0.45); 
+  --color-glass3d: rgba(0, 0, 0, 0.92); 
   --noise-glass3d: none; 
 
   position: relative; 
