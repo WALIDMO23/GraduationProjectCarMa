@@ -84,6 +84,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: _bg,
       appBar: AppBar(
         backgroundColor: _bg,
@@ -456,75 +457,82 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
 
   // ── Input Bar ─────────────────────────────────────────────────────────────
   Widget _buildInputBar() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-      decoration: BoxDecoration(
-        color: _bg,
-        border: Border(top: BorderSide(color: _purplePrimary.withValues(alpha: 0.15))),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: _inputBg,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: _purplePrimary.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      textDirection: TextDirection.rtl,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                      decoration: const InputDecoration(
-                        hintText: 'اسألني عن عربيتك...',
-                        hintStyle: TextStyle(color: Colors.white38, fontSize: 14),
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      onSubmitted: (_) => _send(),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Consumer<AiProvider>(
-            builder: (_, ai, __) => GestureDetector(
-              onTap: ai.isLoading ? null : _send,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 48,
-                height: 48,
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+        decoration: BoxDecoration(
+          color: _bg,
+          border: Border(top: BorderSide(color: _purplePrimary.withValues(alpha: 0.15))),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: ai.isLoading
-                      ? const LinearGradient(colors: [Colors.grey, Colors.grey])
-                      : const LinearGradient(
-                          colors: [_purplePrimary, _purpleLight],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                  boxShadow: ai.isLoading
-                      ? []
-                      : [BoxShadow(color: _purplePrimary.withValues(alpha: 0.5), blurRadius: 12)],
+                  color: _inputBg,
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: _purplePrimary.withValues(alpha: 0.3)),
                 ),
-                child: ai.isLoading
-                    ? const Padding(
-                        padding: EdgeInsets.all(12),
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                      )
-                    : const Icon(Icons.send_rounded, color: Colors.white, size: 22),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        textDirection: TextDirection.rtl,
+                        style: const TextStyle(color: Colors.white, fontSize: 14),
+                        cursorColor: _purpleLight,
+                        decoration: const InputDecoration(
+                          hintText: 'اسألني عن عربيتك...',
+                          hintStyle: TextStyle(color: Colors.white38, fontSize: 14),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          isDense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        ),
+                        onSubmitted: (_) => _send(),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(width: 10),
+            Consumer<AiProvider>(
+              builder: (_, ai, __) => GestureDetector(
+                onTap: ai.isLoading ? null : _send,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: ai.isLoading
+                        ? const LinearGradient(colors: [Colors.grey, Colors.grey])
+                        : const LinearGradient(
+                            colors: [_purplePrimary, _purpleLight],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                    boxShadow: ai.isLoading
+                        ? []
+                        : [BoxShadow(color: _purplePrimary.withValues(alpha: 0.5), blurRadius: 12)],
+                  ),
+                  child: ai.isLoading
+                      ? const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        )
+                      : const Icon(Icons.send_rounded, color: Colors.white, size: 22),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
