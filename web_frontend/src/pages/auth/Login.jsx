@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from "../../component/ui/Button";
 import Input from "../../component/ui/Input";
-import { HiOutlineLockClosed, HiOutlineEnvelope, HiOutlineEye, HiOutlineEyeSlash } from "react-icons/hi2";
+import { HiOutlineLockClosed, HiOutlineEnvelope, HiOutlineEye, HiOutlineEyeSlash, HiOutlineCog6Tooth, HiOutlineShieldCheck, HiOutlineBolt } from "react-icons/hi2";
 import { login } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";
 
@@ -54,28 +54,52 @@ export default function Login() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center font-sans select-none" dir="rtl">
+    <div className="relative flex flex-col items-center justify-center font-sans select-none w-full" dir="rtl">
 
+      {/* Branding */}
       <div className="text-center mb-8">
-        <h1 className="text-6xl font-black text-premium-gold italic tracking-tighter drop-shadow-md flip-animation">CarMa</h1>
-        <p className="text-sm text-premium-gold/80 font-bold tracking-[0.2em] mt-2 mr-1 text-center">خدمة صيانة السيارات</p>
+        <h1 className="text-7xl font-black text-premium-gold italic tracking-tighter drop-shadow-lg flip-animation">CarMa</h1>
+        <p className="text-sm text-premium-gold/70 font-bold tracking-[0.25em] mt-2 uppercase">نحافظ على سيارتك بأفضل حال</p>
       </div>
 
-      <div className="glass3d w-full max-w-[500px] rounded-[40px] overflow-hidden px-8 py-16 lg:px-12 lg:py-24 border border-premium-gold/30 shadow-[0_0_80px_0_rgba(0,0,0,0.5)]">
-      <h2 className="text-3xl font-black text-premium-gold text-center mb-4 drop-shadow-sm">مرحباً Super Admin</h2>
-      <p className="text-white/70 text-sm text-center mb-8 font-medium">سجل دخولك للوصول إلى حسابك</p>
+      {/* Feature Badges */}
+      <div className="flex gap-10 mb-12">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-16 h-16 rounded-full border-2 border-premium-gold/30 flex items-center justify-center bg-premium-gold/5 shadow-lg shadow-premium-gold/5">
+            <HiOutlineCog6Tooth className="text-premium-gold" size={32} />
+          </div>
+          <span className="text-[11px] text-premium-gold font-bold text-center leading-tight">فنيين<br/>خبراء</span>
+        </div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-16 h-16 rounded-full border-2 border-premium-gold/30 flex items-center justify-center bg-premium-gold/5 shadow-lg shadow-premium-gold/5">
+            <HiOutlineShieldCheck className="text-premium-gold" size={32} />
+          </div>
+          <span className="text-[11px] text-premium-gold font-bold text-center leading-tight">جودة<br/>عالية</span>
+        </div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-16 h-16 rounded-full border-2 border-premium-gold/30 flex items-center justify-center bg-premium-gold/5 shadow-lg shadow-premium-gold/5">
+            <HiOutlineBolt className="text-premium-gold" size={32} />
+          </div>
+          <span className="text-[11px] text-premium-gold font-bold text-center leading-tight">سريع<br/>وموثوق</span>
+        </div>
+      </div>
+
+      {/* Glass Form Card */}
+      <div className="w-full rounded-3xl overflow-hidden px-8 py-10 border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_60px_0_rgba(0,0,0,0.3)]">
+        <h2 className="text-2xl font-black text-premium-gold text-center mb-2">مرحباً بعودتك</h2>
+        <p className="text-premium-gold/60 text-sm text-center mb-8 font-medium">سجل دخولك للوصول إلى حسابك</p>
 
       {error && (
-        <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm text-center font-medium">
+        <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium">
           {error}
         </div>
       )}
 
-      <form className="space-y-8" onSubmit={handleSubmit}>
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <Input
           label="البريد الإلكتروني"
-          labelClassName="text-white/90"
-          icon={<HiOutlineEnvelope className="text-premium-gold/70" size={20} />}
+          labelClassName="text-premium-gold/80"
+          icon={<HiOutlineEnvelope className="text-premium-gold/60" size={20} />}
           placeholder="example@mail.com"
           type="email"
           value={email}
@@ -85,9 +109,9 @@ export default function Login() {
         <div className="relative">
           <Input
             label="كلمة المرور"
-            labelClassName="text-white/90"
+            labelClassName="text-premium-gold/80"
             type={showPassword ? "text" : "password"}
-            icon={<HiOutlineLockClosed className="text-premium-gold/70" size={20} />}
+            icon={<HiOutlineLockClosed className="text-premium-gold/60" size={20} />}
             placeholder="********"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -96,7 +120,7 @@ export default function Login() {
             <button 
               type="button" 
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute left-4 top-[45px] text-premium-gold/60 transition-colors"
+              className="absolute left-4 top-[45px] text-premium-gold/60 hover:text-premium-gold transition-colors"
             >
               {showPassword ? <HiOutlineEye size={18} /> : <HiOutlineEyeSlash size={18} />}
             </button>
@@ -104,18 +128,18 @@ export default function Login() {
         </div>
 
         <div className="flex justify-between items-center px-1 text-xs">
-          <label className="flex items-center gap-2 text-white/70 cursor-pointer font-medium">
-            <input type="checkbox" className="w-4 h-4 rounded border-slate-200 text-[#1D4ED8]" />
+          <label className="flex items-center gap-2 text-premium-gold/60 cursor-pointer font-medium">
+            <input type="checkbox" className="w-4 h-4 rounded border-premium-gold/20 text-premium-gold bg-transparent" />
             تذكرني
           </label>
-          {/* <a href="#" className="text-[#1D4ED8] font-bold hover:underline transition-all">نسيت كلمة المرور؟</a> */}
+          {/* <a href="#" className="text-premium-gold font-bold hover:underline transition-all">نسيت كلمة المرور؟</a> */}
         </div>
 
         <Button
           type="submit"
           disabled={loading}
           variant="custom"
-          className="w-full bg-premium-gold text-black hover:bg-gold-light h-14 rounded-2xl shadow-xl shadow-premium-gold/20 text-lg font-bold mt-4 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed transform hover:-translate-y-1"
+          className="w-full bg-premium-gold text-black hover:bg-gold-light h-14 rounded-2xl shadow-xl shadow-premium-gold/20 text-lg font-bold mt-2 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
         >
           {loading ? 'جاري تسجيل الدخول...' : 'تسجيل الدخول'}
         </Button> 

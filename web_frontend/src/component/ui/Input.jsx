@@ -8,7 +8,7 @@ const Input = ({ label, icon, type = "text", placeholder, labelClassName = "text
         <input
           type={type}
           placeholder={placeholder}
-          className="w-full px-4 py-3 rounded-2xl border border-white/10 focus:ring-2 focus:ring-blue-500 outline-none pr-10 transition-all placeholder:text-white/30 bg-white/10 text-white"
+          className="w-full px-4 py-3.5 rounded-xl border border-white/10 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/30 outline-none pr-10 transition-all placeholder:text-white/20 bg-white/5 text-white"
           {...props}
         />
         {icon && (

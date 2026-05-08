@@ -86,8 +86,8 @@
 }
 
 .glass3d { 
-  
-  --color-glass3d: rgba(0, 0, 0, 0.92); 
+  --color-glass3d: rgba(0, 8, 20, 0.45); 
+  --filter-glass3d: blur(20px) saturate(180%);
   --noise-glass3d: none; 
 
   position: relative; 
@@ -142,8 +142,8 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px #f8fafc inset !important;
-    -webkit-text-fill-color: #1e293b !important;
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 8, 20, 0.95) inset !important;
+    -webkit-text-fill-color: #ffffff !important;
     transition: background-color 5000s ease-in-out 0s;
 }
 

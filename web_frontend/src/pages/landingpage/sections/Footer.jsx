@@ -23,7 +23,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <h3 className="text-3xl font-black text-premium-gold italic tracking-tighter mb-4">
-              CarMA
+              CarMa
             </h3>
             <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-sm">
               منصة متكاملة لخدمات صيانة السيارات. نوفر لك أفضل الفنيين المعتمدين مع ضمان شامل على جميع خدماتنا.
@@ -62,7 +62,7 @@ export default function Footer() {
         {/* Divider */}
         <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} CarMA. جميع الحقوق محفوظة.
+            © {new Date().getFullYear()} CarMa. جميع الحقوق محفوظة.
           </p>
           <div className="flex gap-3">
             {SOCIALS.map((social) => (
