@@ -28,20 +28,19 @@ import { GiBattery50 as GiBattery, GiOilDrum, GiCarWheel, GiAutoRepair } from 'r
 import { MdLocalCarWash } from 'react-icons/md';
 import { FiList, FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle } from 'react-icons/fi';
 
+import { useAdminData } from '../../../context/AdminDataContext';
+
 const ITEMS_PER_PAGE = 8;
 
 const AdminOrders = () => {
   const [searchParams] = useSearchParams();
   const orderIdFromUrl = searchParams.get('id');
 
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { orders, loading, error, refreshing, refreshAll, getStatus, getServiceStyle } = useAdminData();
   const [searchTerm, setSearchTerm] = useState(orderIdFromUrl || '');
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [actionLoading, setActionLoading] = useState(null);
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (orderIdFromUrl) {
@@ -50,49 +49,7 @@ const AdminOrders = () => {
   }, [orderIdFromUrl]);
 
   const fetchOrders = async (isRefresh = false) => {
-    try {
-      if (isRefresh) setRefreshing(true);
-      else setLoading(true);
-      const response = await searchOrders();
-      setOrders(response.data?.orders || response.data || []);
-    } catch (err) {
-      console.error("Error fetching orders:", err);
-      setError("تعذر تحميل قائمة الطلبات");
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  // Status config
-  const statusConfig = {
-    'Pending': { label: 'قيد المراجعة', bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', dot: 'bg-amber-500', cardBg: 'bg-amber-50', cardBorder: 'border-amber-200', cardText: 'text-amber-700', icon: FiClock },
-    'Accepted': { label: 'تمت الموافقة', bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200', dot: 'bg-teal-500', cardBg: 'bg-teal-50', cardBorder: 'border-teal-200', cardText: 'text-teal-700', icon: FiCheckCircle },
-    'InProgress': { label: 'جاري التنفيذ', bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', dot: 'bg-blue-500', cardBg: 'bg-blue-50', cardBorder: 'border-blue-200', cardText: 'text-blue-700', icon: FiRefreshCw },
-    'Completed': { label: 'مكتمل', bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', dot: 'bg-green-500', cardBg: 'bg-green-50', cardBorder: 'border-green-200', cardText: 'text-green-700', icon: FiCheckSquare },
-    'Rejected': { label: 'مرفوض', bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', dot: 'bg-red-500', cardBg: 'bg-red-50', cardBorder: 'border-red-200', cardText: 'text-red-700', icon: FiXCircle },
-    'Cancelled': { label: 'ملغي', bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200', dot: 'bg-gray-500', cardBg: 'bg-gray-50', cardBorder: 'border-gray-200', cardText: 'text-gray-700', icon: FiXCircle },
-  };
-
-  const getStatus = (status) => {
-    const value = status?.value || status;
-    return statusConfig[value] || statusConfig['Pending'];
-  };
-
-  // Service icon color mapping
-  const getServiceStyle = (service) => {
-    const color = service?.color || '#1E88E5';
-    const icon = service?.icon || '';
-    let IconComponent = GiAutoRepair;
-    if (icon.includes('battery')) IconComponent = GiBattery;
-    else if (icon.includes('oil')) IconComponent = GiOilDrum;
-    else if (icon.includes('tire')) IconComponent = GiCarWheel;
-    else if (icon.includes('wash')) IconComponent = MdLocalCarWash;
-    return { color, IconComponent };
+    refreshAll();
   };
 
   // Count orders by status
@@ -141,7 +98,7 @@ const AdminOrders = () => {
     try {
       setActionLoading(cleanId);
       await acceptOrder(cleanId);
-      await fetchOrders(true);
+      await refreshAll();
     } catch (err) {
       console.error("Error accepting order:", err);
       alert("فشل في قبول الطلب");
@@ -155,7 +112,7 @@ const AdminOrders = () => {
     try {
       setActionLoading(cleanId);
       await rejectOrder(cleanId);
-      await fetchOrders(true);
+      await refreshAll();
     } catch (err) {
       console.error("Error rejecting order:", err);
       alert("فشل في رفض الطلب");
@@ -220,8 +177,8 @@ const AdminOrders = () => {
             key={card.key}
             onClick={() => setActiveFilter(card.key)}
             className={`relative group overflow-hidden rounded-[2rem] p-5 transition-all duration-500 border-2 
-              ${activeFilter === card.key 
-                ? `${card.lightBg} ${card.textColor} border-current shadow-[0_20px_50px_rgba(0,0,0,0.1)] scale-[1.05] z-10` 
+              ${activeFilter === card.key
+                ? `${card.lightBg} ${card.textColor} border-current shadow-[0_20px_50px_rgba(0,0,0,0.1)] scale-[1.05] z-10`
                 : 'bg-white border-gray-100 hover:border-gray-300 hover:shadow-xl hover:-translate-y-1'
               }`}
           >
@@ -248,20 +205,20 @@ const AdminOrders = () => {
         <div className="flex flex-col md:flex-row gap-4 items-center">
           {/* Search */}
           <div className="relative flex-1 w-full group">
-            <input 
-              type="text" 
-              placeholder="ابحث برقم الطلب، اسم العميل، الخدمة، أو الموقع..." 
+            <input
+              type="text"
+              placeholder="ابحث برقم الطلب، اسم العميل، الخدمة، أو الموقع..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-gray-50/50 border border-gray-200 rounded-2xl py-4 pr-14 pl-6 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white transition-all duration-300"
             />
             <Search size={22} className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex gap-3 w-full md:w-auto">
-            <button 
-              onClick={() => fetchOrders(true)} 
+            <button
+              onClick={() => fetchOrders(true)}
               disabled={refreshing}
               className="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 text-slate-700 px-6 py-4 rounded-2xl text-sm font-black transition-all duration-300 shadow-sm hover:shadow active:scale-95 disabled:opacity-50"
             >
@@ -367,9 +324,9 @@ const AdminOrders = () => {
 
                       {/* Status */}
                       <td className="px-4 py-4">
-                        <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${status.bg} ${status.text} ${status.border}`}>
-                          <status.icon size={13} className={statusValue === 'InProgress' ? 'animate-spin' : ''} />
-                          <span className="text-[11px] font-black whitespace-nowrap">{order.status?.label || status.label}</span>
+                        <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${status.bg} ${status.text} ${status.border || ''}`}>
+                          <status.icon size={13} className={status.value === 'InProgress' ? 'animate-spin' : ''} />
+                          <span className="text-[11px] font-black whitespace-nowrap">{status.label}</span>
                         </div>
                       </td>
 
@@ -396,7 +353,7 @@ const AdminOrders = () => {
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1">
                           {/* Show accept/reject only for Pending (قيد المراجعة) */}
-                          {(statusValue === 'Pending' || statusValue === 'pending' || statusValue === 'قيد المراجعة') && (
+                          {status.value === 'Pending' && (
                             <>
                               <button
                                 onClick={() => handleAccept(order.id)}

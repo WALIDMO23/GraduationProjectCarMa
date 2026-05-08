@@ -1,16 +1,16 @@
 import React from 'react';
 import { Phone, Clock, MapPin, Star, X, Check, Droplets, Battery } from 'lucide-react';
 
-const OrderApprovalCard = ({ 
-  id, 
-  service, 
-  customer, 
-  phone, 
-  time, 
-  location, 
-  price, 
-  rating, 
-  prevOrders, 
+const OrderApprovalCard = ({
+  id,
+  service,
+  customer,
+  phone,
+  time,
+  location,
+  price,
+  rating,
+  prevOrders,
   icon: Icon,
   colorClass,
   onApprove,
@@ -27,7 +27,7 @@ const OrderApprovalCard = ({
           </div>
           <span className="text-orange-500 font-bold bg-orange-50 px-3 py-1 rounded-lg text-sm">#{id}</span>
         </div>
-        
+
         <div className={`h-12 w-12 rounded-2xl flex items-center justify-center text-white shadow-lg order-1 ${colorClass || 'bg-orange-500 shadow-orange-100'}`}>
           <Icon size={24} />
         </div>
@@ -55,14 +55,14 @@ const OrderApprovalCard = ({
 
       <div className="flex items-center justify-between mt-4">
         <div className="flex items-center gap-3 w-2/3">
-          <button 
+          <button
             onClick={() => onReject && onReject(id)}
             className="flex items-center justify-center gap-2 bg-red-50 text-red-600 px-6 py-3 rounded-2xl font-bold text-sm hover:bg-red-100 transition-colors"
           >
             <X size={18} />
             رفض
           </button>
-          <button 
+          <button
             onClick={() => onApprove && onApprove(id)}
             className="flex-1 flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-green-700 shadow-lg shadow-green-100 transition-all active:scale-95"
           >
