@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final auth   = Provider.of<AuthProvider>(context, listen: false);
+      final auth = Provider.of<AuthProvider>(context, listen: false);
       final orders = Provider.of<OrdersProvider>(context, listen: false);
       final userId = auth.currentUser?.id;
       orders.fetchOrders(userId: userId);
@@ -125,27 +125,28 @@ class _HomePageState extends State<HomePage> {
                       ),
                       const SizedBox(width: 16),
                       Consumer<AuthProvider>(
-                        builder: (_, auth, __) => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              auth.currentUser?.name ?? 'مستخدم',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                        builder:
+                            (_, auth, __) => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  auth.currentUser?.name ?? 'مستخدم',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  auth.currentUser?.email ?? '',
+                                  style: TextStyle(
+                                    color: Colors.white.withValues(alpha: 0.9),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              auth.currentUser?.email ?? '',
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),
@@ -173,7 +174,10 @@ class _HomePageState extends State<HomePage> {
                       child: _buildDrawerItem(
                         context: context,
                         title: s.profile,
-                        subtitle: s.isArabic ? 'عرض وتحرير معلوماتك' : 'View and edit your info',
+                        subtitle:
+                            s.isArabic
+                                ? 'عرض وتحرير معلوماتك'
+                                : 'View and edit your info',
                         svgAsset: 'assets/icons/person.svg',
                         backgroundColor: const Color(0xFFDBEAFE),
                         showArrow: true,
@@ -192,7 +196,10 @@ class _HomePageState extends State<HomePage> {
                     _buildDrawerItem(
                       context: context,
                       title: s.settings,
-                      subtitle: s.isArabic ? 'تغيير كلمة المرور وغيرها' : 'Change password and more',
+                      subtitle:
+                          s.isArabic
+                              ? 'تغيير كلمة المرور وغيرها'
+                              : 'Change password and more',
                       svgAsset: 'assets/icons/setting.svg',
                       backgroundColor: const Color(0xFFF1F5F9),
                       showArrow: true,
@@ -234,10 +241,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AiChatPage()),
-        ),
+        onPressed:
+            () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AiChatPage()),
+            ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         child: Container(
@@ -326,14 +334,15 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(height: 16),
                       // النصوص الترحيبية
                       Consumer<AuthProvider>(
-                        builder: (_, auth, __) => Text(
-                          '${s.hello}، ${auth.currentUser?.name ?? ''} 👋',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        builder:
+                            (_, auth, __) => Text(
+                              '${s.hello}، ${auth.currentUser?.name ?? ''} 👋',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -552,7 +561,8 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: textColor ?? Theme.of(context).colorScheme.onSurface,
+                      color:
+                          textColor ?? Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   if (subtitle != null) ...[
