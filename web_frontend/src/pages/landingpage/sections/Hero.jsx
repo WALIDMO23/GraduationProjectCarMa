@@ -69,9 +69,9 @@ export default function Hero() {
           {/* Stats */}
           <div className="flex items-center gap-3">
             {[
-              { value: "+5000", label: "عميل سعيد", icon: <HiOutlineStar size={20} className="text-premium-gold" /> },
+              { value: "+5000", label: "عميل سعيد", icon: <HiOutlineUsers size={20} className="text-amber-400" /> },
               { value: "+200", label: "فني معتمد", icon: <HiOutlineShieldCheck size={20} className="text-green-400" /> },
-              { value: "4.9", label: "تقييم العملاء", icon: <HiOutlineUsers size={20} className="text-amber-400" /> },
+              { value: "4.9", label: "تقييم العملاء", icon: <HiOutlineStar size={20} className="text-premium-gold" /> },
             ].map((stat, i) => (
               <div
                 key={i}
