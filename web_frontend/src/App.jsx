@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { SignalRProvider } from "./context/SignalRContext.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx";
 import DashboardLayout from "./layouts/DashboardLayout.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
@@ -41,9 +42,11 @@ export default function App() {
           <Route
             element={
               <ProtectedRoute>
-                <AdminDataProvider>
-                  <DashboardLayout />
-                </AdminDataProvider>
+                <SignalRProvider>
+                  <AdminDataProvider>
+                    <DashboardLayout />
+                  </AdminDataProvider>
+                </SignalRProvider>
               </ProtectedRoute>
             }
           >
