@@ -76,3 +76,41 @@ export const acceptOrder = (id) => {
 export const rejectOrder = (id) => {
   return api.post(`/api/orders/${id}/reject`);
 };
+
+/**
+ * Fetch New Notifications with pagination and filters
+ * GET /api/new-notifications
+ * @param {Object} params { page, pageSize, isRead, type }
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getNewNotifications = (params = {}) => {
+  return api.get("/api/new-notifications", { params });
+};
+
+/**
+ * Fetch Unread Notifications Count
+ * GET /api/new-notifications/unread-count
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getUnreadNotificationsCount = () => {
+  return api.get("/api/new-notifications/unread-count");
+};
+
+/**
+ * Mark a notification as read
+ * PATCH /api/new-notifications/{id}/read
+ * @param {string|number} id
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const markNotificationAsRead = (id) => {
+  return api.patch(`/api/new-notifications/${id}/read`);
+};
+
+/**
+ * Mark all notifications as read
+ * PATCH /api/new-notifications/read-all
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const markAllNotificationsAsRead = () => {
+  return api.patch(`/api/new-notifications/read-all`);
+};

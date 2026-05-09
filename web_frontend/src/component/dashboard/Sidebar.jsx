@@ -57,9 +57,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             end={item.end}
             onClick={() => window.innerWidth < 768 && onClose()}
             className={({ isActive }) => `
-              flex items-center justify-between px-6 py-4 rounded-full transition-all duration-300
+              flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300
               ${isActive 
-                ? 'bg-white text-[#172554] shadow-xl scale-[1.02]' 
+                ? 'bg-white text-primary-dark shadow-md' 
                 : 'text-white/60 hover:bg-white/10 hover:text-white'}
             `}
           >
