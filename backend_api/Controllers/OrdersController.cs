@@ -34,7 +34,9 @@ namespace CarMaintenance.Controllers
         // ================= GET ALL ORDERS =================
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public async Task<IActionResult> GetAll([FromQuery] string? search = null, [FromQuery] string? status = null)
+        public async Task<IActionResult> GetAll(
+            [FromQuery] string? search = null,
+            [FromQuery] string? status = null)
         {
             var stats = new
             {
@@ -89,7 +91,6 @@ namespace CarMaintenance.Controllers
                                 o.Service.Name.Contains("طارئة") ? "#E53935" :
                                 o.Service.Name.Contains("ونش") ? "#FB8C00" : "#43A047"
                     },
-
                     customer = new
                     {
                         name = o.User.Name,
@@ -99,7 +100,6 @@ namespace CarMaintenance.Controllers
                     location = o.Address,
 
                     dateTime = o.CreatedAt.ToString("yyyy/MM/dd | hh:mm tt"),
-
                     status = new
                     {
                         label = o.OrderStatus == OrderStatus.Pending ? "قيد المراجعة" :
@@ -123,7 +123,6 @@ namespace CarMaintenance.Controllers
         public async Task<IActionResult> Create(CreateOrderDto dto)
         {
             var service = await _context.Services.FindAsync(dto.ServiceId);
-
             if (service == null)
                 return BadRequest("Service not found");
 
@@ -260,22 +259,69 @@ namespace CarMaintenance.Controllers
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
-            return Ok(new { success = true, data = orders });
+            return Ok(new
+            {
+                success = true,
+                data = orders
+            });
         }
 
         // ================= GET BY ID =================
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+      // ================= GET ORDER DETAILS =================
+[HttpGet("{id}")]
+public async Task<IActionResult> GetOrderById(int id)
+{
+    var order = await _context.Orders
+        .Include(o => o.User)
+        .Include(o => o.Service)
+        .FirstOrDefaultAsync(o => o.Id == id);
+
+    if (order == null)
+    {
+        return NotFound(new
         {
-            var order = await _context.Orders
-                .Include(o => o.User)
-                .Include(o => o.Service)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            success = false,
+            message = "Order not found"
+        });
+    }
 
-            if (order == null)
-                return NotFound(new { success = false, message = "Order not found" });
+    var result = new
+    {
+        id = order.Id,
 
-            return Ok(new { success = true, data = order });
-        }
+        customer = new
+        {
+            name = order.User.Name,
+            phone = order.PhoneNumber
+        },
+
+        service = new
+        {
+            name = order.Service.Name
+        },
+
+        address = order.Address,
+
+        status = order.OrderStatus.ToString(),
+
+        price = order.Price,
+
+        paymentStatus = order.IsPaid ? "مدفوع" : "لم يدفع",
+
+        technician = order.TechnicianName ?? "غير معين",
+
+        createdAt = order.CreatedAt.ToString("yyyy/MM/dd hh:mm tt"),
+
+        imageUrl = order.ImageUrl,
+
+        notes = order.Notes
+    };
+
+    return Ok(new
+    {
+        success = true,
+        data = result
+    });
+}
     }
 }

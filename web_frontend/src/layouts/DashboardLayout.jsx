@@ -7,12 +7,12 @@ export default function DashboardLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#F0F4F8] font-tajawal">
+    <div className="flex h-screen overflow-hidden bg-[#F0F4F8] font-tajawal">
       {/* Sidebar Component */}
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile Header Toggle */}
         <div className="md:hidden flex items-center justify-between p-4 bg-primary-dark text-white shadow-md">
           <Link to="/">
