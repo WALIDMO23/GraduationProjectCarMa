@@ -170,8 +170,19 @@ input::-ms-clear {
   perspective: 1000px;
 }
 
+
+
 @keyframes flip {
   0%, 30% { transform: rotateY(0deg); }
   40% { transform: rotateY(360deg); }
   100% { transform: rotateY(360deg); }
+}
+
+/* Hide scrollbar for sidebar */
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
