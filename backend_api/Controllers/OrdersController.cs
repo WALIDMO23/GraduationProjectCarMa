@@ -28,7 +28,6 @@ namespace CarMaintenance.Controllers
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> GetAll([FromQuery] string? search = null, [FromQuery] string? status = null)
         {
-            // حساب الإحصائيات (Stats)
             var stats = new
             {
                 total = await _context.Orders.CountAsync(),
@@ -44,19 +43,18 @@ namespace CarMaintenance.Controllers
                 .Include(o => o.User)
                 .AsQueryable();
 
-            // الفلترة بالبحث
             if (!string.IsNullOrWhiteSpace(search))
             {
-                query = query.Where(o => 
-                    o.Id.ToString().Contains(search) || 
-                    o.User.Name.Contains(search) || 
+                query = query.Where(o =>
+                    o.Id.ToString().Contains(search) ||
+                    o.User.Name.Contains(search) ||
                     o.Service.Name.Contains(search) ||
                     (o.TechnicianName != null && o.TechnicianName.Contains(search)));
             }
 
             if (!string.IsNullOrEmpty(status) && status.ToLower() != "all")
             {
-                query = query.AsEnumerable().Where(o => 
+                query = query.AsEnumerable().Where(o =>
                     o.OrderStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase)).AsQueryable();
             }
 
@@ -65,38 +63,52 @@ namespace CarMaintenance.Controllers
                 .Select(o => new
                 {
                     id = "#" + o.Id,
-                    service = new {
+
+                    service = new
+                    {
                         name = o.Service.Name,
+
                         icon = o.Service.Name.Contains("زيت") ? "oil-icon" :
                                o.Service.Name.Contains("بطارية") ? "battery-icon" :
                                o.Service.Name.Contains("غسيل") ? "wash-icon" :
                                o.Service.Name.Contains("طارئة") ? "emergency-icon" :
                                o.Service.Name.Contains("ونش") ? "towing-icon" :
                                o.Service.Name.Contains("إطار") ? "tire-icon" : "default-icon",
+
                         color = o.Service.Name.Contains("زيت") ? "#FFB300" :
                                 o.Service.Name.Contains("بطارية") ? "#1E88E5" :
                                 o.Service.Name.Contains("غسيل") ? "#8E24AA" :
                                 o.Service.Name.Contains("طارئة") ? "#E53935" :
                                 o.Service.Name.Contains("ونش") ? "#FB8C00" : "#43A047"
                     },
-                    customer = new {
+
+                    customer = new
+                    {
                         name = o.User.Name,
-                        rating = 4.8, 
+                        rating = 4.8,
                     },
+
                     location = o.Address,
+
                     dateTime = o.CreatedAt.ToString("yyyy/MM/dd | hh:mm tt"),
-                    status = new {
-                        // المسميات العربي للفرونت إند
+
+                    status = new
+                    {
                         label = o.OrderStatus == OrderStatus.Pending ? "قيد المراجعة" :
                                 o.OrderStatus == OrderStatus.Accepted ? "تمت الموافقة" :
-                                o.OrderStatus == OrderStatus.InProgress ? "جاري التنفيذ" : 
+                                o.OrderStatus == OrderStatus.InProgress ? "جاري التنفيذ" :
                                 o.OrderStatus == OrderStatus.Rejected ? "مرفوض" : "مكتمل",
-                        value = o.OrderStatus.ToString() // القيمة الأصلية للتعامل البرمجي
+
+                        value = o.OrderStatus.ToString()
                     },
+
                     technician = o.TechnicianName ?? "غير معين",
+
                     paymentStatus = o.IsPaid ? "مدفوع" : "لم يدفع",
+
                     price = o.Price.ToString("N0") + " جنيه"
-                }).ToListAsync();
+                })
+                .ToListAsync();
 
             return Ok(new { stats, orders });
         }
@@ -108,15 +120,26 @@ namespace CarMaintenance.Controllers
         public async Task<IActionResult> AcceptOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
-            if (order == null) return NotFound();
-            
+
+            if (order == null)
+                return NotFound();
+
             order.OrderStatus = OrderStatus.Accepted;
+
             await _context.SaveChangesAsync();
-            
-            // إرسال التحديث فوراً لكل المتصلين بالـ Hub
-            await _hub.Clients.All.SendAsync("OrderUpdated", new { orderId = id, status = "Accepted" });
-            
-            return Ok(new { message = "Order accepted", status = "Accepted" });
+
+            await _hub.Clients.All.SendAsync("OrderUpdated",
+                new
+                {
+                    orderId = id,
+                    status = "Accepted"
+                });
+
+            return Ok(new
+            {
+                message = "Order accepted",
+                status = "Accepted"
+            });
         }
 
         // ================= REJECT ORDER =================
@@ -126,23 +149,37 @@ namespace CarMaintenance.Controllers
         public async Task<IActionResult> RejectOrder(int id)
         {
             var order = await _context.Orders.FindAsync(id);
-            if (order == null) return NotFound();
-            
+
+            if (order == null)
+                return NotFound();
+
             order.OrderStatus = OrderStatus.Rejected;
+
             await _context.SaveChangesAsync();
-            
-            await _hub.Clients.All.SendAsync("OrderUpdated", new { orderId = id, status = "Rejected" });
-            
-            return Ok(new { message = "Order rejected", status = "Rejected" });
+
+            await _hub.Clients.All.SendAsync("OrderUpdated",
+                new
+                {
+                    orderId = id,
+                    status = "Rejected"
+                });
+
+            return Ok(new
+            {
+                message = "Order rejected",
+                status = "Rejected"
+            });
         }
 
-        // باقي الـ Methods (Create, GetUserOrders, etc.) تبقى كما هي...
+        // ================= CREATE ORDER =================
         [HttpPost]
         [SwaggerOperation(Summary = "Create Order")]
         public async Task<IActionResult> Create(CreateOrderDto dto)
         {
             var service = await _context.Services.FindAsync(dto.ServiceId);
-            if (service == null) return BadRequest("Service not found");
+
+            if (service == null)
+                return BadRequest("Service not found");
 
             var order = new Order
             {
@@ -153,14 +190,24 @@ namespace CarMaintenance.Controllers
                 Price = service.Price,
                 OrderStatus = OrderStatus.Pending,
                 CreatedAt = DateTime.UtcNow,
-                IsPaid = false
+                IsPaid = false,
+
+                ImageUrl = dto.ImageUrl,
+                Notes = dto.Notes
             };
 
             _context.Orders.Add(order);
+
             await _context.SaveChangesAsync();
-            return Ok(new { message = "Order created", order });
+
+            return Ok(new
+            {
+                message = "Order created",
+                order
+            });
         }
 
+        // ================= GET USER ORDERS =================
         [HttpGet("user/{userId}")]
         [SwaggerOperation(Summary = "Get A Specific User Orders")]
         public async Task<IActionResult> GetUserOrders(int userId)
@@ -170,22 +217,72 @@ namespace CarMaintenance.Controllers
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
-            return Ok(new { success = true, data = orders });
+            return Ok(new
+            {
+                success = true,
+                data = orders
+            });
         }
 
+        // ================= GET ORDER DETAILS =================
         [HttpGet("{id}")]
         [SwaggerOperation(Summary = "Get Order By Id")]
         public async Task<IActionResult> GetOrderById(int id)
         {
             var order = await _context.Orders
                 .Include(o => o.User)
+                .Include(o => o.Service)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (order == null) return NotFound(new { success = false, message = "Order not found" });
+            if (order == null)
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Order not found"
+                });
+            }
 
-            return Ok(new { success = true, data = order });
+            var result = new
+            {
+                id = order.Id,
+
+                customer = new
+                {
+                    name = order.User.Name,
+                    phone = order.PhoneNumber,
+                },
+
+                service = new
+                {
+                    name = order.Service.Name
+                },
+
+                address = order.Address,
+
+                status = order.OrderStatus.ToString(),
+
+                price = order.Price,
+
+                paymentStatus = order.IsPaid ? "مدفوع" : "لم يدفع",
+
+                technician = order.TechnicianName ?? "غير معين",
+
+                createdAt = order.CreatedAt.ToString("yyyy/MM/dd hh:mm tt"),
+
+                imageUrl = order.ImageUrl,
+
+                notes = order.Notes
+            };
+
+            return Ok(new
+            {
+                success = true,
+                data = result
+            });
         }
 
+        // ================= NOTIFICATIONS =================
         [HttpGet("/api/notifications")]
         [SwaggerOperation(Summary = "Get Orders Notifications")]
         public async Task<IActionResult> GetNotifications()
@@ -193,6 +290,7 @@ namespace CarMaintenance.Controllers
             var data = await _context.Notifications
                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
+
             return Ok(data);
         }
     }
