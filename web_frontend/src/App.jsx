@@ -14,6 +14,8 @@ import Reports from "./pages/dashboard/admin/Reports.jsx";
 import LandingPage from "./pages/landingpage/LandingPage.jsx";
 
 
+import { AdminDataProvider } from "./context/AdminDataContext.jsx";
+
 export default function App() {
   useEffect(() => {
     AOS.init({
@@ -38,7 +40,9 @@ export default function App() {
           <Route
             element={
               <ProtectedRoute>
-                <DashboardLayout />
+                <AdminDataProvider>
+                  <DashboardLayout />
+                </AdminDataProvider>
               </ProtectedRoute>
             }
           >
