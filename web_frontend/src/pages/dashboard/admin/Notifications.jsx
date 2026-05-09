@@ -51,7 +51,7 @@ const Notifications = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [unreadCount, setUnreadCount] = useState(0);
-  const pageSize = 10;
+  const pageSize = 3;
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -102,7 +102,7 @@ const Notifications = () => {
       
       if (res.data) {
         setNotifications(res.data.items || []);
-        setTotalCount(res.data.totalCount || 0);
+        setTotalCount(res.data.totalAllCounts || 0);
         setTotalPages(res.data.totalPages || 1);
         // Sometimes backend includes unreadCount in the list response
         if (res.data.unreadCount !== undefined) {
