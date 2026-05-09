@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import bgImage from "../assets/login page.JPG";
+import bgImage from "../assets/login page.jpg";
 
 export default function AuthLayout() {
 
