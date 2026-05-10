@@ -1,24 +1,21 @@
-import React, { useState } from "react";
-import { HiOutlineArrowLeft, HiOutlineArrowDownTray, HiBars3, HiXMark } from "react-icons/hi2";
+import React from "react";
+import { HiOutlineArrowLeft, HiOutlineArrowDownTray } from "react-icons/hi2";
 
 export default function HeroV2({ isLoaded }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <section className={`relative min-h-screen flex flex-col bg-[#050505] selection:bg-[#D9B07C] selection:text-black transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
       
-      {/* Fixed Integrated Navbar */}
-      <nav className={`fixed top-0 left-0 right-0 z-[100] px-6 py-5 transition-all duration-500 border-b border-white/5 ${isMenuOpen ? 'bg-[#050505]' : 'bg-[#050505]/40 backdrop-blur-md'}`}>
+      {/* Integrated Navbar */}
+      <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-5 bg-[#050505]/40 backdrop-blur-md border-b border-white/5 transition-all duration-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Mobile Menu Button - Right in RTL */}
-          <button 
-            className="lg:hidden text-white p-2 hover:text-[#D9B07C] transition-colors"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <HiXMark size={28} /> : <HiBars3 size={28} />}
-          </button>
+          {/* Logo - Right in RTL */}
+          <div className="flex items-center gap-2">
+            <h1 className="text-3xl font-black text-white italic tracking-tighter">
+              Car<span className="text-[#D9B07C]">Ma</span>
+            </h1>
+          </div>
 
-          {/* Navigation Links - Center (Desktop) */}
+          {/* Navigation Links - Center */}
           <div className="hidden lg:flex items-center gap-8 text-[13px] font-bold text-white">
             <a href="#hero" className="hover:text-[#D9B07C] transition-colors">الرئيسية</a>
             <a href="#services" className="hover:text-[#D9B07C] transition-colors">خدماتنا</a>
@@ -28,38 +25,11 @@ export default function HeroV2({ isLoaded }) {
             <a href="#testimonials" className="hover:text-[#D9B07C] transition-colors">آراء العملاء</a>
           </div>
 
-          {/* Logo - Right in RTL (Desktop) / Left (Mobile) */}
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl md:text-3xl font-black text-white italic tracking-tighter">
-              Car<span className="text-[#D9B07C]">Ma</span>
-            </h1>
-          </div>
-
-          {/* CTA Button - Left (Desktop only or prominent on mobile) */}
-          <button className="hidden sm:flex bg-[#D9B07C] text-black px-5 md:px-6 py-2 md:py-2.5 rounded-sm font-bold text-[10px] md:text-xs hover:brightness-110 transition-all items-center gap-2">
+          {/* CTA Button - Left */}
+          <button className="bg-[#D9B07C] text-black px-6 py-2.5 rounded-sm font-bold text-xs hover:brightness-110 transition-all flex items-center gap-2">
             <HiOutlineArrowDownTray className="text-sm" />
             تحميل التطبيق
           </button>
-        </div>
-
-        {/* Mobile Navigation Menu Overlay */}
-        <div className={`lg:hidden fixed inset-0 top-[73px] bg-[#050505] z-50 flex flex-col p-8 transition-all duration-500 ${isMenuOpen ? 'opacity-100 visible translate-x-0' : 'opacity-0 invisible translate-x-full'}`}>
-          <div className="flex flex-col gap-6 text-right">
-            {["الرئيسية", "خدماتنا", "كيف يعمل", "لماذا نحن", "الأسعار", "آراء العملاء"].map((link, i) => (
-              <a 
-                key={i}
-                href={`#${link}`} 
-                onClick={() => setIsMenuOpen(false)}
-                className="text-2xl font-black text-white hover:text-[#D9B07C] transition-colors"
-              >
-                {link}
-              </a>
-            ))}
-            <button className="mt-8 bg-[#D9B07C] text-black w-full py-4 rounded-sm font-black text-sm flex items-center justify-center gap-3">
-              <HiOutlineArrowDownTray size={20} />
-              تحميل التطبيق الآن
-            </button>
-          </div>
         </div>
       </nav>
 
