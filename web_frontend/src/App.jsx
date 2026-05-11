@@ -15,6 +15,7 @@ import Technicians from "./pages/dashboard/admin/Technicians.jsx";
 import Reports from "./pages/dashboard/admin/Reports.jsx";
 import Notifications from "./pages/dashboard/admin/Notifications.jsx";
 import Profile from "./pages/dashboard/admin/Profile.jsx";
+import Settings from "./pages/dashboard/admin/Settings.jsx";
 import LandingPage from "./pages/landingpage/LandingPage.jsx";
 import LandingPageV2 from "./pages/landingpage/LandingPageV2.jsx";
 
@@ -61,6 +62,7 @@ export default function App() {
             <Route path="/admin/reports" element={<Reports />} />
             <Route path="/admin/notifications" element={<Notifications />} />
             <Route path="/admin/profile" element={<Profile />} />
+            <Route path="/admin/settings" element={<Settings />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" />} />
