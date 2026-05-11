@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend_api:
+    build:
+      context: ./backend_api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+
+  web_frontend:
+    build:
+      context: ./web_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    restart: always
+    environment:
+      - VITE_API_BASE_URL=http://54.84.247.48:8080/
+    depends_on:
+      - backend_api

@@ -7,7 +7,7 @@ class ApiClient {
   // ✅ Real Device (WiFi) → use: http://192.168.1.2:5000/api
   // ✅ iOS Simulator     → use: http://localhost:5000/api
   static const String _baseUrl =
-      'https://carma-backend-api.onrender.com/api'; // Real Device (WiFi)
+      'http://54.84.247.48:8080/api'; // AWS EC2 Instance
 
   final Dio _dio;
 
