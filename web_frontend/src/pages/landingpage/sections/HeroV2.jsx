@@ -5,7 +5,7 @@ export default function HeroV2({ isLoaded }) {
   return (
     <section className={`relative min-h-screen flex flex-col bg-[#050505] selection:bg-[#D9B07C] selection:text-black transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
 
-      {/* Background Video */}
+
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video
           autoPlay
@@ -16,21 +16,21 @@ export default function HeroV2({ isLoaded }) {
         >
           <source src="/videos/bgg.mp4" type="video/mp4" />
         </video>
-        {/* Gradient overlay for better text readability */}
+
         <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/60 to-[#050505]"></div>
       </div>
 
-      {/* Integrated Navbar */}
+
       <nav className="absolute top-0 left-0 right-0 z-[100] px-6 py-5 bg-[#050505]/40 backdrop-blur-md border-b border-white/5 transition-all duration-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo - Right in RTL */}
+
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-black text-white italic tracking-tighter">
               Car<span className="text-[#D9B07C]">Ma</span>
             </h1>
           </div>
 
-          {/* Navigation Links - Center */}
+
           <div className="hidden lg:flex items-center gap-8 text-[13px] font-bold text-white">
             <a href="#hero" className="hover:text-[#D9B07C] transition-colors">الرئيسية</a>
             <a href="#services" className="hover:text-[#D9B07C] transition-colors">خدماتنا</a>
@@ -40,7 +40,7 @@ export default function HeroV2({ isLoaded }) {
             <a href="#testimonials" className="hover:text-[#D9B07C] transition-colors">آراء العملاء</a>
           </div>
 
-          {/* CTA Button - Left */}
+
           <button className="bg-[#D9B07C] text-black px-6 py-2.5 rounded-sm font-bold text-xs hover:brightness-110 transition-all flex items-center gap-2">
             <HiOutlineArrowDownTray className="text-sm" />
             تحميل التطبيق
@@ -48,7 +48,7 @@ export default function HeroV2({ isLoaded }) {
         </div>
       </nav>
 
-      {/* Hero Content Wrapper */}
+
       <div className="relative z-10 flex-grow flex items-center pt-24 lg:pt-20">
         <div className="max-w-7xl mx-auto px-6 w-full flex flex-col items-center justify-center gap-12 text-center">
           {/* Main Text Content Area - Centered */}
@@ -60,7 +60,7 @@ export default function HeroV2({ isLoaded }) {
               <div className="w-10 md:w-16 h-[1px] bg-[#D9B07C]/30"></div>
             </div>
 
-            {/* Main Headlines - Responsive Scaling */}
+
             <h2 className="text-5xl sm:text-7xl lg:text-[90px] font-black text-white leading-[0.9] tracking-tighter">
               سيارتك
             </h2>
