@@ -19,6 +19,6 @@ services:
       - "5173:5173"
     restart: always
     environment:
-      - VITE_API_BASE_URL=http://54.84.247.48:8080/
+      - VITE_API_BASE_URL=http://107.21.214.224:8080/
     depends_on:
       - backend_api

@@ -7,7 +7,7 @@ class ApiClient {
   // ✅ Real Device (WiFi) → use: http://192.168.1.2:5000/api
   // ✅ iOS Simulator     → use: http://localhost:5000/api
   static const String _baseUrl =
-      'http://54.84.247.48:8080/api'; // AWS EC2 Instance
+      'http://107.21.214.224:8080/api'; // AWS EC2 Instance (Static Elastic IP)
 
   final Dio _dio;
 

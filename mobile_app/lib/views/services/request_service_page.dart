@@ -9,6 +9,7 @@ import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/views/home/widgets/technician_accepted_dialog.dart';
+import 'package:graduation_project/views/services/location_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -273,6 +274,20 @@ class _RequestServicePageState extends State<RequestServicePage> {
                       decoration: InputDecoration(
                         hintText: s.isArabic ? 'العنوان بالتفصيل' : 'Detailed address',
                         prefixIcon: const Icon(Icons.location_on_outlined),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.map_outlined, color: AppTheme.primaryColor),
+                          onPressed: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const LocationPickerPage()),
+                            );
+                            if (result != null && result is Map<String, dynamic>) {
+                              setState(() {
+                                _addressController.text = result['address'];
+                              });
+                            }
+                          },
+                        ),
                         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                       ),
                     ),

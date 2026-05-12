@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:graduation_project/core/constants/app_constants.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/payment_methods.dart';
@@ -13,11 +14,26 @@ class LocationPickerPage extends StatefulWidget {
 }
 
 class _LocationPickerPageState extends State<LocationPickerPage> {
-  final Completer<GoogleMapController> _controller = Completer();
+  MapLibreMapController? mapController;
+  LatLng _currentCenter = const LatLng(30.0444, 31.2357);
+  String _currentAddress = 'جاري تحديد الموقع...';
+
   static const CameraPosition _initialPosition = CameraPosition(
     target: LatLng(30.0444, 31.2357),
     zoom: 14.4746,
   );
+
+  void _onMapCreated(MapLibreMapController controller) {
+    mapController = controller;
+  }
+
+  void _onCameraIdle() {
+    // In a real app, you would use reverse geocoding here with the Amazon Location Service
+    // For now, we update the center and keep a placeholder address
+    setState(() {
+      _currentAddress = "الموقع المختار: (${_currentCenter.latitude.toStringAsFixed(4)}, ${_currentCenter.longitude.toStringAsFixed(4)})";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +44,18 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
           SizedBox(
             width: double.infinity,
             height: double.infinity,
-            child: GoogleMap(
+            child: MapLibreMap(
+              styleString: 'https://maps.geo.${AppConstants.amazonLocationRegion}.amazonaws.com/v2/styles/${AppConstants.amazonLocationStyleName}/descriptor?key=${AppConstants.amazonLocationApiKey}',
               initialCameraPosition: _initialPosition,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
+              onMapCreated: _onMapCreated,
+              onCameraIdle: _onCameraIdle,
+              onCameraMove: (position) {
+                _currentCenter = position.target;
               },
               myLocationEnabled: true,
-              myLocationButtonEnabled: false,
-              zoomControlsEnabled: false,
+              myLocationRenderMode: MyLocationRenderMode.normal,
+              myLocationTrackingMode: MyLocationTrackingMode.none,
+              compassEnabled: false,
             ),
           ),
 
@@ -91,9 +111,10 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
             right: 20,
             child: FloatingActionButton(
               backgroundColor: Theme.of(context).colorScheme.surface,
-              onPressed: () async {
-                final GoogleMapController controller = await _controller.future;
-                controller.animateCamera(CameraUpdate.newCameraPosition(_initialPosition));
+              onPressed: () {
+                if (mapController != null) {
+                  mapController!.animateCamera(CameraUpdate.newCameraPosition(_initialPosition));
+                }
               },
               child: const Icon(Icons.my_location, color: AppTheme.primaryColor),
             ),
@@ -205,7 +226,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'المعادي، شارع 9، بجوار المحطة',
+                                _currentAddress,
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 13,
@@ -223,12 +244,11 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   AppButton(
                     text: 'تأكيد الموقع والمتابعة',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PaymentMethodsPage(),
-                        ),
-                      );
+                      Navigator.pop(context, {
+                        'address': _currentAddress,
+                        'lat': _currentCenter.latitude,
+                        'lng': _currentCenter.longitude,
+                      });
                     },
                   ),
                   const SizedBox(height: 10),

@@ -13,13 +13,13 @@ environment:
 dependencies:
   flutter_localization: ^0.3.3
   flutter_svg: ^2.2.1
-  lottie: ^2.2.0
+  lottie: ^3.3.3
   google_fonts: ^6.1.0
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  google_maps_flutter: ^2.14.0
+  maplibre_gl: ^0.26.0
   dio: ^5.9.2
   shared_preferences: ^2.5.3
   provider: ^6.1.5+1

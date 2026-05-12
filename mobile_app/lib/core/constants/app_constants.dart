@@ -1,0 +1,5 @@
+class AppConstants {
+  static const String amazonLocationApiKey = "v1.public.eyJqdGkiOiI3ZTVkZGNiYi1lODFiLTRkMWMtYWFkMS01ZGZiNjFkODEzZDIifRUUDLz4RETMrN5-nHz8DmndDcm_3eTCfbPLlN-zz44M_fYW8fRa2VuDSED4FmTG0vy_REhuZg_u1EQpMTn1ZInAT_Xno8dcrBTuzMVRG8ptIQb8tJuLfPWRsLtbx89JpipKO4PlE8GZZjAm8jeD8DP0ZVp7M6JxHoCIWlNJ0ymt7zxG53s0i_5oCo-917iA3vxtmC5g7dLHJ6c6vG6ozPKUczun0ArGEwjNgjOyp1M9dou0muQFfqQcwpfxn-ysjI3bAZOMbAjdq7i2qkkhzERp04ggnHRkyMCQQ_HvnoX36SZnIdahiQfXpCHsXM4h_q5WcN-VWvWa4kl1YY17PoI.ZWU0ZWIzMTktMWRhNi00Mzg0LTllMzYtNzlmMDU3MjRmYTkx";
+  static const String amazonLocationRegion = "us-east-1";
+  static const String amazonLocationStyleName = "Standard"; 
+}
