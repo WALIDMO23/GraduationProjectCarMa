@@ -10,6 +10,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - GEMINI_API_KEY=AIzaSyAhu31m2fCYImiBI27e3CIEuoz0cOJlpLk
 
   web_frontend:
     build:

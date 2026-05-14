@@ -4,6 +4,8 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:graduation_project/core/constants/app_constants.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:dio/dio.dart';
 import 'package:graduation_project/views/services/payment_methods.dart';
 
 class LocationPickerPage extends StatefulWidget {
@@ -17,19 +19,96 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   MapLibreMapController? mapController;
   LatLng _currentCenter = const LatLng(30.0444, 31.2357);
   String _currentAddress = 'جاري تحديد الموقع...';
+  final TextEditingController _searchController = TextEditingController();
+  List<dynamic> _searchResults = [];
+  bool _isSearching = false;
+  final Dio _dio = Dio();
 
-  static const CameraPosition _initialPosition = CameraPosition(
-    target: LatLng(30.0444, 31.2357),
-    zoom: 14.4746,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return;
+    }
+
+    if (permission == LocationPermission.deniedForever) return;
+
+    final position = await Geolocator.getCurrentPosition();
+    if (mounted) {
+      setState(() {
+        _currentCenter = LatLng(position.latitude, position.longitude);
+      });
+      if (mapController != null) {
+        mapController!.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: _currentCenter, zoom: 15),
+        ));
+      }
+    }
+  }
+
+  Future<void> _searchPlaces(String query) async {
+    if (query.isEmpty) {
+      setState(() => _searchResults = []);
+      return;
+    }
+
+    setState(() => _isSearching = true);
+    try {
+      final url = 'https://places.geo.${AppConstants.amazonLocationRegion}.amazonaws.com/v2/search-text?key=${AppConstants.amazonLocationApiKey}';
+      final response = await _dio.post(
+        url,
+        data: {'QueryText': query},
+      );
+      
+      if (mounted) {
+        setState(() {
+          _searchResults = response.data['ResultItems'] ?? [];
+          _isSearching = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isSearching = false);
+      print("Search Error: $e");
+    }
+  }
+
+  void _onResultSelected(dynamic result) {
+    final point = result['Position'];
+    final lat = point[1].toDouble();
+    final lng = point[0].toDouble();
+    final address = result['Title'] ?? result['Address'] ?? 'موقع مختار';
+
+    setState(() {
+      _currentCenter = LatLng(lat, lng);
+      _currentAddress = address;
+      _searchResults = [];
+      _searchController.text = address;
+    });
+
+    if (mapController != null) {
+      mapController!.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: _currentCenter, zoom: 16),
+      ));
+    }
+  }
 
   void _onMapCreated(MapLibreMapController controller) {
     mapController = controller;
   }
 
   void _onCameraIdle() {
-    // In a real app, you would use reverse geocoding here with the Amazon Location Service
-    // For now, we update the center and keep a placeholder address
     setState(() {
       _currentAddress = "الموقع المختار: (${_currentCenter.latitude.toStringAsFixed(4)}, ${_currentCenter.longitude.toStringAsFixed(4)})";
     });
@@ -46,7 +125,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
             height: double.infinity,
             child: MapLibreMap(
               styleString: 'https://maps.geo.${AppConstants.amazonLocationRegion}.amazonaws.com/v2/styles/${AppConstants.amazonLocationStyleName}/descriptor?key=${AppConstants.amazonLocationApiKey}',
-              initialCameraPosition: _initialPosition,
+              initialCameraPosition: CameraPosition(target: _currentCenter, zoom: 14),
               onMapCreated: _onMapCreated,
               onCameraIdle: _onCameraIdle,
               onCameraMove: (position) {
@@ -82,23 +161,56 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                 const SizedBox(width: 12),
                 // Search Input Field Simulator
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                        const SizedBox(width: 8),
-                        Text(
-                          'ابحث عن موقعك...',
-                          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14),
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
                         ),
-                      ],
-                    ),
+                        child: TextField(
+                          controller: _searchController,
+                          onChanged: _searchPlaces,
+                          decoration: InputDecoration(
+                            hintText: 'ابحث عن موقعك...',
+                            border: InputBorder.none,
+                            icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                            suffixIcon: _isSearching 
+                                ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                                : null,
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                      if (_searchResults.isNotEmpty)
+                        Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surface,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 10)],
+                          ),
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 250),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _searchResults.length,
+                              itemBuilder: (context, index) {
+                                final result = _searchResults[index];
+                                return ListTile(
+                                  title: Text(result['Title'] ?? ''),
+                                  subtitle: Text(result['Address'] ?? ''),
+                                  leading: const Icon(Icons.location_on_outlined),
+                                  onTap: () => _onResultSelected(result),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
@@ -113,35 +225,35 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
               backgroundColor: Theme.of(context).colorScheme.surface,
               onPressed: () {
                 if (mapController != null) {
-                  mapController!.animateCamera(CameraUpdate.newCameraPosition(_initialPosition));
+                  mapController!.animateCamera(CameraUpdate.newCameraPosition(
+                    CameraPosition(target: _currentCenter, zoom: 15),
+                  ));
                 }
               },
               child: const Icon(Icons.my_location, color: AppTheme.primaryColor),
             ),
           ),
 
-          // Floating Pin Marker in the Center
+          // Floating Pin Marker in the Center (Constant UI element)
           Align(
             alignment: Alignment.center,
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 40), // Shift up to compensate for bottom sheet
-              child: Stack(
-                alignment: Alignment.center,
+              padding: const EdgeInsets.only(bottom: 40),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                   // shadow
-                   Container(
-                     margin: const EdgeInsets.only(top: 40),
-                     width: 16, height: 8,
-                     decoration: BoxDecoration(
-                       color: Colors.black.withAlpha(50),
-                       borderRadius: BorderRadius.circular(10),
-                     ),
-                   ),
-                   // Pin
-                   const Icon(
+                  Icon(
                     Icons.location_on,
-                    size: 56,
+                    size: 48,
                     color: AppTheme.primaryColor,
+                  ),
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ],
               ),

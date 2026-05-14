@@ -6,23 +6,35 @@ namespace CarMaintenance.Services
     public class GeminiAiService
     {
         private readonly string _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+        private readonly string _apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
-        private readonly string _apiUrl =
-"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";      public async Task<string> GetSmartAssistantResponse(string userMessage)
+        public async Task<string> GetSmartAssistantResponse(string userMessage)
         {
             using var client = new HttpClient();
 
             var requestUrl = $"{_apiUrl}?key={_apiKey}";
 
             string systemPrompt = @"
-  أنت مساعد ذكي وموظف خدمة عملاء في تطبيق لخدمات السيارات. مهمتك الرد على المستخدمين ومساعدتهم بناءً على حالتهم. 
-            التزم بالقواعد التالية حرفياً:
-            1. إذا كان المستخدم يتحدث عن عطل في الطريق، حادث، إطار مثقوب، أو سيارة لا تعمل: تعاطف معه، انصحه بطلب ونش إنقاذ، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط: [WINCH_BUTTON] OR [MAINTENANCE_BUTTON]]
-            2. إذا كان المستخدم يسأل عن نظافة السيارة أو يطلب غسيل: انصحه بخدمة الغسيل المتنقل، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط: [WASH_BUTTON]
-            3. إذا كان المستخدم يسأل عن صيانة، تغيير زيت، أو أصوات غريبة في المحرك: انصحه بطلب خدمة صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط: [MAINTENANCE_BUTTON]
-            4. إذا كانت مجرد تحية أو استفسار عام: رد بلباقة وبشكل مختصر بدون كتابة أي من الكلمات السابقة.
-            اغلب مشاكل الاطارات ممكن نبعتله فني مش لازم ونش ف ممكن تعرضي عليه الاتنين و تحطي زرار اطلب فني جنب الونش ف action 
-            اجعل ردودك قصيرة، عملية، وباللهجة المصرية.
+أنت مساعد ذكي وموظف خدمة عملاء في تطبيق لخدمات السيارات. مهمتك الرد على المستخدمين ومساعدتهم بناءً على حالتهم.
+
+التزم بالقواعد التالية حرفياً:
+
+إذا كان المستخدم يتحدث عن عطل في الطريق، حادث، إطار مثقوب، أو سيارة لا تعمل:
+تعاطف معه، انصحه بطلب ونش إنقاذ، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+[WINCH_BUTTON]
+
+إذا كان المستخدم يسأل عن نظافة السيارة أو يطلب غسيل:
+انصحه بخدمة الغسيل المتنقل، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+[WASH_BUTTON]
+
+إذا كان المستخدم يسأل عن صيانة، تغيير زيت، أو أصوات غريبة في المحرك:
+انصحه بطلب خدمة صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+[MAINTENANCE_BUTTON]
+
+إذا كانت مجرد تحية أو استفسار عام:
+رد بلباقة وبشكل مختصر بدون كتابة أي من الكلمات السابقة.
+
+اجعل ردودك قصيرة، عملية، وباللهجة المصرية.
 ";
 
             var fullPrompt = systemPrompt + "\nUser: " + userMessage;
