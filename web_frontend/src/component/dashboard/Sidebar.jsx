@@ -9,7 +9,8 @@ import {
   User, 
   Settings, 
   LogOut,
-  X
+  X,
+  Warehouse
 } from 'lucide-react';
 import { useAuth } from "../../context/AuthContext";
 import { useSignalREvent } from "../../context/SignalRContext";
@@ -37,7 +38,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
     { name: 'الرئيسية', icon: Home, path: '/admin', end: true, color: 'text-[#D9B07C]' },
     { name: 'الطلبات', icon: FileText, path: '/admin/orders', color: 'text-emerald-400' },
-    { name: 'الورش', icon: Users, path: '/admin/technicians', color: 'text-amber-400' },
+    // { name: 'الفنيين', icon: Users, path: '/admin/technicians', color: 'text-amber-400' },
+    { name: 'الورش', icon: Warehouse, path: '/admin/workshops', color: 'text-amber-400' },
     { name: 'الإشعارات', icon: Bell, path: '/admin/notifications', color: 'text-rose-400', badge: liveNotifCount > 0 ? liveNotifCount : undefined },
     { name: 'التقارير', icon: BarChart2, path: '/admin/reports', color: 'text-indigo-400' },
     { name: 'الملف الشخصي', icon: User, path: '/admin/profile', color: 'text-cyan-400' },
