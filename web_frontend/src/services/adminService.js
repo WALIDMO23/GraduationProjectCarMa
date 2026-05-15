@@ -124,3 +124,33 @@ export const markNotificationAsRead = (id) => {
 export const markAllNotificationsAsRead = () => {
   return api.patch(`/api/new-notifications/read-all`);
 };
+
+// ================= WORKSHOPS =================
+
+export const getWorkshops = () => {
+  return api.get("/api/admin/workshops");
+};
+
+export const getWorkshopById = (id) => {
+  return api.get(`/api/admin/workshops/${id}`);
+};
+
+export const createWorkshop = (data) => {
+  return api.post("/api/admin/workshops", data);
+};
+
+export const updateWorkshop = (id, data) => {
+  return api.put(`/api/admin/workshops/${id}`, data);
+};
+
+export const deleteWorkshop = (id) => {
+  return api.delete(`/api/admin/workshops/${id}`);
+};
+
+export const toggleWorkshopStatus = (id) => {
+  return api.patch(`/api/admin/workshops/${id}/toggle-status`);
+};
+
+export const toggleWorkshopActive = (id) => {
+  return api.patch(`/api/admin/workshops/${id}/toggle-active`);
+};
