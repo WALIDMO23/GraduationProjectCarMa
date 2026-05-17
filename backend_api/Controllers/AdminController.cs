@@ -93,9 +93,26 @@ public class AdminController : ControllerBase
             stats,
             requestsNeedingApproval,
             technicians,
-            currentOrders
+            currentOrders,
+            workshopsActivity = await _context.Workshops
+                .Where(w => w.IsActive && w.IsOpen)
+                .ToListAsync(),
+        //   TODO : ALErts for orders has service id 5 or 6  and status need to be actioned
+            alerts = await _context.Orders
+                .Where(o => (o.Service.Id == 5 || o.Service.Id == 6) && o.OrderStatus == OrderStatus.Pending)
+                .ToListAsync()
         });
     }
+
+    [HttpGet("services")]
+    [AllowAnonymous]
+    [SwaggerOperation(Summary = "Get All Services")]
+    public async Task<IActionResult> GetServices()
+    {
+        var services = await _context.Services.ToListAsync();
+        return Ok(services);
+    }
+
     [Authorize]
 [HttpPut("profile")]
 public async Task<IActionResult> UpdateProfile(UpdateProfileDto dto)

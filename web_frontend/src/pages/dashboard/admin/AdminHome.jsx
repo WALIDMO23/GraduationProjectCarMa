@@ -8,7 +8,9 @@ import {
   Loader2,
   AlertTriangle,
   CheckCircle,
-  Clock
+  Clock,
+  MapPin,
+  Phone
 } from 'lucide-react';
 import { FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle } from 'react-icons/fi';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
@@ -20,6 +22,7 @@ import { useAdminData } from '../../../context/AdminDataContext';
 
 const AdminHome = () => {
   const { dashboardData: data, loading, error, refreshAll, getStatus, getServiceStyle } = useAdminData();
+  console.log(data)
 
   const handleApprove = async (id) => {
     try {
@@ -124,7 +127,7 @@ const AdminHome = () => {
 
   const pendingOrders = data?.requestsNeedingApproval || [];
   const activeOrders = data?.currentOrders || [];
-  const alerts = data?.notifications || [];
+  const alerts = data?.alerts || [];
 
   const formatTime = (dateString) => {
     if (!dateString) return '';
@@ -154,7 +157,7 @@ const AdminHome = () => {
             <button className="text-[#D9B07C] font-black hover:underline text-sm uppercase tracking-widest">عرض الكل</button>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-4 max-h-[600px] overflow-y-auto pr-2 overflow-x-hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/30 hover:[&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/50 [&::-webkit-scrollbar-thumb]:rounded-full transition-all pl-1">
             {pendingOrders.length > 0 ? (
               pendingOrders.map((order, idx) => {
                 const serviceStyle = getServiceStyle(order.serviceName);
@@ -193,7 +196,7 @@ const AdminHome = () => {
             </div>
 
             <div className="bg-[#121212] rounded-[2.5rem] shadow-2xl border border-white/5 overflow-hidden">
-              <div className="overflow-x-auto">
+              <div className="max-h-[500px] overflow-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/30 hover:[&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/50 [&::-webkit-scrollbar-thumb]:rounded-full transition-all">
                 <table className="w-full text-right">
                   <thead>
                     <tr className="bg-white/5">
@@ -248,18 +251,25 @@ const AdminHome = () => {
         <div className="space-y-8">
           <div>
             <h2 className="text-2xl font-black text-white mb-6">تنبيهات هامة</h2>
-            <div className="space-y-4">
+            <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 overflow-x-hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/30 hover:[&::-webkit-scrollbar-thumb]:bg-[#D9B07C]/50 [&::-webkit-scrollbar-thumb]:rounded-full transition-all pl-1">
               {alerts.length > 0 ? (
-                alerts.map((alert) => (
-                  <AlertCard
-                    key={alert.id}
-                    title={alert.title}
-                    description={alert.description}
-                    time={alert.time}
-                    type={alert.type === 'urgent' ? 'emergency' : alert.type || 'info'}
-                    icon={alert.type === 'urgent' ? AlertTriangle : CheckCircle}
-                  />
-                ))
+                alerts.map((alert) => {
+                  const isOrder = alert.orderStatus !== undefined;
+                  return (
+                    <AlertCard
+                      key={alert.id}
+                      id={alert.id}
+                      
+                      title={isOrder ? `طلب جديد #${alert.id} ${alert.serviceId === 5 ? 'لصيانة طارئة' : alert.serviceId === 6 ? 'لونش' : ''}` : alert.title}
+                      description={isOrder ? `طلب خدمة جديد بقيمة ${alert.price} جنيه. ${alert.address && alert.address !== 'string' ? `العنوان: ${alert.address}` : ''}` : alert.description}
+                      time={isOrder ? formatTime(alert.createdAt) : alert.time}
+                      type={isOrder ? 'warning' : (alert.type === 'urgent' ? 'emergency' : alert.type || 'info')}
+                      icon={isOrder ? Clock : (alert.type === 'urgent' ? AlertTriangle : CheckCircle)}
+                      onApprove={isOrder && alert.orderStatus === 'Pending' ? handleApprove : undefined}
+                      onReject={isOrder && alert.orderStatus === 'Pending' ? handleReject : undefined}
+                    />
+                  );
+                })
               ) : (
                 <div className="bg-[#121212] p-8 rounded-[2.5rem] text-center border border-dashed border-white/5 shadow-xl">
                   <p className="text-slate-500 font-bold text-sm">لا توجد تنبيهات جديدة</p>
@@ -272,17 +282,58 @@ const AdminHome = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#D9B07C]/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
             <h2 className="text-xl font-black text-white mb-8 relative z-10">نشاط الورش</h2>
             <div className="space-y-8 relative z-10">
-              {data?.techniciansActivity?.length > 0 ? (
-                data.techniciansActivity.map((activity, idx) => (
-                  <div key={idx} className="flex items-center gap-5 group/item transition-all">
-                    <div className="h-12 w-12 rounded-2xl bg-[#D9B07C]/10 border border-[#D9B07C]/20 flex items-center justify-center text-[#D9B07C] font-black shrink-0 shadow-lg transition-transform group-hover/item:scale-110">
-                      {activity.technicianName?.[0] || 'ف'}
+              {data?.workshopsActivity?.length > 0 ? (
+                data.workshopsActivity.map((activity, idx) => (
+                  <div key={idx} className="flex items-center gap-4 group/item transition-all p-4 hover:bg-white/5 rounded-2xl border border-transparent hover:border-white/10 cursor-pointer relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-l from-[#D9B07C]/0 via-[#D9B07C]/5 to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
+                    
+                    <div className="relative z-10 shrink-0">
+                      <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-[#2a2a2a] to-[#121212] border border-white/10 flex items-center justify-center text-[#D9B07C] text-lg font-black shadow-lg shadow-black/40 transition-all duration-300 group-hover/item:scale-110 group-hover/item:border-[#D9B07C]/30 group-hover/item:shadow-[#D9B07C]/20">
+                        {activity.name?.replace('ورشة', '').replace('ورشه', '').trim()[0] || 'و'}
+                      </div>
+                      {activity.isOpen && (
+                        <div className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                          <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500 border-2 border-[#121212]"></span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm font-black text-white">{activity.technicianName}</p>
-                      <p className="text-xs text-slate-500 font-bold mt-0.5">{activity.description}</p>
+                    
+                    <div className="flex-1 min-w-0 z-10">
+                      <div className="flex justify-between items-start mb-1.5">
+                        <p className="text-sm font-black text-white truncate group-hover/item:text-[#D9B07C] transition-colors">{activity.name}</p>
+                        <span className="text-[10px] font-bold text-slate-300 bg-white/5 px-2 py-1 rounded-full border border-white/5 flex items-center gap-1 shrink-0 mr-2">
+                          <Clock size={10} className="text-[#D9B07C]" />
+                          <span dir="ltr">{activity.openTime?.substring(0, 5)} - {activity.closeTime?.substring(0, 5)}</span>
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs text-slate-300 font-bold truncate flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#D9B07C]/50"></span>
+                          {activity.ownerName}
+                        </span>
+                        {activity.totalOrders > 0 && (
+                          <>
+                            <span className="w-1 h-1 rounded-full bg-white/20"></span>
+                            <span className="text-[10px] text-emerald-400 font-black bg-emerald-500/10 px-1.5 py-0.5 rounded">
+                              {activity.totalOrders} طلب
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      
+                      <div className="flex items-center gap-4 text-[10px] text-slate-500 font-bold">
+                        <div className="flex items-center gap-1 truncate max-w-[60%]">
+                          <MapPin size={10} className="text-slate-400 shrink-0" />
+                          <span className="truncate">{activity.address}</span>
+                        </div>
+                        <div className="flex items-center gap-1 shrink-0">
+                          <Phone size={10} className="text-slate-400 shrink-0" />
+                          <span dir="ltr">{activity.phoneNumber}</span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-[10px] font-black text-slate-600 bg-white/5 px-2 py-1 rounded-lg mr-auto">{activity.timeAgo}</span>
                   </div>
                 ))
               ) : (
