@@ -43,8 +43,30 @@ namespace CarMaintenance.Controllers
                 user.Email,
                 user.PhoneNumber,
                 user.Role,
-                user.ProfileImageUrl
+                ProfileImageUrl = user.ProfileImageData != null
+                    ? $"{Request.Scheme}://{Request.Host}/api/profile/image/{user.Id}"
+                    : (string?)null
             });
+        }
+
+        /// <summary>
+        /// Serves the profile image directly from the database.
+        /// AllowAnonymous so browser &lt;img&gt; tags can load it without a JWT header.
+        /// </summary>
+        [HttpGet("image/{userId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProfileImage(int userId)
+        {
+            var user = await _context.Users
+                .AsNoTracking()
+                .Where(u => u.Id == userId)
+                .Select(u => new { u.ProfileImageData, u.ProfileImageContentType })
+                .FirstOrDefaultAsync();
+
+            if (user?.ProfileImageData == null)
+                return NotFound();
+
+            return File(user.ProfileImageData, user.ProfileImageContentType ?? "image/jpeg");
         }
 
         [HttpPost("upload-image")]
@@ -66,36 +88,24 @@ namespace CarMaintenance.Controllers
             if (user == null)
                 return NotFound();
 
-            var uploadsFolder = Path.Combine(
-                Directory.GetCurrentDirectory(),
-                "wwwroot",
-                "images"
-            );
-
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
-            var fileName = Guid.NewGuid().ToString()
-                           + Path.GetExtension(dto.File.FileName);
-
-            var filePath = Path.Combine(uploadsFolder, fileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // Read the file into a byte array and store in the database
+            using (var memoryStream = new MemoryStream())
             {
-                await dto.File.CopyToAsync(stream);
+                await dto.File.CopyToAsync(memoryStream);
+                user.ProfileImageData = memoryStream.ToArray();
             }
 
-            var imageUrl =
-                $"{Request.Scheme}://{Request.Host}/images/{fileName}";
-
-            user.ProfileImageUrl = imageUrl;
+            user.ProfileImageContentType = dto.File.ContentType;
 
             await _context.SaveChangesAsync();
+
+            var imageUrl =
+                $"{Request.Scheme}://{Request.Host}/api/profile/image/{user.Id}";
 
             return Ok(new
             {
                 message = "Profile image uploaded successfully",
-                imageUrl = user.ProfileImageUrl
+                imageUrl
             });
         }
 
@@ -127,7 +137,9 @@ namespace CarMaintenance.Controllers
                 user.Name,
                 user.Email,
                 user.PhoneNumber,
-                user.ProfileImageUrl
+                ProfileImageUrl = user.ProfileImageData != null
+                    ? $"{Request.Scheme}://{Request.Host}/api/profile/image/{user.Id}"
+                    : (string?)null
             });
         }
     }

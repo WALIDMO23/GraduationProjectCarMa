@@ -11,7 +11,8 @@ namespace CarMaintenance.Models
 
         [Required]
         public string Email { get; set; }
-        public string? ProfileImageUrl { get; set; }
+        public byte[]? ProfileImageData { get; set; }
+        public string? ProfileImageContentType { get; set; }
 
         [Required]
         public string PasswordHash { get; set; }
