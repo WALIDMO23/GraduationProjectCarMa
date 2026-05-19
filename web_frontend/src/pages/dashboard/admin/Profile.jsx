@@ -87,6 +87,7 @@ const Profile = () => {
       const response = await getProfile();
       setProfileData(response.data);
       // Optional: Show success message
+      window.location.reload();
     } catch (err) {
       console.error("Error uploading image:", err);
       alert('فشل رفع الصورة. يرجى المحاولة مرة أخرى.');
