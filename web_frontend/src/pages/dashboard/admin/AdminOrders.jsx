@@ -22,7 +22,8 @@ import {
   MoreVertical,
   User,
   Settings,
-  ClipboardList
+  ClipboardList,
+  Info
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
@@ -36,6 +37,9 @@ import { useAdminData } from '../../../context/AdminDataContext';
 const ITEMS_PER_PAGE = 8;
 
 const AdminOrders = () => {
+
+  
+
   const [searchParams] = useSearchParams();
   const orderIdFromUrl = searchParams.get('id');
 
@@ -49,7 +53,13 @@ const AdminOrders = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+const [selectedOrderIcon , setSelectedOrderIcon] = useState(""); 
 
+useEffect(()=>{
+ 
+  setSelectedOrderIcon(getServiceStyle(selectedOrder?.service))
+  
+},[selectedOrder])
   useEffect(() => {
     if (orderIdFromUrl) {
       setSearchTerm(orderIdFromUrl);
@@ -184,6 +194,7 @@ const AdminOrders = () => {
       </div>
     );
   }
+
 
   return (
     <div className="font-tajawal min-h-screen">
@@ -404,7 +415,7 @@ const AdminOrders = () => {
                             className="p-2.5 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all active:scale-90"
                             title="عرض التفاصيل"
                           >
-                            <Eye size={16} />
+                            <Info size={18} />
                           </button>
                         </div>
                       </td>
@@ -571,8 +582,11 @@ const AdminOrders = () => {
                     </div>
                     <div className="p-8 rounded-3xl border border-white/5 space-y-8 shadow-2xl bg-white/5">
                       <div className="flex items-center gap-5">
-                        <div className="p-5 rounded-2xl bg-[#D9B07C] text-black shadow-lg shadow-[#D9B07C]/10">
-                          {getServiceStyle(selectedOrder.service?.name).icon}
+                        <div className="p-3 rounded-2xl bg-[#D9B07C] text-black shadow-lg shadow-[#D9B07C]/10">
+                         
+                          {/* TODO : create icon component  */}
+                          <selectedOrderIcon.IconComponent size={28} />
+                          
                         </div>
                         <div className="text-right">
                           <p className="font-black text-white text-xl">{selectedOrder.service?.name}</p>
@@ -582,10 +596,10 @@ const AdminOrders = () => {
                       
                       <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
                         <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
-                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">وقت التنفيذ</span>
+                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">وقت الطلب</span>
                           <div className="flex items-center gap-2 text-white">
                             <Clock size={14} className="text-[#D9B07C]" />
-                            <span className="font-black text-sm">{selectedOrder.executionTime || '---'}</span>
+                            <span className="font-black text-sm">{new Date(selectedOrder.createdAt).toLocaleTimeString('ar-EG') || '---'}</span>
                           </div>
                         </div>
                         <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
