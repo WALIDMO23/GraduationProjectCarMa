@@ -173,7 +173,7 @@ const Workshops = () => {
         setData(response.data?.data || response.data);
       } catch (err) {
         console.error("Error fetching technicians:", err);
-        setError("تعذر تحميل بيانات الفنيين");
+        setError("تعذر تحميل بيانات الورش");
       } finally {
         setLoading(false);
       }
@@ -185,7 +185,7 @@ const Workshops = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] font-tajawal">
         <Loader2 className="animate-spin text-primary mb-4" size={48} />
-        <p className="text-slate-500 font-bold">جاري تحميل بيانات الفنيين...</p>
+        <p className="text-slate-500 font-bold">جاري تحميل بيانات الورش...</p>
       </div>
     );
   }

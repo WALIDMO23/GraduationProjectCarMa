@@ -131,7 +131,7 @@ const Technicians = () => {
         setData(response.data?.data || response.data);
       } catch (err) {
         console.error("Error fetching technicians:", err);
-        setError("تعذر تحميل بيانات الفنيين");
+        setError("تعذر تحميل بيانات الورش");
       } finally {
         setLoading(false);
       }

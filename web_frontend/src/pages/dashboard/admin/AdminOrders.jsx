@@ -28,8 +28,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
 import { searchOrders, acceptOrder, rejectOrder, getOrderById } from '../../../services/adminService';
-import { GiBattery50 as GiBattery, GiOilDrum, GiCarWheel, GiAutoRepair } from 'react-icons/gi';
-import { MdLocalCarWash } from 'react-icons/md';
 import { FiList, FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle } from 'react-icons/fi';
 
 import { useAdminData } from '../../../context/AdminDataContext';
