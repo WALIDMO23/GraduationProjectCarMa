@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { getAdminDashboard, searchOrders } from '../services/adminService';
-import { FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle } from 'react-icons/fi';
-import { GiBattery50 as GiBattery, GiOilDrum, GiCarWheel, GiAutoRepair } from 'react-icons/gi';
+import { FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle, FiAlertTriangle } from 'react-icons/fi';
+import { GiCarWheel, GiAutoRepair, GiTowTruck } from 'react-icons/gi';
 import { MdLocalCarWash } from 'react-icons/md';
+import { FaOilCan, FaCarBattery } from 'react-icons/fa';
 
 const AdminDataContext = createContext();
 
@@ -97,11 +98,11 @@ export const AdminDataProvider = ({ children }) => {
     let textColorClass = 'text-blue-400';
 
     if (name.includes('battery') || name.includes('بطارية') || iconKey.includes('battery')) {
-      IconComponent = GiBattery;
+      IconComponent = FaCarBattery;
       bgClass = 'bg-amber-500/10';
       textColorClass = 'text-amber-400';
     } else if (name.includes('oil') || name.includes('زيت') || iconKey.includes('oil')) {
-      IconComponent = GiOilDrum;
+      IconComponent = FaOilCan;
       bgClass = 'bg-blue-500/10';
       textColorClass = 'text-blue-400';
     } else if (name.includes('tire') || name.includes('إطار') || iconKey.includes('tire')) {
@@ -112,6 +113,14 @@ export const AdminDataProvider = ({ children }) => {
       IconComponent = MdLocalCarWash;
       bgClass = 'bg-indigo-500/10';
       textColorClass = 'text-indigo-400';
+    } else if (name.includes('emergency') || name.includes('طارئة') || name.includes('طوارئ') || iconKey.includes('emergency')) {
+      IconComponent = FiAlertTriangle;
+      bgClass = 'bg-rose-500/10';
+      textColorClass = 'text-rose-400';
+    } else if (name.includes('tow') || name.includes('ونش') || name.includes('winch') || iconKey.includes('tow')) {
+      IconComponent = GiTowTruck;
+      bgClass = 'bg-purple-500/10';
+      textColorClass = 'text-purple-400';
     }
 
     return { IconComponent, bgClass, textColorClass };

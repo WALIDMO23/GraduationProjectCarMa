@@ -278,7 +278,7 @@ const Reports = () => {
         {/* Technician Performance Bar Chart */}
         <div className="bg-[#121212] p-6 rounded-[2rem] border border-white/5 shadow-xl">
           <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-black text-white">أداء الفنيين</h3>
+            <h3 className="text-lg font-black text-white">أداء الورش</h3>
             <button className="text-[#3b82f6] text-sm font-bold hover:underline">عرض التفاصيل</button>
           </div>
           {techPerformanceData.length > 0 ? (
@@ -439,7 +439,7 @@ const Reports = () => {
 
         {/* Top Technicians List */}
         <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl">
-          <h3 className="text-xl font-black text-white mb-8">أفضل الفنيين</h3>
+          <h3 className="text-xl font-black text-white mb-8">أفضل الورش</h3>
           {topTechnicians.length > 0 ? (
             <div className="space-y-4">
               {topTechnicians.map((tech, idx) => (
