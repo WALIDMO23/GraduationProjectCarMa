@@ -319,7 +319,7 @@ const Settings = () => {
         </div>
 
         {/* Payment Methods */}
-        <div className="bg-[#121212] rounded-[2.5rem] p-8 border border-white/5 shadow-xl">
+        {/* <div className="bg-[#121212] rounded-[2.5rem] p-8 border border-white/5 shadow-xl">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-[#D9B07C]/10 text-[#D9B07C] flex items-center justify-center">
               <CreditCard size={20} />
@@ -345,7 +345,7 @@ const Settings = () => {
               <span>+ إضافة بطاقة جديدة</span>
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Danger Zone */}
         <div className="bg-red-500/5 rounded-[2.5rem] p-8 border border-red-500/20 shadow-xl">
