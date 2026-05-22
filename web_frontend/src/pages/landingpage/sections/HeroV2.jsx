@@ -1,15 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { HiOutlineArrowLeft, HiOutlineArrowDownTray, HiOutlineChevronDown } from "react-icons/hi2";
+import { HiOutlineArrowLeft, HiOutlineArrowDownTray, HiOutlineChevronDown, HiOutlineBars3, HiXMark } from "react-icons/hi2";
+
+const NAV_LINKS = [
+  { label: "الرئيسية", href: "#hero" },
+  { label: "خدماتنا", href: "#services" },
+  { label: "كيف يعمل", href: "#how-it-works" },
+  { label: "لماذا نحن", href: "#why-us" },
+  { label: "الأسعار", href: "#pricing" },
+  { label: "آراء العملاء", href: "#testimonials" },
+];
 
 export default function HeroV2({ isLoaded }) {
   const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+      setScrolled(window.scrollY > 50);
+
+      // Force Hero active index when at the very top
+      if (window.scrollY < 50) {
+        setActiveLink(0);
+        return;
+      }
+
+      // Update active link based on scroll position
+      const sections = NAV_LINKS.map(l => l.href.replace("#", ""));
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && window.scrollY >= el.offsetTop - 200) {
+          setActiveLink(i);
+          break;
+        }
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -17,37 +40,13 @@ export default function HeroV2({ isLoaded }) {
   }, []);
 
   return (
-    <section className={`relative min-h-screen flex flex-col bg-[#050505] selection:bg-[#D9B07C] selection:text-black transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-
-
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-40 mix-blend-luminosity"
-        >
-          <source src="/videos/bgg.mp4" type="video/mp4" />
-        </video>
-
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/60 to-[#050505]"></div>
-        
-        {/* Ambient Backdrop Orbs */}
-        <div className="absolute top-[20%] right-[10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#D9B07C]/5 rounded-full blur-[100px] md:blur-[150px] pointer-events-none animate-pulse z-0" />
-        <div className="absolute bottom-[30%] left-[5%] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-[#D9B07C]/3 rounded-full blur-[90px] md:blur-[130px] pointer-events-none z-0" />
-      </div>
-
-
-      <nav className={`fixed top-0 left-0 right-0 z-[100] px-6 transition-all duration-500 ${
-        scrolled 
-          ? "py-3 bg-[#050505]/85 backdrop-blur-lg border-b border-[#D9B07C]/15 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]" 
-          : "py-5 bg-[#050505]/10 backdrop-blur-sm border-b border-white/5"
-      }`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-
-          <a href="#hero" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#D9B07C] to-[#FFDFB9] flex items-center justify-center shadow-[0_0_15px_rgba(217,176,124,0.4)] group-hover:scale-105 transition-transform duration-300">
+    <>
+      {/* ===== Floating Pill Navbar ===== */}
+      <nav className={`pill-navbar ${scrolled ? "pill-navbar--scrolled" : ""}`}>
+        <div className="pill-navbar__inner">
+          {/* Logo */}
+          <a href="#hero" className="pill-navbar__logo group">
+            <div className="pill-navbar__logo-icon">
               <span className="text-black font-black text-sm italic">C</span>
             </div>
             <h1 className="text-2xl font-black text-white italic tracking-tighter group-hover:text-[#D9B07C] transition-colors duration-300">
@@ -55,39 +54,82 @@ export default function HeroV2({ isLoaded }) {
             </h1>
           </a>
 
-
-          <div className="hidden lg:flex items-center gap-8 text-[15px] font-bold text-gray-300">
-            {[
-              { label: "الرئيسية", href: "#hero" },
-              { label: "خدماتنا", href: "#services" },
-              { label: "كيف يعمل", href: "#how-it-works" },
-              { label: "لماذا نحن", href: "#why-us" },
-              { label: "الأسعار", href: "#pricing" },
-              { label: "آراء العملاء", href: "#testimonials" },
-            ].map((link, idx) => (
-              <a 
-                key={idx} 
-                href={link.href} 
-                className="relative py-1 hover:text-[#D9B07C] transition-all duration-300 after:absolute after:bottom-0 after:right-0 after:w-0 after:h-[2px] after:bg-[#D9B07C] hover:after:w-full after:transition-all after:duration-300"
+          {/* Desktop Nav Links */}
+          <div className="pill-navbar__links">
+            {NAV_LINKS.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.href}
+                onClick={() => setActiveLink(idx)}
+                className={`pill-navbar__link ${activeLink === idx ? "pill-navbar__link--active" : ""}`}
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-
-          <button className="relative overflow-hidden bg-gradient-to-r from-[#D9B07C] via-[#FFDFB9] to-[#D9B07C] bg-[length:200%_auto] hover:bg-right text-black px-6 py-2.5 rounded-sm font-black text-xs hover:translate-y-[-2px] transition-all duration-300 shadow-[0_10px_20px_-5px_rgba(217,176,124,0.3)] hover:shadow-[0_15px_25px_-5px_rgba(217,176,124,0.4)] flex items-center gap-2 group">
+          {/* CTA Button */}
+          <a href="#cta" className="pill-navbar__cta group">
             <span className="relative z-10 flex items-center gap-2">
               <HiOutlineArrowDownTray className="text-sm group-hover:translate-y-[1px] transition-transform duration-300" />
-              تحميل التطبيق
+              <span className="hidden sm:inline">تحميل التطبيق</span>
             </span>
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out" />
+          </a>
+
+          {/* Mobile Toggle */}
+          <button
+            className="pill-navbar__mobile-toggle"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <HiXMark size={22} /> : <HiOutlineBars3 size={22} />}
           </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`pill-navbar__mobile-menu ${mobileOpen ? "pill-navbar__mobile-menu--open" : ""}`}>
+          {NAV_LINKS.map((link, idx) => (
+            <a
+              key={idx}
+              href={link.href}
+              onClick={() => { setActiveLink(idx); setMobileOpen(false); }}
+              className={`pill-navbar__mobile-link ${activeLink === idx ? "pill-navbar__mobile-link--active" : ""}`}
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href="#cta"
+            onClick={() => setMobileOpen(false)}
+            className="pill-navbar__mobile-cta"
+          >
+            <HiOutlineArrowDownTray size={18} />
+            تحميل التطبيق
+          </a>
         </div>
       </nav>
 
+      <section id="hero" className={`relative min-h-screen flex flex-col bg-[#050505] selection:bg-[#D9B07C] selection:text-black transition-all duration-1000 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-1/2 left-1/2 min-w-full min-h-full -translate-x-1/2 -translate-y-1/2 object-cover opacity-40 mix-blend-luminosity"
+          >
+            <source src="/videos/bgg.mp4" type="video/mp4" />
+          </video>
 
-      <div className="relative z-10 flex-grow flex items-center pt-24 lg:pt-20">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/90 via-[#050505]/60 to-[#050505]"></div>
+          
+          {/* Ambient Backdrop Orbs */}
+          <div className="absolute top-[20%] right-[10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#D9B07C]/5 rounded-full blur-[100px] md:blur-[150px] pointer-events-none animate-pulse z-0" />
+          <div className="absolute bottom-[30%] left-[5%] w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-[#D9B07C]/3 rounded-full blur-[90px] md:blur-[130px] pointer-events-none z-0" />
+        </div>
+
+        <div className="relative z-10 flex-grow flex items-center pt-24 lg:pt-20">
         <div className="max-w-7xl mx-auto px-6 w-full flex flex-col items-center justify-center gap-12 text-center">
           {/* Main Text Content Area - Centered */}
           <div className="w-full max-w-4xl flex flex-col items-center">
@@ -206,5 +248,6 @@ export default function HeroV2({ isLoaded }) {
       {/* Subtle Bottom Ambient Glow */}
       <div className="absolute bottom-10 left-0 w-full h-[30vh] bg-gradient-to-t from-[#D9B07C]/5 to-transparent pointer-events-none"></div>
     </section>
+    </>
   );
 }
