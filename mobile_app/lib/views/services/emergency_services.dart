@@ -334,17 +334,21 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'ميكانيكا وكهرباء سريعة' : 'Quick Mechanics & Electrical',
+                                s.isArabic ? 'توصيل وقود (بنزين)' : 'Fuel Delivery',
+                                s.isArabic ? 'فتح أبواب السيارة' : 'Unlock Car Doors',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.emergency}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).emergency,
+                                        serviceName: fullServiceName,
                                         serviceId: 5,
                                         serviceIcon: Icons.warning_amber_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,

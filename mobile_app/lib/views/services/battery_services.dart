@@ -334,17 +334,21 @@ class _BatteryServicesState extends State<BatteryServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'شحن بطارية' : 'Charge Battery',
+                                s.isArabic ? 'تغيير بطارية' : 'Replace Battery',
+                                s.isArabic ? 'شراء بطارية جديدة' : 'Buy New Battery',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.battery}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).battery,
+                                        serviceName: fullServiceName,
                                         serviceId: 2,
                                         serviceIcon: Icons.battery_charging_full_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,

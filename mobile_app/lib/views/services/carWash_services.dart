@@ -336,17 +336,21 @@ class _CarWashServicesState extends State<CarWashServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'غسيل خارجي فقط' : 'Exterior Wash Only',
+                                s.isArabic ? 'غسيل داخلي وخارجي' : 'Interior & Exterior Wash',
+                                s.isArabic ? 'تنظيف جاف' : 'Dry Clean',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.carWash}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).carWash,
+                                        serviceName: fullServiceName,
                                         serviceId: 4,
                                         serviceIcon:
                                             Icons.local_car_wash_rounded,

@@ -333,17 +333,21 @@ class _TowingServicesState extends State<TowingServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'ونش إنقاذ مسطح' : 'Flatbed Tow Truck',
+                                s.isArabic ? 'ونش سحب (شوكه)' : 'Wheel-Lift Tow Truck',
+                                s.isArabic ? 'ونش هيدروليك' : 'Hydraulic Tow Truck',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.towing}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).towing,
+                                        serviceName: fullServiceName,
                                         serviceId: 6,
                                         serviceIcon: Icons.fire_truck_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,

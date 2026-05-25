@@ -10,8 +10,10 @@ import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/views/home/widgets/technician_accepted_dialog.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
+import 'package:graduation_project/views/services/widgets/datetime_picker_card.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 /// Unified service request page — submits order to backend,
 /// shows waiting screen, triggers TechnicianAcceptedDialog on acceptance.
@@ -40,6 +42,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
   final _phoneController = TextEditingController();
   final _picker = ImagePicker();
   File? _carImage;
+  DateTime? _selectedServiceTime;
   bool _submitted = false;
 
   @override
@@ -148,6 +151,15 @@ class _RequestServicePageState extends State<RequestServicePage> {
       if (mounted) TechnicianAcceptedDialog.show(context, order);
     };
 
+    String finalNotes = widget.notes;
+    if (_selectedServiceTime != null) {
+      final timeStr = DateFormat('dd-MM-yyyy  hh:mm a', 'en').format(_selectedServiceTime!);
+      final prefix = s.isArabic ? 'موعد الخدمة المفضل:' : 'Preferred Service Time:';
+      // \u200E forces left-to-right rendering for the date/time string to prevent RTL mixups
+      final formattedTime = '\n\u200E$timeStr';
+      finalNotes = finalNotes.isEmpty ? '$prefix$formattedTime' : '$finalNotes\n\n$prefix$formattedTime';
+    }
+
     final dto = CreateOrderDto(
       userId: userId,
       vehicleId: 1,
@@ -156,7 +168,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
       phoneNumber: _phoneController.text.trim(),
       carImagePath: _carImage?.path,
       serviceName: widget.serviceName,
-      notes: widget.notes.isNotEmpty ? widget.notes : null,
+      notes: finalNotes.isNotEmpty ? finalNotes : null,
     );
 
     final newOrder = await orders.createOrder(dto);
@@ -428,6 +440,28 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                       _carImage == null
                                           ? _buildImagePickerButton(s)
                                           : _buildImagePreview(s),
+
+                                      const SizedBox(height: 24),
+                                      Text(
+                                        s.isArabic
+                                            ? 'توقيت الخدمة'
+                                            : 'Service Time',
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      DateTimePickerCard(
+                                        onDateTimeSelected: (date) {
+                                          setState(() {
+                                            _selectedServiceTime = date;
+                                          });
+                                        },
+                                      ),
+
 
                                       const SizedBox(height: 32),
 

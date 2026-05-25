@@ -331,17 +331,21 @@ class _OilServicesState extends State<OilServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'تغيير زيت المحرك' : 'Engine Oil Change',
+                                s.isArabic ? 'تغيير زيت الفتيس' : 'Transmission Oil Change',
+                                s.isArabic ? 'فحص مستوى الزيوت' : 'Check Oil Levels',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.oilChange}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).oilChange,
+                                        serviceName: fullServiceName,
                                         serviceId: 1,
                                         serviceIcon: Icons.water_drop_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,

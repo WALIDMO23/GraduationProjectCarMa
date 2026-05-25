@@ -334,17 +334,21 @@ class _TireServicesState extends State<TireServices> {
                               ),
                             ),
                             onPressed: () {
+                              final options = [
+                                s.isArabic ? 'نفخ وضبط ضغط الإطارات' : 'Inflate & Adjust Pressure',
+                                s.isArabic ? 'تغيير إطار' : 'Replace Tire',
+                                s.isArabic ? 'لحام إطار' : 'Repair Tire Puncture',
+                              ];
+                              final selectedSub = options[_selectedServiceIndex];
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
+                              final fullServiceName = '${s.tires}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder:
                                       (context) => RequestServicePage(
-                                        serviceName:
-                                            appStrings(
-                                              context
-                                                  .read<LocaleProvider>()
-                                                  .isArabic,
-                                            ).tires,
+                                        serviceName: fullServiceName,
                                         serviceId: 3,
                                         serviceIcon: Icons.tire_repair_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,
