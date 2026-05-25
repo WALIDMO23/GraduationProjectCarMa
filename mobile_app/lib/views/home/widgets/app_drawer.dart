@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
+import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/views/login.dart';
+import 'package:graduation_project/views/create_account.dart';
 import 'package:graduation_project/views/profile/profile.dart';
 import 'package:graduation_project/views/profile/order_history.dart';
 import 'package:graduation_project/views/services/settings.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+    final user = auth.currentUser;
+
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.surface,
       child: SafeArea(
@@ -26,7 +32,6 @@ class AppDrawer extends StatelessWidget {
                   CircleAvatar(
                     radius: 36,
                     backgroundColor: Colors.white.withValues(alpha: 0.2),
-                    // Assuming male avatar silhouette or image from assets
                     child: const Icon(
                       Icons.person,
                       size: 40,
@@ -34,9 +39,9 @@ class AppDrawer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'أحمد محمد', // Placeholder user name
-                    style: TextStyle(
+                  Text(
+                    user?.name ?? 'مستخدم',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -44,7 +49,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '+966 50 123 4567',
+                    user?.phoneNumber ?? user?.email ?? '',
                     textDirection: TextDirection.ltr,
                     style: TextStyle(
                       color: Colors.white.withValues(alpha: 0.8),
@@ -140,10 +145,12 @@ class AppDrawer extends StatelessWidget {
               padding: const EdgeInsets.all(24.0),
               child: InkWell(
                 borderRadius: BorderRadius.circular(12),
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                onTap: () async {
+                  final auth = context.read<AuthProvider>();
+                  final navigator = Navigator.of(context, rootNavigator: true);
+                  await auth.logout();
+                  navigator.pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (_) => const CreateAccount()),
                     (route) => false,
                   );
                 },

@@ -5,6 +5,9 @@ import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -17,6 +20,17 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -67,8 +81,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final s = appStrings(context.read<LocaleProvider>().isArabic);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(s.editProfile),
         leading: IconButton(
@@ -88,28 +103,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     // Avatar
                     Center(
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 2),
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppTheme.carmaGold.withValues(alpha: 0.3), width: 2),
+                              ),
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                backgroundImage: _imageFile != null ? FileImage(_imageFile!) : null,
+                                child: _imageFile == null ? Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.onSurfaceVariant) : null,
+                              ),
                             ),
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                              child: Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(color: AppTheme.carmaGold, shape: BoxShape.circle),
+                              child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: const BoxDecoration(color: AppTheme.primaryColor, shape: BoxShape.circle),
-                            child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -171,6 +190,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

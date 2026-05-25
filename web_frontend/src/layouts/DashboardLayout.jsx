@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import Sidebar from "../component/dashboard/Sidebar";
 import { Menu } from "lucide-react";
 
@@ -7,15 +7,17 @@ export default function DashboardLayout() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-[#F0F4F8] font-tajawal">
+    <div className="flex h-screen overflow-hidden bg-[#0A0A0A] font-tajawal">
       {/* Sidebar Component */}
       <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Mobile Header Toggle */}
-        <div className="md:hidden flex items-center justify-between p-4 bg-primary-dark text-white shadow-md">
-          <h1 className="text-xl font-black">CarMa</h1>
+        <div className="md:hidden flex items-center justify-between p-4 bg-[#121212] text-white shadow-md border-b border-white/5">
+          <Link to="/">
+            <h1 className="text-xl font-black alyamama-premium text-[#D9B07C]">CarMa</h1>
+          </Link>
           <button 
             onClick={() => setSidebarOpen(true)}
             className="p-2 hover:bg-white/10 rounded-xl transition-colors"

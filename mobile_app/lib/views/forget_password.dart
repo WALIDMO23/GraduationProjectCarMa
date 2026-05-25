@@ -3,15 +3,18 @@ import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class ForgetPassword extends StatelessWidget {
   const ForgetPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
         title: Text('استعادة كلمة المرور',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,
@@ -49,7 +52,7 @@ class ForgetPassword extends StatelessWidget {
                       width: 72,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                        color: AppTheme.carmaGold.withValues(alpha: 0.1),
                       ),
                       child: const AppImage(image: 'message.svg'),
                     ),
@@ -98,7 +101,7 @@ class ForgetPassword extends StatelessWidget {
                       child: const Text(
                         'إعادة الإرسال',
                         style: TextStyle(
-                          color: AppTheme.primaryColor,
+                          color: AppTheme.carmaGold,
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
                         ),
@@ -110,6 +113,7 @@ class ForgetPassword extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

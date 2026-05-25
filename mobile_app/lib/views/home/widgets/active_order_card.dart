@@ -135,7 +135,9 @@ class ActiveOrderCard extends StatelessWidget {
                     width: double.infinity,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.carmaGold
+                          : AppTheme.primaryColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     alignment: Alignment.center,
@@ -144,8 +146,8 @@ class ActiveOrderCard extends StatelessWidget {
                       children: [
                         Text(
                           s.viewDetails,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                          style: const TextStyle(
+                            color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
@@ -155,7 +157,7 @@ class ActiveOrderCard extends StatelessWidget {
                           image: 'arroww.svg',
                           width: 13,
                           height: 13,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Colors.black,
                         ),
                       ],
                     ),

@@ -5,6 +5,7 @@ import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:graduation_project/views/profile/edit_profile.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -17,15 +18,30 @@ class ProfilePage extends StatelessWidget {
         final user = auth.currentUser;
         final s = appStrings(locale.isArabic);
 
-        return Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        return AppBackground(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(s.profile, style: const TextStyle(color: Colors.white)),
-            backgroundColor: AppTheme.primaryColor,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaDeepDark : AppTheme.primaryColor,
             iconTheme: const IconThemeData(color: Colors.white),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => Navigator.pop(context),
+            leading: Center(
+              child: GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.35),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+              ),
             ),
             actions: [
               IconButton(
@@ -46,8 +62,8 @@ class ProfilePage extends StatelessWidget {
                 // ── Header ──────────────────────────────────────────
                 Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: AppTheme.primaryColor,
+                  decoration:  BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaGold : AppTheme.primaryColor,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(32),
                       bottomRight: Radius.circular(32),
@@ -62,10 +78,10 @@ class ProfilePage extends StatelessWidget {
                           color: Colors.white.withValues(alpha: 0.2),
                           shape: BoxShape.circle,
                         ),
-                        child: const CircleAvatar(
+                        child:  CircleAvatar(
                           radius: 48,
                           backgroundColor: Colors.white,
-                          child: Icon(Icons.person, size: 50, color: AppTheme.primaryColor),
+                          child: Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -149,18 +165,18 @@ class ProfilePage extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            border: Border.all(color: AppTheme.errorColor),
+                            border: Border.all(color: Theme.of(context).colorScheme.error),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(Icons.logout, color: AppTheme.errorColor),
+                              Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
                               const SizedBox(width: 8),
                               Text(
                                 s.logout,
-                                style: const TextStyle(
-                                  color: AppTheme.errorColor,
+                                style:  TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -176,9 +192,10 @@ class ProfilePage extends StatelessWidget {
               ],
             ),
           ),
-        );
-      },
-    );
+        ),
+      );
+    },
+  );
   }
 
   Widget _buildInfoField(BuildContext context, IconData icon, String label, String value, {bool isPhone = false}) {

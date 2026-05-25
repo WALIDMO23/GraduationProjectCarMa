@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
-import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/payment_methods.dart';
 
 class LocationPickerPage extends StatefulWidget {
@@ -95,7 +94,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                 final GoogleMapController controller = await _controller.future;
                 controller.animateCamera(CameraUpdate.newCameraPosition(_initialPosition));
               },
-              child: const Icon(Icons.my_location, color: AppTheme.primaryColor),
+              child: Icon(Icons.my_location, color: Theme.of(context).colorScheme.primary),
             ),
           ),
 
@@ -117,10 +116,10 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                      ),
                    ),
                    // Pin
-                   const Icon(
+                    Icon(
                     Icons.location_on,
                     size: 56,
-                    color: AppTheme.primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ],
               ),
@@ -175,19 +174,19 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceContainerHighest ,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+                      border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       children: [
                          Container(
                            padding: const EdgeInsets.all(10),
                            decoration: BoxDecoration(
-                             color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                              shape: BoxShape.circle,
                            ),
-                           child: const Icon(
+                           child:  Icon(
                              Icons.location_city,
-                             color: AppTheme.primaryColor,
+                             color: Theme.of(context).colorScheme.primary,
                            ),
                          ),
                          SizedBox(width: 16),

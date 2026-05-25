@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using CarMaintenance.Hubs;
 using System.Text;
 using CarMaintenance.Models;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +20,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.SetIsOriginAllowed(_ => true)
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -29,7 +31,11 @@ builder.Services.AddCors(options =>
 // Services
 // ======================
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<INewNotificationService, NewNotificationService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
 builder.Services.AddScoped<GeminiAiService>();
+builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -98,6 +104,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             Encoding.UTF8.GetBytes("THIS_IS_MY_SUPER_SECRET_KEY_1234567890")
         )
     };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/hubs/notifications"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
 });
 
 builder.Services.AddAuthorization();
@@ -111,6 +134,36 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    // ======================
+    // self-healing migrations alignment
+    // ======================
+    try
+    {
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS ""__EFMigrationsHistory"" (
+                ""MigrationId"" character varying(150) NOT NULL,
+                ""ProductVersion"" character varying(32) NOT NULL,
+                CONSTRAINT ""PK___EFMigrationsHistory"" PRIMARY KEY (""MigrationId"")
+            );
+
+            INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+            VALUES ('20260511144619_AddCarsTable', '8.0.0')
+            ON CONFLICT (""MigrationId"") DO NOTHING;
+
+            INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+            VALUES ('20260519163927_StoreProfileImageInDatabase', '8.0.0')
+            ON CONFLICT (""MigrationId"") DO NOTHING;
+
+            ALTER TABLE ""Users"" DROP COLUMN IF EXISTS ""ProfileImageUrl"";
+            ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageData"" bytea;
+            ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageContentType"" text;
+        ");
+        Console.WriteLine("Database schema and migrations aligned successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error aligning database schema: {ex.Message}");
+    }
 
     if (!context.Users.Any(u => u.Role == "admin"))
     {
@@ -136,6 +189,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 
 app.UseAuthentication();
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();

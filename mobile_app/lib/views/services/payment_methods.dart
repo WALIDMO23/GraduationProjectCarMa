@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
-import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/order_confirmation.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class PaymentMethodsPage extends StatefulWidget {
   const PaymentMethodsPage({super.key});
@@ -38,8 +38,9 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: const Text('طريقة الدفع'),
         leading: IconButton(
@@ -69,7 +70,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
                             blurRadius: 15,
                             offset: const Offset(0, 8),
                           ),
@@ -154,13 +155,13 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? AppTheme.primaryColor.withValues(alpha: 0.05)
+                                      ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)
                                       : Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color:
                                     isSelected
-                                        ? AppTheme.primaryColor
+                                        ? Theme.of(context).colorScheme.primary
                                         : Theme.of(context).colorScheme.outline,
                                 width: isSelected ? 2 : 1,
                               ),
@@ -207,9 +208,9 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(
+                                   Icon(
                                     Icons.check_circle,
-                                    color: AppTheme.primaryColor,
+                                    color: Theme.of(context).colorScheme.primary,
                                   )
                                 else
                                   Icon(
@@ -252,6 +253,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

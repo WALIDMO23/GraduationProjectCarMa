@@ -22,6 +22,132 @@ namespace CarMaintenance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CarMaintenance.Models.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PlateNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.NewNotification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ActionUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("MetadataJson")
+                        .HasColumnType("jsonb");
+
+                    b.Property<string>("PrimaryActionLabel")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PrimaryActionUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SecondaryActionLabel")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("SecondaryActionUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("Severity")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TargetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TargetType")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Type");
+
+                    b.HasIndex("UserId", "IsRead");
+
+                    b.HasIndex("UserId", "IsDeleted", "CreatedAt");
+
+                    b.ToTable("NewNotifications");
+                });
+
             modelBuilder.Entity("CarMaintenance.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
@@ -79,8 +205,14 @@ namespace CarMaintenance.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsPaid")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
 
                     b.Property<string>("OrderStatus")
                         .IsRequired()
@@ -116,9 +248,15 @@ namespace CarMaintenance.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("OrderStatus");
+
                     b.HasIndex("ServiceId");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("OrderStatus", "IsPaid", "CreatedAt");
 
                     b.ToTable("Orders");
                 });
@@ -130,6 +268,10 @@ namespace CarMaintenance.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -146,20 +288,44 @@ namespace CarMaintenance.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Oil Change",
+                            Description = "تغيير زيت المحرك مع الفلتر",
+                            Name = "غيار زيت",
                             Price = 300m
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Battery Change",
+                            Description = "فحص وتغيير بطارية السيارة",
+                            Name = "بطارية",
                             Price = 500m
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Tire Service",
+                            Description = "إصلاح أو تبديل إطارات السيارة",
+                            Name = "تغير إطار",
                             Price = 250m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "غسيل وتنظيف السيارة بالكامل",
+                            Name = "غسيل",
+                            Price = 150m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "إصلاح أعطال مفاجئة في الموقع",
+                            Name = "صيانة طارئة",
+                            Price = 450m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "خدمة سحب وإنقاذ السيارات",
+                            Name = "ونش",
+                            Price = 600m
                         });
                 });
 
@@ -204,6 +370,12 @@ namespace CarMaintenance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfileImageContentType")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("ProfileImageData")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
@@ -214,6 +386,140 @@ namespace CarMaintenance.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.UserSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BiometricsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("EmailNotifications")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PromotionalOffers")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("SmsNotifications")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Workshop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<TimeSpan>("CloseTime")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<TimeSpan>("OpenTime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IsOpen");
+
+                    b.ToTable("Workshops");
+                });
+
+            modelBuilder.Entity("ServiceWorkshop", b =>
+                {
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WorkshopsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ServicesId", "WorkshopsId");
+
+                    b.HasIndex("WorkshopsId");
+
+                    b.ToTable("ServiceWorkshop");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Car", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.NewNotification", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarMaintenance.Models.Notification", b =>
@@ -249,6 +555,21 @@ namespace CarMaintenance.Migrations
                     b.Navigation("Service");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ServiceWorkshop", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.Service", null)
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarMaintenance.Models.Workshop", null)
+                        .WithMany()
+                        .HasForeignKey("WorkshopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CarMaintenance.Models.Order", b =>

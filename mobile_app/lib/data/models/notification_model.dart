@@ -58,17 +58,29 @@ class AppNotification {
     final t = type.toLowerCase();
     final ttl = title.toLowerCase();
     if (t.contains('pending') || t.contains('review') || t.contains('waiting') ||
-        ttl.contains('مراجعة') || ttl.contains('قيد')) return 'time.svg';
+        ttl.contains('مراجعة') || ttl.contains('قيد')) {
+      return 'time.svg';
+    }
     if (t.contains('approved') || t.contains('accepted') || t.contains('confirm') ||
-        ttl.contains('موافقة') || ttl.contains('قبول')) return 'accept.svg';
+        ttl.contains('موافقة') || ttl.contains('قبول')) {
+      return 'accept.svg';
+    }
     if (t.contains('assigned') || t.contains('technician') ||
-        ttl.contains('تعيين')) return 'done.svg';
+        ttl.contains('تعيين')) {
+      return 'done.svg';
+    }
     if (t.contains('ontheway') || t.contains('way') || t.contains('dispatched') ||
-        ttl.contains('طريق')) return 'trucks.svg';
+        ttl.contains('طريق')) {
+      return 'trucks.svg';
+    }
     if (t.contains('completed') || t.contains('done') || t.contains('finished') ||
-        ttl.contains('اكتمل') || ttl.contains('انتهى')) return 'star.svg';
+        ttl.contains('اكتمل') || ttl.contains('انتهى')) {
+      return 'star.svg';
+    }
     if (t.contains('rejected') || t.contains('cancel') || t.contains('failed') ||
-        ttl.contains('رفض') || ttl.contains('ملغ')) return 'fales.svg';
+        ttl.contains('رفض') || ttl.contains('ملغ')) {
+      return 'fales.svg';
+    }
     return 'time.svg';
   }
 
@@ -77,17 +89,29 @@ class AppNotification {
     final t = type.toLowerCase();
     final ttl = title.toLowerCase();
     if (t.contains('pending') || t.contains('review') || t.contains('waiting') ||
-        ttl.contains('مراجعة') || ttl.contains('قيد')) return const Color(0xffFEF3C6);
+        ttl.contains('مراجعة') || ttl.contains('قيد')) {
+      return const Color(0xffFEF3C6);
+    }
     if (t.contains('approved') || t.contains('accepted') || t.contains('confirm') ||
-        ttl.contains('موافقة') || ttl.contains('قبول')) return const Color(0xffDCFCE7);
+        ttl.contains('موافقة') || ttl.contains('قبول')) {
+      return const Color(0xffDCFCE7);
+    }
     if (t.contains('assigned') || t.contains('technician') ||
-        ttl.contains('تعيين')) return const Color(0xffDBEAFE);
+        ttl.contains('تعيين')) {
+      return const Color(0xffDBEAFE);
+    }
     if (t.contains('ontheway') || t.contains('way') || t.contains('dispatched') ||
-        ttl.contains('طريق')) return const Color(0xffF3E8FF);
+        ttl.contains('طريق')) {
+      return const Color(0xffF3E8FF);
+    }
     if (t.contains('completed') || t.contains('done') || t.contains('finished') ||
-        ttl.contains('اكتمل') || ttl.contains('انتهى')) return const Color(0xffFEF9C2);
+        ttl.contains('اكتمل') || ttl.contains('انتهى')) {
+      return const Color(0xffFEF9C2);
+    }
     if (t.contains('rejected') || t.contains('cancel') || t.contains('failed') ||
-        ttl.contains('رفض') || ttl.contains('ملغ')) return const Color(0xffFFE2E2);
+        ttl.contains('رفض') || ttl.contains('ملغ')) {
+      return const Color(0xffFFE2E2);
+    }
     return const Color(0xffFEF3C6);
   }
 

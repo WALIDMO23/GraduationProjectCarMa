@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
-import 'package:graduation_project/views/create_account.dart';
+import 'package:graduation_project/views/home/home.dart';
+import 'package:graduation_project/views/login.dart';
+import 'package:graduation_project/logic/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,14 +16,31 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const CreateAccount()),
-        );
-      }
-    });
+    _checkAuth();
+  }
+
+  Future<void> _checkAuth() async {
+    final auth = context.read<AuthProvider>();
+    
+    // Simulate splash delay while loading auth state
+    await Future.wait([
+      Future.delayed(const Duration(seconds: 3)),
+      auth.loadCurrentUser(),
+    ]);
+
+    if (!mounted) return;
+
+    if (auth.isAuthenticated) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    }
   }
 
   @override

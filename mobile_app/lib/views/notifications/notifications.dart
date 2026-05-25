@@ -5,6 +5,7 @@ import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/notification_provider.dart';
 import 'package:graduation_project/data/models/notification_model.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsPage extends StatefulWidget {
@@ -74,9 +75,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
     final provider = context.watch<NotificationProvider>();
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
+        leading: Center(
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.black.withValues(alpha: 0.35),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_back,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+          ),
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -132,28 +152,27 @@ class _NotificationsPageState extends State<NotificationsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration:  BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: [Color(0xff1C398E), Color(0xff1447E6)],
+              colors: Theme.of(context).brightness == Brightness.dark
+                  ? [AppTheme.carmaGold, AppTheme.carmaGoldDim]
+                  : const [Color(0xff1C398E), Color(0xff1447E6)],
             ),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 20),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
       body: _buildBody(context, s, provider),
+      ),
     );
   }
 
   Widget _buildBody(
       BuildContext context, AppStrings s, NotificationProvider provider) {
     if (provider.isLoading && provider.notifications.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(color: AppTheme.primaryColor),
+      return Center(
+        child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
       );
     }
 
@@ -192,7 +211,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
     }
 
     return RefreshIndicator(
-      color: AppTheme.primaryColor,
+      color: Theme.of(context).colorScheme.primary,
       onRefresh: () =>
           context.read<NotificationProvider>().fetchNotifications(refresh: true),
       child: ListView.separated(
@@ -204,10 +223,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
         separatorBuilder: (context, index) => const SizedBox(height: 16),
         itemBuilder: (context, index) {
           if (index == provider.notifications.length) {
-            return const Center(
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(16),
-                child: CircularProgressIndicator(color: AppTheme.primaryColor),
+                padding: const EdgeInsets.all(16),
+                child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary),
               ),
             );
           }
@@ -220,7 +239,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
             child: Container(
               decoration: BoxDecoration(
                 color: !notification.isRead
-                    ? const Color(0xff155DFC)
+                    ? (Theme.of(context).brightness == Brightness.dark
+                        ? AppTheme.carmaGold
+                        : const Color(0xff155DFC))
                     : Colors.transparent,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
@@ -287,8 +308,10 @@ class _NotificationsPageState extends State<NotificationsPage> {
                                   width: 8,
                                   height: 8,
                                   margin: const EdgeInsets.only(top: 6),
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xff155DFC),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).brightness == Brightness.dark
+                                        ? AppTheme.carmaGold
+                                        : const Color(0xff155DFC),
                                     shape: BoxShape.circle,
                                   ),
                                 ),

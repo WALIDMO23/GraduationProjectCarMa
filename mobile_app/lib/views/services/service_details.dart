@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/location_picker.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
   final String serviceName;
@@ -32,8 +33,9 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(widget.serviceName),
         leading: IconButton(
@@ -103,10 +105,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               ],
                             ),
                           ),
-                          const Text(
+                           Text(
                             '150 ريال',
                             style: TextStyle(
-                              color: AppTheme.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -145,7 +147,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                             decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? AppTheme.primaryColor.withValues(
+                                      ? Theme.of(context).colorScheme.primary.withValues(
                                         alpha: 0.05,
                                       )
                                       : Theme.of(context).colorScheme.surface,
@@ -153,7 +155,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               border: Border.all(
                                 color:
                                     isSelected
-                                        ? AppTheme.primaryColor
+                                        ? Theme.of(context).colorScheme.primary
                                         : Theme.of(context).colorScheme.outline,
                                 width: isSelected ? 2 : 1,
                               ),
@@ -165,7 +167,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                   decoration: BoxDecoration(
                                     color:
                                         isSelected
-                                            ? AppTheme.primaryColor
+                                            ? Theme.of(context).colorScheme.primary
                                             : Theme.of(context)
                                                 .colorScheme
                                                 .surfaceContainerHighest,
@@ -218,8 +220,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                 const SizedBox(width: 16),
                                 Text(
                                   option['price'] as String,
-                                  style: const TextStyle(
-                                    color: AppTheme.primaryColor,
+                                  style:  TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -286,6 +288,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'package:graduation_project/logic/providers/services_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/request_service_page.dart';
@@ -27,6 +28,7 @@ class ServiceTemplate extends StatefulWidget {
   final String headerIcon;
   final String headerTitle;
   final String headerDescription;
+  /// Fallback price shown while the API is loading. Leave empty to show '...'.
   final String basePrice;
   final List<ServiceOption> options;
   final String notesHintText;
@@ -44,7 +46,7 @@ class ServiceTemplate extends StatefulWidget {
     required this.headerIcon,
     required this.headerTitle,
     required this.headerDescription,
-    required this.basePrice,
+    this.basePrice = '',
     required this.options,
     required this.notesHintText,
     required this.primaryActionColor,
@@ -62,6 +64,18 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
   final TextEditingController _notesController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch services if not already loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<ServicesProvider>();
+      if (!provider.hasFetched) {
+        provider.fetchServices();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _notesController.dispose();
     super.dispose();
@@ -70,6 +84,14 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
   @override
   Widget build(BuildContext context) {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
+    final svcProvider = context.watch<ServicesProvider>();
+    final displayPrice = svcProvider.isLoading
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : svcProvider.priceFor(
+            serviceId: widget.serviceId,
+            isArabic: s.isArabic,
+            fallback: widget.basePrice.isNotEmpty ? widget.basePrice : '—',
+          );
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(title: Text(widget.title)),
@@ -144,7 +166,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                           ),
                         ),
                         Text(
-                          widget.basePrice,
+                          displayPrice,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
