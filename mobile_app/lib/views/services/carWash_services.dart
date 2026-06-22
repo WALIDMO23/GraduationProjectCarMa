@@ -29,14 +29,17 @@ class CarWashServices extends StatelessWidget {
         ServiceOption(
           title: s.isArabic ? 'غسيل خارجي فقط' : 'Exterior Wash Only',
           subtitle: s.isArabic ? 'تنظيف الهيكل وتلميع الزجاج' : 'Clean body and polish glass',
+          subServiceId: 11,
         ),
         ServiceOption(
           title: s.isArabic ? 'غسيل داخلي وخارجي' : 'Interior & Exterior Wash',
           subtitle: s.isArabic ? 'تنظيف شامل للسيارة' : 'Comprehensive car wash',
+          subServiceId: 10,
         ),
         ServiceOption(
           title: s.isArabic ? 'غسيل كيماوي' : 'Chemical Wash',
           subtitle: s.isArabic ? 'إزالة البقع العميقة وتنظيف الفرش' : 'Remove deep stains and clean upholstery',
+          subServiceId: 12,
         ),
       ],
     );

@@ -165,7 +165,7 @@ const AdminHome = () => {
                   <OrderApprovalCard
                     key={order.id || idx}
                     id={order.id}
-                    service={order.serviceName}
+                    service={order.subServiceName ? `${order.serviceName} - ${order.subServiceName}` : order.serviceName}
                     customer={order.customerName}
                     phone={order.phoneNumber}
                     time={formatTime(order.createdAt)}
@@ -221,7 +221,9 @@ const AdminHome = () => {
                                 >
                                   <serviceStyle.IconComponent size={20} />
                                 </div>
-                                <span className="text-sm font-bold text-slate-300 whitespace-nowrap">{order.serviceName}</span>
+                                <span className="text-sm font-bold text-slate-300 whitespace-nowrap">
+                                  {order.subServiceName ? `${order.serviceName} - ${order.subServiceName}` : order.serviceName}
+                                </span>
                               </div>
                             </td>
                             <td className="px-8 py-5 text-sm font-bold text-slate-400">{order.customerName}</td>

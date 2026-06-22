@@ -39,6 +39,7 @@ public class AdminController : ControllerBase
 
         var requestsNeedingApproval = await _context.Orders
             .Include(o => o.Service) 
+            .Include(o => o.SubService)
             .Include(o => o.User)    
             .Where(o => o.OrderStatus == OrderStatus.Pending)
             .OrderByDescending(o => o.CreatedAt)
@@ -46,11 +47,13 @@ public class AdminController : ControllerBase
             .Select(o => new {
                 o.Id,
                 ServiceName = o.Service != null ? o.Service.Name : "صيانة عامة",
+                SubServiceName = o.SubService != null ? o.SubService.Name : null,
                 CustomerName = o.User != null ? o.User.Name : "عميل غير معروف",
                 o.Address,
                 o.PhoneNumber,
                 o.Price,
-                o.CreatedAt
+                o.CreatedAt,
+                o.NeededServiceTime
             })
             .ToListAsync();
 
@@ -70,6 +73,7 @@ public class AdminController : ControllerBase
 
       var currentOrders = await _context.Orders
     .Include(o => o.Service)
+    .Include(o => o.SubService)
     .Include(o => o.User)
     .Where(o => o.OrderStatus == OrderStatus.InProgress || o.OrderStatus == OrderStatus.Accepted || o.OrderStatus == OrderStatus.Completed)
     .OrderByDescending(o => o.CreatedAt)
@@ -77,12 +81,15 @@ public class AdminController : ControllerBase
     .Select(o => new {
         o.Id,
         ServiceName = o.Service.Name,
+        SubServiceName = o.SubService != null ? o.SubService.Name : null,
         CustomerName = o.User.Name,
         o.Address,
         o.Price,
         StatusLabel = o.OrderStatus == OrderStatus.InProgress ? "جاري التنفيذ" : 
                       o.OrderStatus == OrderStatus.Completed ? "مكتمل" : "تمت الموافقة",
         StatusValue = o.OrderStatus.ToString(),
+        PaymentMethod = (int)o.PaymentMethod,
+        NeededServiceTime = o.NeededServiceTime != null ? o.NeededServiceTime.Value.ToString("yyyy/MM/dd hh:mm tt") : null,
         TechnicianName = o.TechnicianName ?? "لم يحدد بعد",
         Time = o.CreatedAt.ToString("hh:mm tt"),
         Date = o.CreatedAt.ToString("yyyy/MM/dd")
@@ -109,7 +116,9 @@ public class AdminController : ControllerBase
     [SwaggerOperation(Summary = "Get All Services")]
     public async Task<IActionResult> GetServices()
     {
-        var services = await _context.Services.ToListAsync();
+        var services = await _context.Services
+            .Include(s => s.SubServices)
+            .ToListAsync();
         return Ok(services);
     }
 

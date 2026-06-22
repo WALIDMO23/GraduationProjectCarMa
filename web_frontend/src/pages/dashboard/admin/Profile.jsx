@@ -21,7 +21,9 @@ import {
   X
 } from 'lucide-react';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
-import { getProfile, uploadProfileImage } from '../../../services/authService';
+import { getProfile, uploadProfileImage, updateProfile } from '../../../services/authService';
+import { getActivityLogs } from '../../../services/adminService';
+import Model from '../../../component/ui/Model';
 
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
@@ -30,6 +32,14 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [showImagePopup, setShowImagePopup] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Edit Profile Modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editFormData, setEditFormData] = useState({ name: '', email: '', phoneNumber: '' });
+  const [editSubmitting, setEditSubmitting] = useState(false);
+  const [editError, setEditError] = useState(null);
+  const [editUploading, setEditUploading] = useState(false);
+  const editFileInputRef = useRef(null);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -49,6 +59,9 @@ const Profile = () => {
     };
   }, [showImagePopup]);
 
+  const [activities, setActivities] = useState([]);
+  const [activitiesLoading, setActivitiesLoading] = useState(true);
+
   const fetchProfileData = async () => {
     try {
       setLoading(true);
@@ -62,9 +75,89 @@ const Profile = () => {
     }
   };
 
+  const fetchActivities = async () => {
+    try {
+      setActivitiesLoading(true);
+      const response = await getActivityLogs(1, 10);
+      setActivities(response.data.items || []);
+    } catch (err) {
+      console.error("Error fetching activities:", err);
+    } finally {
+      setActivitiesLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
+    fetchActivities();
   }, []);
+
+  // ---- Edit Profile Modal Handlers ----
+  const openEditModal = () => {
+    setEditFormData({
+      name: profileData?.name || '',
+      email: profileData?.email || '',
+      phoneNumber: profileData?.phoneNumber || '',
+    });
+    setEditError(null);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditError(null);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData(prev => ({ ...prev, [name]: value }));
+    if (editError) setEditError(null);
+  };
+
+  const handleEditPhotoClick = () => {
+    editFileInputRef.current?.click();
+  };
+
+  const handleEditPhotoChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('يرجى اختيار ملف صورة صحيح');
+      return;
+    }
+    try {
+      setEditUploading(true);
+      await uploadProfileImage(file);
+      const response = await getProfile();
+      setProfileData(response.data);
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      alert('فشل رفع الصورة. يرجى المحاولة مرة أخرى.');
+    } finally {
+      setEditUploading(false);
+    }
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    setEditSubmitting(true);
+    setEditError(null);
+    try {
+      await updateProfile(editFormData);
+      const response = await getProfile();
+      setProfileData(response.data);
+      closeEditModal();
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      if (err.response?.status === 409) {
+        setEditError(err.response.data?.message || 'البيانات مستخدمة بالفعل');
+      } else {
+        setEditError('حدث خطأ أثناء تحديث البيانات. يرجى المحاولة مرة أخرى.');
+      }
+    } finally {
+      setEditSubmitting(false);
+    }
+  };
 
   const handleCameraClick = () => {
     fileInputRef.current?.click();
@@ -96,55 +189,62 @@ const Profile = () => {
     }
   };
 
-  const recentActivities = [
-    {
-      id: 1,
-      title: 'تفعيل حساب فني جديد',
-      desc: 'محمد أحمد علي',
-      time: 'منذ ساعتين',
-      icon: User,
-      color: 'text-emerald-400',
-      bg: 'bg-emerald-500/10'
-    },
-    {
-      id: 2,
-      title: 'إرسال إشعار جماعي',
-      desc: 'تحديث نظام الدفع',
-      time: 'منذ 4 ساعات',
-      icon: Bell,
-      color: 'text-blue-400',
-      bg: 'bg-blue-500/10'
-    },
-    {
-      id: 3,
-      title: 'مراجعة تقرير مالي',
-      desc: 'تقرير شهر مارس',
-      time: 'منذ يوم',
-      icon: FileText,
-      color: 'text-purple-400',
-      bg: 'bg-purple-500/10'
-    },
-    {
-      id: 4,
-      title: 'تعديل إعدادات المنصة',
-      desc: 'تحديث رسوم الخدمات',
-      time: 'منذ يومين',
-      icon: Settings,
-      color: 'text-slate-400',
-      bg: 'bg-white/10'
+  const getActionDetails = (action) => {
+    switch (action) {
+      case 'AcceptOrder':
+        return {
+          title: 'قبول طلب صيانة',
+          icon: CheckCircle2,
+          color: 'text-emerald-400',
+          bg: 'bg-emerald-500/10'
+        };
+      case 'RejectOrder':
+        return {
+          title: 'رفض طلب صيانة',
+          icon: X,
+          color: 'text-red-400',
+          bg: 'bg-red-500/10'
+        };
+      case 'UpdateProfile':
+        return {
+          title: 'تعديل الملف الشخصي',
+          icon: Edit3,
+          color: 'text-blue-400',
+          bg: 'bg-blue-500/10'
+        };
+      case 'UpdateProfileImage':
+        return {
+          title: 'تغيير صورة الملف الشخصي',
+          icon: Camera,
+          color: 'text-purple-400',
+          bg: 'bg-purple-500/10'
+        };
+      default:
+        return {
+          title: 'نشاط للمسؤول',
+          icon: Settings,
+          color: 'text-[#D9B07C]',
+          bg: 'bg-[#D9B07C]/10'
+        };
     }
-  ];
+  };
 
-  const permissions = [
-    'إدارة جميع الطلبات',
-    'إدارة الفنيين',
-    'إدارة العملاء',
-    'الوصول للتقارير المالية',
-    'إرسال الإشعارات',
-    'إدارة الإعدادات العامة',
-    'مراجعة التقييمات',
-    'إدارة الصلاحيات'
-  ];
+  const formatActivityTime = (dateStr) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'الآن';
+    if (diffMins < 60) return `منذ ${diffMins} د`;
+    if (diffHours < 24) return `منذ ${diffHours} س`;
+    if (diffDays === 1) return 'أمس';
+    if (diffDays < 7) return `منذ ${diffDays} ي`;
+    return date.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
+  };
 
   if (loading && !profileData) {
     return (
@@ -251,7 +351,7 @@ const Profile = () => {
 
           {/* Action Buttons */}
           <div className="w-full md:w-auto flex justify-end mt-4 md:mt-0 relative z-10">
-            <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xl">
+            <button onClick={openEditModal} className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xl">
               <Edit3 size={16} />
               تعديل الملف الشخصي
             </button>
@@ -259,12 +359,12 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* Right Column: Info & System */}
-        <div className="lg:col-span-2 space-y-8">
+      <div className="mb-5">
+       
+        <div className="flex gap-[12px]">
           
           {/* Personal Information */}
-          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl">
+          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl w-[70%]">
             <h3 className="text-xl font-black text-white mb-8 flex items-center gap-3">
               <User className="text-[#D9B07C]" size={24} />
               المعلومات الشخصية
@@ -311,33 +411,8 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Roles and Permissions */}
-          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl">
-            <h3 className="text-xl font-black text-white mb-8 flex items-center gap-3">
-              <Shield className="text-[#D9B07C]" size={24} />
-              الصلاحيات والأذونات
-            </h3>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {permissions.map((perm, idx) => (
-                <div key={idx} className="flex items-center gap-3 p-3 rounded-xl border border-purple-500/20 bg-purple-500/5">
-                  <div className="w-5 h-5 rounded-md bg-purple-500 flex items-center justify-center text-[#121212] shrink-0">
-                    <CheckCircle2 size={14} />
-                  </div>
-                  <span className="text-sm font-bold text-slate-200">{perm}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Left Column: System & Activity */}
-        <div className="space-y-8">
-          
-          {/* System Information */}
-          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl">
+              {/* System Information */}
+          <div className="mt-8">
             <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3">
               <Activity className="text-[#D9B07C]" size={24} />
               معلومات النظام
@@ -365,9 +440,12 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          </div>
+
+     
 
           {/* Recent Activities */}
-          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl relative overflow-hidden">
+          <div className="bg-[#121212] p-8 rounded-[2.5rem] border border-white/5 shadow-xl relative overflow-hidden w-[30%]">
             <div className="absolute top-0 left-0 w-32 h-32 bg-[#D9B07C]/5 blur-3xl rounded-full -ml-16 -mt-16"></div>
             <h3 className="text-xl font-black text-white mb-6 flex items-center gap-3 relative z-10">
               <Activity className="text-[#D9B07C]" size={24} />
@@ -375,22 +453,42 @@ const Profile = () => {
             </h3>
             
             <div className="space-y-6 relative z-10">
-              {recentActivities.map((activity, idx) => (
-                <div key={activity.id} className="flex items-start gap-4">
-                  <div className={`mt-1 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${activity.bg} ${activity.color}`}>
-                    <activity.icon size={18} />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-black text-white">{activity.title}</p>
-                    <p className="text-xs text-slate-400 font-bold mt-1">{activity.desc}</p>
-                  </div>
-                  <span className="text-[10px] text-slate-500 font-black whitespace-nowrap bg-white/5 px-2 py-1 rounded-md">{activity.time}</span>
+              {activitiesLoading ? (
+                <div className="flex flex-col items-center py-8 gap-3">
+                  <Loader2 className="w-8 h-8 text-[#D9B07C] animate-spin" />
+                  <p className="text-xs text-slate-500 font-bold animate-pulse">جاري تحميل النشاطات...</p>
                 </div>
-              ))}
+              ) : activities.length === 0 ? (
+                <div className="text-center py-8">
+                  <Activity className="w-12 h-12 text-slate-600 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm text-slate-400 font-bold">لا توجد نشاطات مسجلة بعد</p>
+                </div>
+              ) : (
+                activities.map((activity) => {
+                  const details = getActionDetails(activity.action);
+                  const IconComponent = details.icon;
+                  return (
+                    <div key={activity.id} className="flex items-start gap-4">
+                      <div className={`mt-1 w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${details.bg} ${details.color}`}>
+                        <IconComponent size={18} />
+                      </div>
+                      <div className="flex-1 text-right" dir="rtl">
+                        <p className="text-sm font-black text-white">{details.title}</p>
+                        <p className="text-xs text-slate-400 font-bold mt-1">{activity.description}</p>
+                      </div>
+                      <span className="text-[10px] text-slate-500 font-black whitespace-nowrap bg-white/5 px-2 py-1 rounded-md">
+                        {formatActivityTime(activity.createdAt)}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
-
+          {/* Section removed */}
         </div>
+
+   
       </div>
 
       {/* Security Banner */}
@@ -459,6 +557,134 @@ const Profile = () => {
           </div>
         </div>
       )}
+
+      {/* Edit Profile Modal */}
+      <Model
+        isOpen={isEditModalOpen}
+        onClose={closeEditModal}
+        title="تعديل الملف الشخصي"
+        showCloseButton={true}
+        closeOnBackdropClick={false}
+      >
+        <form onSubmit={handleEditSubmit} className="space-y-6 text-right" dir="rtl">
+          {/* Profile Photo */}
+          <div className="flex flex-col items-center gap-4 pb-6 border-b border-white/5">
+            <div className="relative group">
+              <div className="h-28 w-28 rounded-full bg-[#121212] p-1.5 flex items-center justify-center shadow-xl relative">
+                {editUploading && (
+                  <div className="absolute inset-0 z-20 bg-black/60 rounded-full flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 text-[#D9B07C] animate-spin" />
+                  </div>
+                )}
+                {profileData?.profileImageUrl ? (
+                  <img
+                    src={profileData.profileImageUrl}
+                    alt={profileData.name}
+                    className="h-full w-full rounded-full object-cover border border-[#D9B07C]/30"
+                  />
+                ) : (
+                  <div className="h-full w-full rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                    <User size={48} strokeWidth={1.5} />
+                  </div>
+                )}
+              </div>
+              <input
+                type="file"
+                ref={editFileInputRef}
+                onChange={handleEditPhotoChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={handleEditPhotoClick}
+                disabled={editUploading}
+                className="absolute bottom-1 left-1 bg-[#D9B07C] text-black p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 z-30 hover:scale-110"
+              >
+                <Camera size={14} />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 font-bold">اضغط على أيقونة الكاميرا لتغيير الصورة</p>
+          </div>
+
+          {/* Error Message */}
+          {editError && (
+            <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 text-red-400 px-5 py-3.5 rounded-2xl text-sm font-bold">
+              <AlertCircle size={18} className="shrink-0" />
+              {editError}
+            </div>
+          )}
+
+          {/* Form Fields */}
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-white flex items-center gap-2">
+                <User size={14} className="text-[#D9B07C]" />
+                الاسم الكامل
+              </label>
+              <input
+                required
+                type="text"
+                name="name"
+                value={editFormData.name}
+                onChange={handleEditInputChange}
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#D9B07C] focus:ring-1 focus:ring-[#D9B07C] outline-none transition-all placeholder-slate-600"
+                placeholder="أدخل الاسم الكامل"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-white flex items-center gap-2">
+                <Mail size={14} className="text-[#D9B07C]" />
+                البريد الإلكتروني
+              </label>
+              <input
+                required
+                type="email"
+                name="email"
+                value={editFormData.email}
+                onChange={handleEditInputChange}
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#D9B07C] focus:ring-1 focus:ring-[#D9B07C] outline-none transition-all text-left placeholder-slate-600" dir="ltr"
+                placeholder="example@email.com"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-white flex items-center gap-2">
+                <Phone size={14} className="text-[#D9B07C]" />
+                رقم الهاتف
+              </label>
+              <input
+                required
+                type="text"
+                name="phoneNumber"
+                value={editFormData.phoneNumber}
+                onChange={handleEditInputChange}
+                className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[#D9B07C] focus:ring-1 focus:ring-[#D9B07C] outline-none transition-all text-left placeholder-slate-600" dir="ltr"
+                placeholder="01XXXXXXXXX"
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="pt-6 border-t border-white/5 flex gap-3">
+            <button
+              type="submit"
+              disabled={editSubmitting}
+              className="flex-1 bg-[#D9B07C] hover:bg-[#D9B07C]/90 text-black px-6 py-3.5 rounded-xl font-black transition-all shadow-xl shadow-[#D9B07C]/10 disabled:opacity-50 flex items-center justify-center gap-2"
+            >
+              {editSubmitting ? <Loader2 size={20} className="animate-spin" /> : 'حفظ التعديلات'}
+            </button>
+            <button
+              type="button"
+              onClick={closeEditModal}
+              className="px-6 py-3.5 rounded-xl font-black text-white bg-white/5 hover:bg-white/10 transition-all border border-white/5"
+            >
+              إلغاء
+            </button>
+          </div>
+        </form>
+      </Model>
 
     </div>
   );

@@ -140,6 +140,10 @@ export const getWorkshops = () => {
   return api.get("/api/admin/workshops");
 };
 
+export const getServices = () => {
+  return api.get("/api/admin/services");
+};
+
 export const getWorkshopById = (id) => {
   return api.get(`/api/admin/workshops/${id}`);
 };
@@ -208,4 +212,15 @@ export const getMySettings = () => {
 
 export const updateSettings = (data) => {
   return api.put("/api/Settings/Update-Settings", data);
+};
+
+/**
+ * Fetch Admin Activity Logs.
+ * GET /api/admin/activity-logs
+ * @param {number} page
+ * @param {number} pageSize
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getActivityLogs = (page = 1, pageSize = 10) => {
+  return api.get("/api/admin/activity-logs", { params: { page, pageSize } });
 };

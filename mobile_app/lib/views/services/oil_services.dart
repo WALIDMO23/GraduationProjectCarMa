@@ -29,14 +29,17 @@ class OilServices extends StatelessWidget {
         ServiceOption(
           title: s.isArabic ? 'تغيير زيت المحرك' : 'Engine Oil Change',
           subtitle: s.isArabic ? 'تغيير الزيت مع فلتر جديد' : 'Change oil with a new filter',
+          subServiceId: 4,
         ),
         ServiceOption(
           title: s.isArabic ? 'تغيير زيت الفتيس' : 'Transmission Oil Change',
           subtitle: s.isArabic ? 'تغيير زيت ناقل الحركة' : 'Change transmission fluid',
+          subServiceId: 5,
         ),
         ServiceOption(
           title: s.isArabic ? 'فحص مستوى الزيوت' : 'Check Oil Levels',
           subtitle: s.isArabic ? 'مراجعة وتزويد الزيوت الناقصة' : 'Inspect and top up missing oils',
+          subServiceId: 6,
         ),
       ],
     );

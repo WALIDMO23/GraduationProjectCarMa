@@ -555,16 +555,17 @@
   width: 2.2rem;
   height: 2.2rem;
   border-radius: 0.6rem;
-  background: linear-gradient(135deg, #D9B07C, #FFDFB9);
+  /* background: linear-gradient(135deg, #D9B07C, #FFDFB9); */
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 12px rgba(217, 176, 124, 0.35);
-  transition: transform 0.3s ease;
+  /* box-shadow: 0 0 12px rgba(217, 176, 124, 0.35); */
+  transition:  0.3s ease;
 }
 
 .pill-navbar__logo:hover .pill-navbar__logo-icon {
   transform: scale(1.08);
+
 }
 
 /* Nav Links Container */

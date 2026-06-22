@@ -32,16 +32,19 @@ class EmergencyServices extends StatelessWidget {
           title: s.isArabic ? 'ميكانيكا وكهرباء سريعة' : 'Quick Mechanics & Electrical',
           subtitle: s.isArabic ? 'إصلاح الأعطال الميكانيكية والكهربائية' : 'Repair mechanical and electrical faults',
           icon: Icons.build,
+          subServiceId: 13,
         ),
         ServiceOption(
           title: s.isArabic ? 'توصيل وقود (بنزين)' : 'Fuel Delivery',
           subtitle: s.isArabic ? 'توصيل البنزين لموقع سيارتك' : 'Deliver fuel to your location',
           icon: Icons.local_gas_station,
+          subServiceId: 14,
         ),
         ServiceOption(
           title: s.isArabic ? 'فتح أبواب السيارة' : 'Unlock Car Doors',
           subtitle: s.isArabic ? 'طوارئ نسيان المفتاح داخل السيارة' : 'Emergency unlocking if keys are inside',
           icon: Icons.lock_open,
+          subServiceId: 15,
         ),
       ],
     );

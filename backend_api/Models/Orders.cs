@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema; 
 using System.Text.Json.Serialization;
+using CarMaintenance.Models.Enums;
 
 namespace CarMaintenance.Models
 {
@@ -24,6 +25,11 @@ namespace CarMaintenance.Models
         [ForeignKey("ServiceId")] 
         public virtual Service? Service { get; set; }
 
+        public int? SubServiceId { get; set; }
+        
+        [ForeignKey("SubServiceId")]
+        public virtual SubService? SubService { get; set; }
+
         [Required]
         public decimal Price { get; set; }
 
@@ -42,12 +48,13 @@ namespace CarMaintenance.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
+        public DateTime? NeededServiceTime { get; set; }
         public string? ImageUrl { get; set; }
 
      public string? Notes { get; set; }
         
         [Required]
-        public string PaymentMethod { get; set; } = "Cash";
+        public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.CashOnDelivery;
 
         public ICollection<Notification>? Notifications { get; set; }
     }
