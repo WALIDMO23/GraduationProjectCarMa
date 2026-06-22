@@ -52,7 +52,8 @@ public class AdminController : ControllerBase
                 o.Address,
                 o.PhoneNumber,
                 o.Price,
-                o.CreatedAt
+                o.CreatedAt,
+                o.NeededServiceTime
             })
             .ToListAsync();
 
@@ -88,6 +89,7 @@ public class AdminController : ControllerBase
                       o.OrderStatus == OrderStatus.Completed ? "مكتمل" : "تمت الموافقة",
         StatusValue = o.OrderStatus.ToString(),
         PaymentMethod = (int)o.PaymentMethod,
+        NeededServiceTime = o.NeededServiceTime != null ? o.NeededServiceTime.Value.ToString("yyyy/MM/dd hh:mm tt") : null,
         TechnicianName = o.TechnicianName ?? "لم يحدد بعد",
         Time = o.CreatedAt.ToString("hh:mm tt"),
         Date = o.CreatedAt.ToString("yyyy/MM/dd")

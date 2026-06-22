@@ -600,7 +600,7 @@ useEffect(()=>{
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-white/5">
                         <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
                           <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">وقت الطلب</span>
                           <div className="flex items-center gap-2 text-white">
@@ -613,6 +613,13 @@ useEffect(()=>{
                           <div className="flex items-center gap-2 text-white">
                             <Calendar size={14} className="text-[#D9B07C]" />
                             <span className="font-black text-sm">{new Date(selectedOrder.createdAt).toLocaleDateString('ar-EG')}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
+                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">تاريخ ووقت الخدمة المطلوب</span>
+                          <div className="flex items-center gap-2 text-white">
+                            <Calendar size={14} className="text-[#D9B07C]" />
+                            <span className="font-black text-[10px] sm:text-[11px] md:text-xs">{selectedOrder.neededServiceTime || 'في أسرع وقت'}</span>
                           </div>
                         </div>
                       </div>

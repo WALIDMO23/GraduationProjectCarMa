@@ -14,8 +14,9 @@ namespace CarMaintenance.DTOs
 
         public string PhoneNumber { get; set; }
 
-        // الجديد
         public string? ImageUrl { get; set; }
+
+        public DateTime? NeededServiceTime { get; set; }
 
         public string? Notes { get; set; }
 

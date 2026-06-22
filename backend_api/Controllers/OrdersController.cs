@@ -106,6 +106,7 @@ namespace CarMaintenance.Controllers
                     location = o.Address,
 
                     dateTime = o.CreatedAt.ToString("yyyy/MM/dd | hh:mm tt"),
+                    neededServiceTime = o.NeededServiceTime != null ? o.NeededServiceTime.Value.ToString("yyyy/MM/dd | hh:mm tt") : null,
                     status = new
                     {
                         label = o.OrderStatus == OrderStatus.Pending ? "قيد المراجعة" :
@@ -152,6 +153,7 @@ namespace CarMaintenance.Controllers
                 Price = service.Price,
                 OrderStatus = OrderStatus.Pending,
                 PaymentMethod = dto.PaymentMethod,
+                NeededServiceTime = dto.NeededServiceTime,
                 CreatedAt = DateTime.UtcNow,
                 IsPaid = false,
 
@@ -389,6 +391,7 @@ public async Task<IActionResult> GetOrderById(int id)
         technician = order.TechnicianName ?? "غير معين",
 
         createdAt = order.CreatedAt.ToString("yyyy/MM/dd hh:mm tt"),
+        neededServiceTime = order.NeededServiceTime != null ? order.NeededServiceTime.Value.ToString("yyyy/MM/dd hh:mm tt") : null,
 
         imageUrl = order.ImageUrl,
 
