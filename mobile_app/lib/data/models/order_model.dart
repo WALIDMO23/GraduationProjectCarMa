@@ -46,12 +46,14 @@ class OrderModel {
   final int userId;
   final int vehicleId;
   final int serviceId;
+  final int? subServiceId;
+  final String? subServiceName;
   final OrderStatus orderStatus;
   final String address;
   final String phoneNumber;
   final double price;
   final bool isPaid;
-  final String paymentMethod;
+  final int paymentMethod;
 
   // Technician info (filled when admin accepts)
   final int? technicianId;
@@ -68,12 +70,14 @@ class OrderModel {
     required this.userId,
     required this.vehicleId,
     required this.serviceId,
+    this.subServiceId,
+    this.subServiceName,
     required this.orderStatus,
     required this.address,
     required this.phoneNumber,
     this.price = 0.0,
     this.isPaid = false,
-    this.paymentMethod = 'Cash',
+    this.paymentMethod = 1,
     this.technicianId,
     this.technicianName,
     this.technicianPhone,
@@ -89,12 +93,14 @@ class OrderModel {
       userId:          json['userId'] as int? ?? 0,
       vehicleId:       json['vehicleId'] as int? ?? 0,
       serviceId:       json['serviceId'] as int? ?? 0,
+      subServiceId:    json['subServiceId'] as int?,
+      subServiceName:  json['subServiceName'] as String?,
       orderStatus:     _orderStatusFromString(json['orderStatus']),
       address:         json['address'] as String? ?? '',
       phoneNumber:     json['phoneNumber'] as String? ?? '',
       price:           (json['price'] as num?)?.toDouble() ?? 0.0,
       isPaid:          json['isPaid'] as bool? ?? false,
-      paymentMethod:   json['paymentMethod'] as String? ?? 'Cash',
+      paymentMethod:   json['paymentMethod'] as int? ?? 1,
       technicianId:    json['technicianId'] as int?,
       technicianName:  json['technicianName'] as String?,
       technicianPhone: json['technicianPhone'] as String?,
@@ -120,21 +126,25 @@ class CreateOrderDto {
   final int userId;
   final int vehicleId;
   final int serviceId;
+  final int? subServiceId;
   final String address;
   final String phoneNumber;
   final String? carImagePath; // local path (stored on device only)
   final String? serviceName;  // stored locally for display
   final String? notes;        // stored locally for display
+  final int paymentMethod;
 
   CreateOrderDto({
     required this.userId,
     required this.vehicleId,
     required this.serviceId,
+    this.subServiceId,
     required this.address,
     required this.phoneNumber,
     this.carImagePath,
     this.serviceName,
     this.notes,
+    this.paymentMethod = 1,
   });
 
   Map<String, dynamic> toJson() {
@@ -142,8 +152,10 @@ class CreateOrderDto {
       'userId': userId,
       'vehicleId': vehicleId,
       'serviceId': serviceId,
+      if (subServiceId != null) 'subServiceId': subServiceId,
       'address': address,
       'phoneNumber': phoneNumber,
+      'paymentMethod': paymentMethod,
       // Note: image and serviceName are stored locally, not sent to backend
     };
   }

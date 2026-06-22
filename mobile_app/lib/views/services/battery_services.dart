@@ -29,14 +29,17 @@ class BatteryServices extends StatelessWidget {
         ServiceOption(
           title: s.isArabic ? 'شحن بطارية' : 'Charge Battery',
           subtitle: s.isArabic ? 'إعادة شحن البطارية الحالية' : 'Recharge the current battery',
+          subServiceId: 1,
         ),
         ServiceOption(
           title: s.isArabic ? 'تغيير بطارية' : 'Replace Battery',
           subtitle: s.isArabic ? 'تركيب بطارية من عندك' : 'Install a battery you provide',
+          subServiceId: 2,
         ),
         ServiceOption(
           title: s.isArabic ? 'شراء بطارية جديدة' : 'Buy New Battery',
           subtitle: s.isArabic ? 'شراء وتركيب بطارية أصلية' : 'Buy and install a genuine battery',
+          subServiceId: 3,
         ),
       ],
     );

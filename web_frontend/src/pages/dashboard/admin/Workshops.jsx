@@ -11,15 +11,6 @@ import {
   User, Phone, Mail, MapPin, Clock, Calendar, Activity, Wrench
 } from 'lucide-react';
 import { getWorkshops, createWorkshop, updateWorkshop, deleteWorkshop, toggleWorkshopStatus, toggleWorkshopActive } from '../../../services/adminService';
-
-const AVAILABLE_SERVICES = [
-  { id: 1, name: "غيار زيت" },
-  { id: 2, name: "بطارية" },
-  { id: 3, name: "تغير إطار" },
-  { id: 4, name: "غسيل" },
-  { id: 5, name: "صيانة طارئة" },
-  { id: 6, name: "ونش" },
-];
 import WorkshopStatCard from '../../../component/dashboard/Workshop/WorkshopStatCard';
 import WorkshopGridCard from '../../../component/dashboard/Workshop/WorkshopGridCard';
 import Model from '../../../component/ui/Model';
@@ -29,6 +20,7 @@ import Model from '../../../component/ui/Model';
 
 const Workshops = () => {
   const [data, setData] = useState(null);
+  const [availableServices, setAvailableServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -169,11 +161,15 @@ const Workshops = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await getWorkshops();
-        setData(response.data?.data || response.data);
+        const [workshopsResponse, servicesResponse] = await Promise.all([
+          getWorkshops(),
+          import('../../../services/adminService').then(m => m.getServices())
+        ]);
+        setData(workshopsResponse.data?.data || workshopsResponse.data);
+        setAvailableServices(servicesResponse.data?.data || servicesResponse.data);
       } catch (err) {
-        console.error("Error fetching technicians:", err);
-        setError("تعذر تحميل بيانات الورش");
+        console.error("Error fetching data:", err);
+        setError("تعذر تحميل بيانات الورش والخدمات");
       } finally {
         setLoading(false);
       }
@@ -547,7 +543,7 @@ const Workshops = () => {
         <div className="space-y-3">
           <label className="text-sm font-bold text-white block">الخدمات المتاحة</label>
           <div className="flex flex-wrap gap-3">
-            {AVAILABLE_SERVICES.map(service => {
+            {availableServices.map(service => {
               const isSelected = formData.serviceIds.includes(service.id);
               return (
                 <button

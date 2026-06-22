@@ -172,6 +172,12 @@ useEffect(()=>{
     { key: 'Rejected', label: 'مرفوض', count: statusCounts.Rejected },
   ];
 
+  const paymentMethodMap = {
+    1: 'الدفع عند الاستلام',
+    2: 'المحافظ الإلكترونية',
+    3: 'إنستاباي'
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] font-tajawal">
@@ -331,7 +337,7 @@ useEffect(()=>{
                           </div>
                           <div className="flex flex-col">
                             <span className="text-sm font-bold text-slate-200 whitespace-nowrap">{order.service?.name}</span>
-                            <span className="text-[10px] text-slate-500 font-bold">صيانة احترافية</span>
+                            <span className="text-[10px] text-slate-500 font-bold">{order.service?.subServiceName || "صيانة عامة"}</span>
                           </div>
                         </div>
                       </td>
@@ -374,7 +380,7 @@ useEffect(()=>{
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-2 text-slate-400">
                           <CreditCard size={14} className="text-[#D9B07C]" />
-                          <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{order.paymentStatus}</span>
+                          <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{paymentMethodMap[order.paymentMethod] || order.paymentStatus}</span>
                         </div>
                       </td>
 
@@ -531,7 +537,7 @@ useEffect(()=>{
                       <div className="absolute top-0 right-0 w-16 h-16 bg-[#D9B07C]/5 blur-2xl rounded-full -mr-8 -mt-8"></div>
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2 relative z-10">التكلفة</span>
                       <div className="flex items-center gap-1 justify-end text-[#D9B07C] relative z-10">
-                        <span className="text-2xl font-black">{selectedOrder.totalPrice}</span>
+                        <span className="text-2xl font-black">{selectedOrder.price}</span>
                         <span className="text-xs font-bold">ج.م</span>
                       </div>
                     </div>
@@ -561,7 +567,7 @@ useEffect(()=>{
                         <span className="text-[10px] text-[#D9B07C] block font-black uppercase tracking-widest">العنوان</span>
                         <div className="flex items-start gap-3 text-slate-300">
                           <MapPin size={18} className="text-[#D9B07C] mt-0.5 shrink-0" />
-                          <p className="font-bold text-sm leading-relaxed">{selectedOrder.location || 'غير متوفر'}</p>
+                          <p className="font-bold text-sm leading-relaxed">{selectedOrder.address || 'غير متوفر'}</p>
                         </div>
                       </div>
                     </div>
@@ -588,7 +594,9 @@ useEffect(()=>{
                         </div>
                         <div className="text-right">
                           <p className="font-black text-white text-xl">{selectedOrder.service?.name}</p>
-                          <p className="text-[#D9B07C] text-[10px] font-black uppercase tracking-widest mt-0.5">نوع الخدمة المختارة</p>
+                          <p className="text-[#D9B07C] text-[10px] font-black uppercase tracking-widest mt-0.5">
+                            {selectedOrder.service?.subServiceName || "نوع الخدمة المختارة"}
+                          </p>
                         </div>
                       </div>
                       
@@ -636,7 +644,9 @@ useEffect(()=>{
             <div className="px-8 py-6 bg-white/5 border-t border-white/5 flex justify-between items-center">
               <div className="flex items-center gap-2 text-slate-500">
                 <CreditCard size={18} className="text-[#D9B07C]" />
-                <span className="text-[10px] font-black uppercase tracking-widest">الدفع عند الاستلام</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  {selectedOrder?.paymentMethod === 2 ? 'المحافظ الإلكترونية' : selectedOrder?.paymentMethod === 3 ? 'إنستاباي' : 'الدفع عند الاستلام'}
+                </span>
               </div>
               <button 
                 onClick={() => setShowModal(false)}

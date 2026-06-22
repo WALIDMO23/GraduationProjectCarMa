@@ -1,3 +1,5 @@
+using CarMaintenance.Models.Enums;
+
 namespace CarMaintenance.DTOs
 {
     public class CreateOrderDto
@@ -5,6 +7,8 @@ namespace CarMaintenance.DTOs
         public int UserId { get; set; }
 
         public int ServiceId { get; set; }
+
+        public int? SubServiceId { get; set; }
 
         public string Address { get; set; }
 
@@ -14,5 +18,7 @@ namespace CarMaintenance.DTOs
         public string? ImageUrl { get; set; }
 
         public string? Notes { get; set; }
+
+        public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.CashOnDelivery;
     }
 }

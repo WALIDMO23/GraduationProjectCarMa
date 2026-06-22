@@ -3,6 +3,7 @@ using System;
 using CarMaintenance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarMaintenance.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260606223755_AddAdminActivityLogs")]
+    partial class AddAdminActivityLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,8 +264,9 @@ namespace CarMaintenance.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("integer");
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -273,9 +277,6 @@ namespace CarMaintenance.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SubServiceId")
                         .HasColumnType("integer");
 
                     b.Property<string>("TechnicianName")
@@ -297,8 +298,6 @@ namespace CarMaintenance.Migrations
                     b.HasIndex("OrderStatus");
 
                     b.HasIndex("ServiceId");
-
-                    b.HasIndex("SubServiceId");
 
                     b.HasIndex("UserId");
 
@@ -372,139 +371,6 @@ namespace CarMaintenance.Migrations
                             Description = "خدمة سحب وإنقاذ السيارات",
                             Name = "ونش",
                             Price = 600m
-                        });
-                });
-
-            modelBuilder.Entity("CarMaintenance.Models.SubService", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("SubServices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 4,
-                            Name = "تغيير زيت محرك",
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "تغيير زيت فتيس",
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "فحص مستوي الزيت",
-                            ServiceId = 1
-                        },
-                        new
-                        {
-                            Id = 1,
-                            Name = "شحن",
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "تغيير",
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "شراء",
-                            ServiceId = 2
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "نفخ",
-                            ServiceId = 3
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "تغيير",
-                            ServiceId = 3
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "لحام",
-                            ServiceId = 3
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "خارجي وداخلي",
-                            ServiceId = 4
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "خارجي",
-                            ServiceId = 4
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "تنظيف جاف",
-                            ServiceId = 4
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "ميكانيكا وكهربا سريعه",
-                            ServiceId = 5
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "توصيل وقود بنزين",
-                            ServiceId = 5
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "فتح ابواب السياره",
-                            ServiceId = 5
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "ونش انقاذ مسطح",
-                            ServiceId = 6
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "ونش سحب",
-                            ServiceId = 6
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "ونش هيدروليك",
-                            ServiceId = 6
                         });
                 });
 
@@ -736,10 +602,6 @@ namespace CarMaintenance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarMaintenance.Models.SubService", "SubService")
-                        .WithMany()
-                        .HasForeignKey("SubServiceId");
-
                     b.HasOne("CarMaintenance.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -748,20 +610,7 @@ namespace CarMaintenance.Migrations
 
                     b.Navigation("Service");
 
-                    b.Navigation("SubService");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CarMaintenance.Models.SubService", b =>
-                {
-                    b.HasOne("CarMaintenance.Models.Service", "Service")
-                        .WithMany("SubServices")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("ServiceWorkshop", b =>
@@ -782,11 +631,6 @@ namespace CarMaintenance.Migrations
             modelBuilder.Entity("CarMaintenance.Models.Order", b =>
                 {
                     b.Navigation("Notifications");
-                });
-
-            modelBuilder.Entity("CarMaintenance.Models.Service", b =>
-                {
-                    b.Navigation("SubServices");
                 });
 #pragma warning restore 612, 618
         }

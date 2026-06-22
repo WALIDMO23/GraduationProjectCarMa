@@ -23,10 +23,11 @@ namespace CarMaintenance.Services.Implementation
             _newNotificationService = newNotificationService;
         }
 
-        // ================= GET ALL =================
         public async Task<List<Order>> GetAllAsync()
         {
             return await _context.Orders
+                .Include(o => o.Service)
+                .Include(o => o.SubService)
                 .OrderByDescending(o => o.CreatedAt)
                 .ToListAsync();
         }
@@ -34,7 +35,10 @@ namespace CarMaintenance.Services.Implementation
         // ================= GET BY ID =================
         public async Task<Order?> GetByIdAsync(int id)
         {
-            return await _context.Orders.FindAsync(id);
+            return await _context.Orders
+                .Include(o => o.Service)
+                .Include(o => o.SubService)
+                .FirstOrDefaultAsync(o => o.Id == id);
         }
 
         // ================= CREATE ORDER =================
@@ -46,12 +50,14 @@ var order = new Order
 {
     UserId = dto.UserId,
     ServiceId = dto.ServiceId,
+    SubServiceId = dto.SubServiceId,
 
     Address = dto.Address,
     PhoneNumber = dto.PhoneNumber,
 
     Price = service.Price, 
     OrderStatus = OrderStatus.Pending,
+    PaymentMethod = dto.PaymentMethod,
     CreatedAt = DateTime.UtcNow
 };
 

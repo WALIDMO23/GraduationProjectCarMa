@@ -5,6 +5,7 @@ using CarMaintenance.Models;
 using Microsoft.AspNetCore.Authorization;
 using CarMaintenance.DTOs;
 using System.Security.Claims;
+using CarMaintenance.Services.Interfaces;
 
 namespace CarMaintenance.Controllers
 {
@@ -14,10 +15,12 @@ namespace CarMaintenance.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IAdminActivityLogService _activityLogService;
 
-        public ProfileController(AppDbContext context)
+        public ProfileController(AppDbContext context, IAdminActivityLogService activityLogService)
         {
             _context = context;
+            _activityLogService = activityLogService;
         }
 
         [HttpGet("me")]
@@ -99,6 +102,16 @@ namespace CarMaintenance.Controllers
 
             await _context.SaveChangesAsync();
 
+            // Log activity
+            await _activityLogService.LogAsync(
+                adminUserId: userId,
+                action: "UpdateProfileImage",
+                description: $"قام المسؤول بتغيير صورة الملف الشخصي",
+                targetType: "User",
+                targetId: userId,
+                ipAddress: HttpContext.Connection.RemoteIpAddress?.ToString()
+            );
+
             var imageUrl =
                 $"{Request.Scheme}://{Request.Host}/api/profile/image/{user.Id}";
 
@@ -125,11 +138,39 @@ namespace CarMaintenance.Controllers
             if (user == null)
                 return NotFound();
 
+            // Check email uniqueness (exclude current user)
+            if (!string.IsNullOrWhiteSpace(dto.Email))
+            {
+                var emailTaken = await _context.Users
+                    .AnyAsync(u => u.Id != userId && u.Email == dto.Email);
+                if (emailTaken)
+                    return Conflict(new { message = "البريد الإلكتروني مستخدم بالفعل" });
+            }
+
+            // Check phone uniqueness (exclude current user)
+            if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+            {
+                var phoneTaken = await _context.Users
+                    .AnyAsync(u => u.Id != userId && u.PhoneNumber == dto.PhoneNumber);
+                if (phoneTaken)
+                    return Conflict(new { message = "رقم الهاتف مستخدم بالفعل" });
+            }
+
             user.Name = dto.Name;
             user.Email = dto.Email;
             user.PhoneNumber = dto.PhoneNumber;
 
             await _context.SaveChangesAsync();
+
+            // Log activity
+            await _activityLogService.LogAsync(
+                adminUserId: userId,
+                action: "UpdateProfile",
+                description: $"قام المسؤول بتعديل الملف الشخصي (الاسم: {dto.Name})",
+                targetType: "User",
+                targetId: userId,
+                ipAddress: HttpContext.Connection.RemoteIpAddress?.ToString()
+            );
 
             return Ok(new
             {

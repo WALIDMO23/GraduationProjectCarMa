@@ -30,16 +30,19 @@ class TowingServices extends StatelessWidget {
           title: s.isArabic ? 'ونش إنقاذ مسطح' : 'Flatbed Tow Truck',
           subtitle: s.isArabic ? 'مناسب للسيارات المعطلة بالكامل' : 'Suitable for completely broken down cars',
           icon: Icons.fire_truck,
+          subServiceId: 16,
         ),
         ServiceOption(
           title: s.isArabic ? 'ونش سحب (شوكه)' : 'Wheel-Lift Tow Truck',
           subtitle: s.isArabic ? 'للسحب السريع داخل المدينة' : 'For quick towing inside the city',
           icon: Icons.car_repair,
+          subServiceId: 17,
         ),
         ServiceOption(
           title: s.isArabic ? 'ونش هيدروليك' : 'Hydraulic Tow Truck',
           subtitle: s.isArabic ? 'للسيارات الرياضية والمنخفضة' : 'For sports and low cars',
           icon: Icons.precision_manufacturing,
+          subServiceId: 18,
         ),
       ],
     );

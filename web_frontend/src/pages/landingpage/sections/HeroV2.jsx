@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { HiOutlineArrowLeft, HiOutlineArrowDownTray, HiOutlineChevronDown, HiOutlineBars3, HiXMark } from "react-icons/hi2";
-
+import  logo from "../../../assets/carma_logo_bg_trans.png"
 const NAV_LINKS = [
   { label: "الرئيسية", href: "#hero" },
   { label: "خدماتنا", href: "#services" },
@@ -47,9 +47,10 @@ export default function HeroV2({ isLoaded }) {
           {/* Logo */}
           <a href="#hero" className="pill-navbar__logo group">
             <div className="pill-navbar__logo-icon">
-              <span className="text-black font-black text-sm italic">C</span>
+             <img src={logo} alt="" />
+
             </div>
-            <h1 className="text-2xl font-black text-white italic tracking-tighter group-hover:text-[#D9B07C] transition-colors duration-300">
+            <h1 className="text-2xl font-black text-white italic tracking-tighter group-hover:text-[#D9B07C] transition-colors duration-300 mt-[7px]">
               Car<span className="text-[#D9B07C] group-hover:text-white transition-colors duration-300">Ma</span>
             </h1>
           </a>
@@ -181,10 +182,10 @@ export default function HeroV2({ isLoaded }) {
               data-aos-delay="700"
             >
               <button className="relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-[#D9B07C] via-[#FFDFB9] to-[#D9B07C] bg-[length:200%_auto] text-black px-10 py-5 rounded-sm font-black text-sm hover:bg-right hover:translate-y-[-4px] hover:shadow-[0_20px_45px_-10px_rgba(217,176,124,0.5)] transition-all duration-500 shadow-[0_20px_40px_-15px_rgba(217,176,124,0.3)] flex items-center justify-center gap-4 group">
-                <span className="relative z-10 flex items-center gap-4">
-                  احجز موعدك الآن
+                <a href="#pricing" className="relative z-10 flex items-center gap-4">
+                 اطلع على عروضنا
                   <HiOutlineArrowLeft className="group-hover:translate-x-[-8px] transition-transform duration-300" size={20} />
-                </span>
+                </a>
                 {/* Metallic Shine Sweep */}
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
               </button>

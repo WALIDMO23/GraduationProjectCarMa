@@ -11,5 +11,7 @@ namespace CarMaintenance.Models
 
         [JsonIgnore]
         public ICollection<Workshop> Workshops { get; set; } = new List<Workshop>();
+
+        public ICollection<SubService> SubServices { get; set; } = new List<SubService>();
     }
 }

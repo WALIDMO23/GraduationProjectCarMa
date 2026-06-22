@@ -43,3 +43,13 @@ export const uploadProfileImage = (file) => {
   });
 };
 
+/**
+ * Update profile info (name, email, phone).
+ * PUT /api/profile/update
+ * @param {{ name: string, email: string, phoneNumber: string }} data
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const updateProfile = (data) => {
+  return api.put("/api/profile/update", data);
+};
+
