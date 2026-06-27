@@ -57,23 +57,23 @@ export default function Footer() {
             </p>
 
             <div className="space-y-6">
-              <a href="tel:+201001234567" className="flex items-center justify-end gap-4 group">
+              <a href="tel:+201001234567" className="flex items-center justify-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
+                  <HiOutlinePhone size={18} />
+                </div>
                 <div className="text-right">
                   <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">اتصل بنا</p>
                   <p className="text-white font-bold group-hover:text-[#D9B07C] transition-colors" dir="ltr">+20 100 123 4567</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
-                  <HiOutlinePhone size={18} />
-                </div>
               </a>
 
-              <a href="mailto:info@carma.eg" className="flex items-center justify-end gap-4 group">
+              <a href="mailto:info@carma.eg" className="flex items-center justify-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
+                  <HiOutlineEnvelope size={18} />
+                </div>
                 <div className="text-right">
                   <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">راسلنا</p>
                   <p className="text-white font-bold group-hover:text-[#D9B07C] transition-colors">info@carma.eg</p>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
-                  <HiOutlineEnvelope size={18} />
                 </div>
               </a>
             </div>

@@ -51,12 +51,12 @@ export default function CTA() {
 
           {/* Mockup Image */}
           <div data-aos="fade-right" data-aos-delay="200" className="flex justify-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-[#D9B07C]/10 blur-[60px] rounded-full scale-75" />
+            <div className="relative -translate-y-20">
+              <div className="absolute inset-0 bg-[#D9B07C]/10 blur-[60px] rounded-full scale-130 md:scale-150 pointer-events-none" />
               <img
                 src={mobileMockup}
                 alt="تطبيق CarMa"
-                className="relative z-10 drop-shadow-2xl max-h-[520px] w-auto object-contain"
+                className="relative z-10 drop-shadow-2xl max-h-[520px] w-auto object-contain origin-center scale-[1.45] md:scale-[1.6] transition-transform duration-500 ease-out hover:scale-[1.5] md:hover:scale-[1.65]"
               />
             </div>
           </div>
