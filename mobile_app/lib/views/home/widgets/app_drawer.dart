@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
-import 'package:graduation_project/views/login.dart';
 import 'package:graduation_project/views/create_account.dart';
 import 'package:graduation_project/views/profile/profile.dart';
 import 'package:graduation_project/views/profile/order_history.dart';

@@ -350,10 +350,16 @@ class _SettingsPageState extends State<SettingsPage> {
         Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.white,
-          activeTrackColor: Theme.of(context).colorScheme.primary,
-          inactiveThumbColor: Colors.white,
-          inactiveTrackColor: Theme.of(context).colorScheme.outline,
+          thumbColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) return Colors.white;
+            return Colors.white;
+          }),
+          trackColor: WidgetStateProperty.resolveWith<Color>((states) {
+            if (states.contains(WidgetState.selected)) {
+              return Theme.of(context).colorScheme.primary;
+            }
+            return Theme.of(context).colorScheme.outline;
+          }),
           trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
         ),
       ],

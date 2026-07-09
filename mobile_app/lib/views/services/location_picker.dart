@@ -79,7 +79,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
       }
     } catch (e) {
       if (mounted) setState(() => _isSearching = false);
-      print("Search Error: $e");
+      debugPrint("Search Error: $e");
     }
   }
 

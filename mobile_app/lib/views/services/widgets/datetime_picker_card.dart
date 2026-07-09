@@ -211,9 +211,14 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
     // Nearest 30 min slot
     int min = widget.initialDate.minute;
     int hour = widget.initialDate.hour;
-    if (min < 15) min = 0;
-    else if (min < 45) min = 30;
-    else { min = 0; hour++; }
+    if (min < 15) {
+      min = 0;
+    } else if (min < 45) {
+      min = 30;
+    } else {
+      min = 0;
+      hour++;
+    }
     selectedTime = TimeOfDay(hour: hour, minute: min);
 
     // Generate times for the full 24 hours every 30 mins

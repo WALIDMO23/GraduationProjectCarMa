@@ -160,6 +160,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         fontSize: 54,
                         fontWeight: FontWeight.w900,
                         fontStyle: FontStyle.italic,
+                        fontFamily: 'Mystery Quest',
                       ),
                       children: [
                         TextSpan(

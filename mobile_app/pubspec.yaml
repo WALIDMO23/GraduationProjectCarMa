@@ -17,6 +17,9 @@ dependencies:
   google_fonts: ^6.1.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
 
   cupertino_icons: ^1.0.8
   maplibre_gl: ^0.26.0

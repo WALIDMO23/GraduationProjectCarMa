@@ -26,7 +26,6 @@ class _EmergencyServicesState extends State<EmergencyServices> {
     'assets/images/emergencye.jpeg',
   ];
 
-  static const Color emergencyColor = Color(0xFFE7000B);
 
   @override
   void dispose() {

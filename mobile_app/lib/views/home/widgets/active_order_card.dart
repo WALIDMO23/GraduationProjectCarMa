@@ -252,7 +252,7 @@ class ActiveOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'لا توجد طلبات حالية',
+                    s.isArabic ? 'لا توجد طلبات حالية' : 'No active orders',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 15,

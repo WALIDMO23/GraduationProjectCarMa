@@ -3,8 +3,10 @@ import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:graduation_project/views/profile/edit_profile.dart';
+import 'package:graduation_project/views/profile/order_history.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +15,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<AuthProvider, LocaleProvider>(
-      builder: (context, auth, locale, _) {
+    return Consumer3<AuthProvider, LocaleProvider, OrdersProvider>(
+      builder: (context, auth, locale, orders, _) {
         final user = auth.currentUser;
         final s = appStrings(locale.isArabic);
 
@@ -145,8 +147,53 @@ class ProfilePage extends StatelessWidget {
                         children: [
                           Expanded(child: _buildStatCard(context, s.rating, '4.8', Icons.star, Colors.orange)),
                           const SizedBox(width: 16),
-                          Expanded(child: _buildStatCard(context, s.orders, '12', Icons.task_alt, AppTheme.successColor)),
+                          Expanded(
+                            child: _buildStatCard(
+                              context,
+                              s.orders,
+                              '${orders.orders.length}',
+                              Icons.task_alt,
+                              AppTheme.successColor,
+                            ),
+                          ),
                         ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // ── My Orders Button ─────────────────────────
+                      InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const OrderHistoryPage()),
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
+                            border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                Icon(Icons.history, color: Theme.of(context).colorScheme.primary),
+                                const SizedBox(width: 12),
+                                Text(
+                                  s.myOrders,
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ]),
+                              Icon(Icons.arrow_forward_ios, size: 16, color: Theme.of(context).colorScheme.primary),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 32),
 

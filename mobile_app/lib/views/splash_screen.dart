@@ -3,6 +3,7 @@ import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/views/home/home.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
+import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -46,12 +47,38 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff1C398E),
-      body: const Center(
-        child: AppImage(
-          image: 'servishero_loading.json',
-          width: 250,
-          height: 250,
+      backgroundColor: AppTheme.carmaDark,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const AppImage(
+              image: 'servishero_loading.json',
+              width: 250,
+              height: 250,
+            ),
+            const SizedBox(height: 16),
+            RichText(
+              text: const TextSpan(
+                style: TextStyle(
+                  fontSize: 54,
+                  fontWeight: FontWeight.w900,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'Mystery Quest',
+                ),
+                children: [
+                  TextSpan(
+                    text: 'Car',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextSpan(
+                    text: 'Ma',
+                    style: TextStyle(color: AppTheme.carmaGold),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -25,6 +25,7 @@ import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/notification_provider.dart';
 import 'package:graduation_project/views/login.dart';
+import 'package:graduation_project/views/profile/order_history.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -234,6 +235,30 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         ),
+                      ),
+                      const SizedBox(height: 24),
+                      _buildDrawerItem(
+                        context: context,
+                        title: s.myOrders,
+                        subtitle:
+                            s.isArabic
+                                ? 'عرض جميع طلباتك السابقة'
+                                : 'View all your orders',
+                        svgAsset: 'assets/icons/order.svg',
+                        backgroundColor:
+                            Theme.of(context).brightness == Brightness.dark
+                                ? AppTheme.carmaGold.withAlpha(25)
+                                : const Color(0xFFDBEAFE),
+                        showArrow: true,
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OrderHistoryPage(),
+                            ),
+                          );
+                        },
                       ),
                       const SizedBox(height: 24),
                       _buildDrawerItem(

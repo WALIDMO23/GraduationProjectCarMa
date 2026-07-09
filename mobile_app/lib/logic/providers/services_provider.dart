@@ -5,8 +5,10 @@ import 'package:graduation_project/data/models/service_model.dart';
 
 /// Fetches the list of services (with prices) from the backend.
 /// Usage:
+/// ```dart
 ///   context.read<ServicesProvider>().fetchServices();
 ///   context.watch<ServicesProvider>().priceFor(serviceId: 4)
+/// ```
 class ServicesProvider extends ChangeNotifier {
   final ApiClient _apiClient = ApiClient();
 

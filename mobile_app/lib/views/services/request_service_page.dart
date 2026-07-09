@@ -45,9 +45,9 @@ class _RequestServicePageState extends State<RequestServicePage> {
   final _phoneController = TextEditingController();
   final _picker = ImagePicker();
   File? _carImage;
+  int _selectedPaymentMethod = 1;
   DateTime? _selectedServiceTime;
   bool _submitted = false;
-  int _selectedPaymentMethod = 1;
 
   @override
   void dispose() {
@@ -410,132 +410,6 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                           prefixIcon: const Icon(
                                             Icons.location_on_outlined,
                                           ),
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-
-                                      AppInput(
-                                        controller: _phoneController,
-                                        hint:
-                                            s.isArabic
-                                                ? 'رقم الهاتف'
-                                                : 'Phone number',
-                                        prefixIconData: Icons.phone_android,
-                                        keyboardType: TextInputType.phone,
-                                      ),
-                                      const SizedBox(height: 24),
-
-                                      Text(
-                                        s.isArabic
-                                            ? 'صورة السيارة (اختياري)'
-                                            : 'Car Photo (optional)',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-
-                                      _carImage == null
-                                          ? _buildImagePickerButton(s)
-                                          : _buildImagePreview(s),
-
-                                      const SizedBox(height: 24),
-                                      Text(
-                                        s.isArabic
-                                            ? 'توقيت الخدمة'
-                                            : 'Service Time',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      DateTimePickerCard(
-                                        onDateTimeSelected: (date) {
-                                          setState(() {
-                                            _selectedServiceTime = date;
-                                          });
-                                        },
-                                      ),
-
-
-                                      const SizedBox(height: 32),
-
-                                      _InfoBox(
-                                        icon: Icons.access_time,
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
-                                        title:
-                                            s.isArabic
-                                                ? 'وقت الاستجابة'
-                                                : 'Response Time',
-                                        subtitle:
-                                            s.isArabic
-                                                ? 'سيتم الرد خلال 5 دقائق من الإرسال'
-                                                : 'We respond within 5 minutes',
-                                      ),
-                                      const SizedBox(height: 12),
-                                      _InfoBox(
-                                        icon: Icons.verified_user,
-                                        color: AppTheme.successColor,
-                                        title:
-                                            s.isArabic
-                                                ? 'فنيون معتمدون'
-                                                : 'Certified Technicians',
-                                        subtitle:
-                                            s.isArabic
-                                                ? 'جميع فنيينا حاصلون على شهادات معتمدة'
-                                                : 'All technicians are fully certified',
-                                      ),
-                                      SizedBox(height: 40 + MediaQuery.of(context).viewInsets.bottom),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                    // ── Address & Phone ──────────────────────────
-                                      Text(
-                                        s.isArabic
-                                            ? 'تفاصيل الطلب'
-                                            : 'Order Details',
-                                        style: Theme.of(
-                                          context,
-                                        ).textTheme.titleMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-
-                                      TextField(
-                                        controller: _addressController,
-                                        maxLines: 3,
-                                        decoration: InputDecoration(
-                                          hintText:
-                                              s.isArabic
-                                                  ? 'العنوان بالتفصيل'
-                                                  : 'Detailed address',
-                                          prefixIcon: const Icon(
-                                            Icons.location_on_outlined,
-                                          ),
                                           suffixIcon: IconButton(
                                             icon: const Icon(
                                               Icons.map_outlined,
@@ -599,7 +473,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                       const SizedBox(height: 24),
                                       Text(
                                         s.isArabic
-                                            ? 'موعد الخدمة'
+                                            ? 'توقيت الخدمة'
                                             : 'Service Time',
                                         style: Theme.of(
                                           context,
@@ -631,6 +505,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                       ),
                                       const SizedBox(height: 12),
                                       _buildPaymentMethodSelector(s),
+
 
                                       const SizedBox(height: 32),
 
@@ -703,6 +578,36 @@ class _RequestServicePageState extends State<RequestServicePage> {
               ),
             ],
           ),
+    );
+  }
+
+  Widget _buildPaymentMethodSelector(AppStrings s) {
+    return Column(
+      children: [
+        _PaymentOption(
+          title: s.isArabic ? 'الدفع عند الاستلام' : 'Cash on Delivery',
+          value: 1,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.money,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+        const SizedBox(height: 8),
+        _PaymentOption(
+          title: s.isArabic ? 'المحافظ الإلكترونية (فودافون كاش وغيرها)' : 'E-Wallets',
+          value: 2,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.account_balance_wallet,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+        const SizedBox(height: 8),
+        _PaymentOption(
+          title: s.isArabic ? 'إنستاباي' : 'InstaPay',
+          value: 3,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.transform,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+      ],
     );
   }
 
@@ -813,36 +718,6 @@ class _RequestServicePageState extends State<RequestServicePage> {
       ],
     );
   }
-
-  Widget _buildPaymentMethodSelector(AppStrings s) {
-    return Column(
-      children: [
-        _PaymentOption(
-          title: s.isArabic ? 'الدفع عند الاستلام' : 'Cash on Delivery',
-          value: 1,
-          groupValue: _selectedPaymentMethod,
-          icon: Icons.money,
-          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
-        ),
-        const SizedBox(height: 8),
-        _PaymentOption(
-          title: s.isArabic ? 'المحافظ الإلكترونية (فودافون كاش وغيرها)' : 'E-Wallets',
-          value: 2,
-          groupValue: _selectedPaymentMethod,
-          icon: Icons.account_balance_wallet,
-          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
-        ),
-        const SizedBox(height: 8),
-        _PaymentOption(
-          title: s.isArabic ? 'إنستاباي' : 'InstaPay',
-          value: 3,
-          groupValue: _selectedPaymentMethod,
-          icon: Icons.transform,
-          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
-        ),
-      ],
-    );
-  }
 }
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -938,6 +813,7 @@ class _InfoBox extends StatelessWidget {
   }
 }
 
+
 class _PaymentOption extends StatelessWidget {
   final String title;
   final int value;
@@ -946,7 +822,6 @@ class _PaymentOption extends StatelessWidget {
   final ValueChanged<int?> onChanged;
 
   const _PaymentOption({
-    super.key,
     required this.title,
     required this.value,
     required this.groupValue,
@@ -959,7 +834,8 @@ class _PaymentOption extends StatelessWidget {
     final isSelected = value == groupValue;
     return GestureDetector(
       onTap: () => onChanged(value),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.1) : Theme.of(context).colorScheme.surface,
@@ -982,11 +858,30 @@ class _PaymentOption extends StatelessWidget {
                 ),
               ),
             ),
-            Radio<int>(
-              value: value,
-              groupValue: groupValue,
-              onChanged: onChanged,
-              activeColor: AppTheme.primaryColor,
+            // Custom radio indicator (avoids deprecated Radio API)
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? AppTheme.primaryColor : Colors.grey,
+                  width: 2,
+                ),
+              ),
+              child: isSelected
+                  ? Center(
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        decoration: const BoxDecoration(
+                          color: AppTheme.primaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  : null,
             ),
           ],
         ),
