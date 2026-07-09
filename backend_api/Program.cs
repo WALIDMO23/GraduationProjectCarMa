@@ -32,8 +32,11 @@ builder.Services.AddCors(options =>
 // ======================
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<INewNotificationService, NewNotificationService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
+builder.Services.AddScoped<IAdminActivityLogService, AdminActivityLogService>();
 builder.Services.AddScoped<GeminiAiService>();
 builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -132,6 +135,36 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    // ======================
+    // self-healing migrations alignment
+    // ======================
+    try
+    {
+        context.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS ""__EFMigrationsHistory"" (
+                ""MigrationId"" character varying(150) NOT NULL,
+                ""ProductVersion"" character varying(32) NOT NULL,
+                CONSTRAINT ""PK___EFMigrationsHistory"" PRIMARY KEY (""MigrationId"")
+            );
+
+            INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+            VALUES ('20260511144619_AddCarsTable', '8.0.0')
+            ON CONFLICT (""MigrationId"") DO NOTHING;
+
+            INSERT INTO ""__EFMigrationsHistory"" (""MigrationId"", ""ProductVersion"")
+            VALUES ('20260519163927_StoreProfileImageInDatabase', '8.0.0')
+            ON CONFLICT (""MigrationId"") DO NOTHING;
+
+            ALTER TABLE ""Users"" DROP COLUMN IF EXISTS ""ProfileImageUrl"";
+            ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageData"" bytea;
+            ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageContentType"" text;
+        ");
+        Console.WriteLine("Database schema and migrations aligned successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error aligning database schema: {ex.Message}");
+    }
 
     if (!context.Users.Any(u => u.Role == "admin"))
     {
@@ -157,6 +190,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAll");
 
 app.UseAuthentication();
+app.UseStaticFiles();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -21,14 +21,14 @@ export default function Footer() {
       {/* Decorative Background Elements */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
       <div className="absolute top-0 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#D9B07C]/5 blur-[80px] md:blur-[120px] rounded-full pointer-events-none"></div>
-      
+
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+
         {/* Newsletter / CTA Section */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-20 p-6 md:p-10 rounded-3xl border border-white/5 bg-white/[0.02] backdrop-blur-sm">
           <div className="text-right">
             <h3 className="text-2xl md:text-3xl font-black text-white mb-4">اشترك في نشرتنا الإخبارية</h3>
-            <p className="text-gray-500 text-sm max-w-md mr-0 ml-auto">
+            <p className="text-gray-500 text-sm leading-relaxed">
               كن أول من يعرف عن عروضنا الحصرية وخدماتنا الجديدة. انضم إلى أكثر من 10,000 عميل يثقون بنا.
             </p>
           </div>
@@ -37,9 +37,9 @@ export default function Footer() {
               <button className="bg-[#D9B07C] text-black px-8 py-3 rounded-lg font-bold text-sm hover:brightness-110 transition-all whitespace-nowrap order-2 sm:order-1">
                 اشترك الآن
               </button>
-              <input 
-                type="email" 
-                placeholder="البريد الإلكتروني" 
+              <input
+                type="email"
+                placeholder="البريد الإلكتروني"
                 className="bg-transparent border-none text-white text-right px-4 py-3 sm:py-2 w-full focus:outline-none placeholder:text-gray-600 order-1 sm:order-2"
               />
             </div>
@@ -52,28 +52,28 @@ export default function Footer() {
             <h3 className="text-3xl md:text-4xl font-black text-white italic tracking-tighter mb-6">
               Car<span className="text-[#D9B07C]">Ma</span>
             </h3>
-            <p className="text-gray-500 text-sm leading-relaxed mb-10 max-w-sm mr-0 ml-auto">
+            <p className="text-gray-500 text-sm leading-relaxed mb-10">
               CarMa هي وجهتك الأولى للعناية الفائقة بالسيارات. نحن نجمع بين الخبرة التقنية والراحة الرقمية لنقدم لك أفضل تجربة صيانة مباشرة عند باب منزلك.
             </p>
-            
+
             <div className="space-y-6">
-              <a href="tel:+201001234567" className="flex items-center justify-end gap-4 group">
+              <a href="tel:+201001234567" className="flex items-center justify-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
+                  <HiOutlinePhone size={18} />
+                </div>
                 <div className="text-right">
                   <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">اتصل بنا</p>
                   <p className="text-white font-bold group-hover:text-[#D9B07C] transition-colors" dir="ltr">+20 100 123 4567</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
-                  <HiOutlinePhone size={18} />
-                </div>
               </a>
-              
-              <a href="mailto:info@carma.eg" className="flex items-center justify-end gap-4 group">
+
+              <a href="mailto:info@carma.eg" className="flex items-center justify-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
+                  <HiOutlineEnvelope size={18} />
+                </div>
                 <div className="text-right">
                   <p className="text-[10px] text-gray-600 uppercase tracking-widest font-bold">راسلنا</p>
                   <p className="text-white font-bold group-hover:text-[#D9B07C] transition-colors">info@carma.eg</p>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-[#D9B07C] group-hover:bg-[#D9B07C] group-hover:text-black transition-all">
-                  <HiOutlineEnvelope size={18} />
                 </div>
               </a>
             </div>
@@ -81,19 +81,19 @@ export default function Footer() {
 
           {/* Dynamic Links */}
           {Object.entries(FOOTER_LINKS).map(([title, links]) => (
-            <div key={title} className="text-right">
-              <h4 className="text-white font-black text-xs uppercase tracking-[0.2em] mb-8 relative inline-block">
+            <div key={title} className="text-right flex flex-col">
+              <h4 className="text-white font-black text-sm uppercase tracking-[0.1em] mb-8 relative inline-block self-start">
                 {title}
                 <span className="absolute -bottom-2 right-0 w-8 h-px bg-[#D9B07C]"></span>
               </h4>
               <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link}>
-                    <a href="#" className="group flex items-center justify-end gap-2 text-gray-500 text-sm hover:text-white transition-all">
-                      <span className="group-hover:translate-x-0 translate-x-2 opacity-0 group-hover:opacity-100 transition-all text-[#D9B07C]">
+                    <a href="#" className="group flex items-center justify-start gap-3 text-gray-500 text-sm hover:text-white transition-all">
+                      <span className="group-hover:translate-x-0 translate-x-[-8px] opacity-0 group-hover:opacity-100 transition-all text-[#D9B07C] order-2">
                         <HiOutlineArrowLeft size={14} />
                       </span>
-                      {link}
+                      <span className="order-1">{link}</span>
                     </a>
                   </li>
                 ))}
@@ -136,9 +136,9 @@ export default function Footer() {
                 </a>
               ))}
             </div>
-            
+
             <p className="text-gray-700 text-[10px] md:text-[11px] font-medium tracking-wide text-center lg:text-right leading-loose">
-              © {new Date().getFullYear()} CARMA TECHNOLOGIES. ALL RIGHTS RESERVED. 
+              © {new Date().getFullYear()} CARMA TECHNOLOGIES. ALL RIGHTS RESERVED.
               <span className="hidden sm:inline mx-3 text-white/5">|</span>
               <br className="sm:hidden" />
               <a href="#" className="hover:text-white transition-colors">سياسة الخصوصية</a>
@@ -152,3 +152,4 @@ export default function Footer() {
     </footer>
   );
 }
+

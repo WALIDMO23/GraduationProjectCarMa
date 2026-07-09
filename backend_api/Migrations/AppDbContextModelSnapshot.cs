@@ -22,6 +22,88 @@ namespace CarMaintenance.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CarMaintenance.Models.AdminActivityLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("AdminUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int?>("TargetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TargetType")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdminUserId", "CreatedAt");
+
+                    b.ToTable("AdminActivityLogs");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PlateNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Cars");
+                });
+
             modelBuilder.Entity("CarMaintenance.Models.NewNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -171,6 +253,9 @@ namespace CarMaintenance.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("NeededServiceTime")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
@@ -179,9 +264,8 @@ namespace CarMaintenance.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -192,6 +276,9 @@ namespace CarMaintenance.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("SubServiceId")
                         .HasColumnType("integer");
 
                     b.Property<string>("TechnicianName")
@@ -208,9 +295,17 @@ namespace CarMaintenance.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("OrderStatus");
+
                     b.HasIndex("ServiceId");
 
+                    b.HasIndex("SubServiceId");
+
                     b.HasIndex("UserId");
+
+                    b.HasIndex("OrderStatus", "IsPaid", "CreatedAt");
 
                     b.ToTable("Orders");
                 });
@@ -283,6 +378,139 @@ namespace CarMaintenance.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CarMaintenance.Models.SubService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("SubServices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Name = "تغيير زيت محرك",
+                            ServiceId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "تغيير زيت فتيس",
+                            ServiceId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "فحص مستوي الزيت",
+                            ServiceId = 1
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "شحن",
+                            ServiceId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "تغيير",
+                            ServiceId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "شراء",
+                            ServiceId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "نفخ",
+                            ServiceId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "تغيير",
+                            ServiceId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "لحام",
+                            ServiceId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "خارجي وداخلي",
+                            ServiceId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "خارجي",
+                            ServiceId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "تنظيف جاف",
+                            ServiceId = 4
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "ميكانيكا وكهربا سريعه",
+                            ServiceId = 5
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "توصيل وقود بنزين",
+                            ServiceId = 5
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "فتح ابواب السياره",
+                            ServiceId = 5
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "ونش انقاذ مسطح",
+                            ServiceId = 6
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "ونش سحب",
+                            ServiceId = 6
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "ونش هيدروليك",
+                            ServiceId = 6
+                        });
+                });
+
             modelBuilder.Entity("CarMaintenance.Models.TestItem", b =>
                 {
                     b.Property<int>("Id")
@@ -324,6 +552,12 @@ namespace CarMaintenance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ProfileImageContentType")
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("ProfileImageData")
+                        .HasColumnType("bytea");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("text");
@@ -334,6 +568,140 @@ namespace CarMaintenance.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.UserSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BiometricsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("EmailNotifications")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("PromotionalOffers")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("SmsNotifications")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Workshop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<TimeSpan>("CloseTime")
+                        .HasColumnType("interval");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsOpen")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<TimeSpan>("OpenTime")
+                        .HasColumnType("interval");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<int>("TotalOrders")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IsOpen");
+
+                    b.ToTable("Workshops");
+                });
+
+            modelBuilder.Entity("ServiceWorkshop", b =>
+                {
+                    b.Property<int>("ServicesId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WorkshopsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ServicesId", "WorkshopsId");
+
+                    b.HasIndex("WorkshopsId");
+
+                    b.ToTable("ServiceWorkshop");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.AdminActivityLog", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.User", "AdminUser")
+                        .WithMany()
+                        .HasForeignKey("AdminUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdminUser");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Car", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarMaintenance.Models.NewNotification", b =>
@@ -371,6 +739,10 @@ namespace CarMaintenance.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CarMaintenance.Models.SubService", "SubService")
+                        .WithMany()
+                        .HasForeignKey("SubServiceId");
+
                     b.HasOne("CarMaintenance.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -379,12 +751,45 @@ namespace CarMaintenance.Migrations
 
                     b.Navigation("Service");
 
+                    b.Navigation("SubService");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.SubService", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.Service", "Service")
+                        .WithMany("SubServices")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("ServiceWorkshop", b =>
+                {
+                    b.HasOne("CarMaintenance.Models.Service", null)
+                        .WithMany()
+                        .HasForeignKey("ServicesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarMaintenance.Models.Workshop", null)
+                        .WithMany()
+                        .HasForeignKey("WorkshopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CarMaintenance.Models.Order", b =>
                 {
                     b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("CarMaintenance.Models.Service", b =>
+                {
+                    b.Navigation("SubServices");
                 });
 #pragma warning restore 612, 618
         }

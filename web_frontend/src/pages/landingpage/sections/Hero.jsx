@@ -36,14 +36,13 @@ export default function Hero() {
               </div>
 
               <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-white leading-[1.15] mb-6">
-                صيانة عربيتك
+                جيل جديد من
                 <br />
-                <span className="text-premium-gold"> في اي مكان</span>
+                <span className="text-premium-gold"> خدمات السيارات</span>
               </h1>
 
               <p className="text-gray-400 text-sm lg:text-base leading-relaxed mb-8 max-w-md">
-                خدمات صيانة وإصلاح السيارات في أي مكان
-                بسهولة وسرعة مع فنيين متخصصين ومعتمدين.
+                حلول سريعة، شكل احترافي، وجودة تفرق من أول مرة.
               </p>
 
               {/* Action Button */}

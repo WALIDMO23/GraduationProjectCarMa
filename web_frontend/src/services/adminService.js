@@ -30,11 +30,20 @@ export const getAdminNotifications = () => {
 
 /**
  * Fetch current admin account info.
- * GET /api/admin/me
+ * GET /api/profile/me
  * @returns {Promise<import("axios").AxiosResponse>}
  */
 export const getAccountInfo = () => {
-  return api.get("/api/admin/me");
+  return api.get("/api/profile/me");
+};
+
+/**
+ * Fetch Profile Dropdown Menu items.
+ * GET /api/menu
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getMenu = () => {
+  return api.get("/api/menu");
 };
 
 /**
@@ -123,4 +132,95 @@ export const markNotificationAsRead = (id) => {
  */
 export const markAllNotificationsAsRead = () => {
   return api.patch(`/api/new-notifications/read-all`);
+};
+
+// ================= WORKSHOPS =================
+
+export const getWorkshops = () => {
+  return api.get("/api/admin/workshops");
+};
+
+export const getServices = () => {
+  return api.get("/api/admin/services");
+};
+
+export const getWorkshopById = (id) => {
+  return api.get(`/api/admin/workshops/${id}`);
+};
+
+export const createWorkshop = (data) => {
+  return api.post("/api/admin/workshops", data);
+};
+
+export const updateWorkshop = (id, data) => {
+  return api.put(`/api/admin/workshops/${id}`, data);
+};
+
+export const deleteWorkshop = (id) => {
+  return api.delete(`/api/admin/workshops/${id}`);
+};
+
+export const toggleWorkshopStatus = (id) => {
+  return api.patch(`/api/admin/workshops/${id}/toggle-status`);
+};
+
+export const toggleWorkshopActive = (id) => {
+  return api.patch(`/api/admin/workshops/${id}/toggle-active`);
+};
+
+/**
+ * Fetch Report Summary.
+ * GET /api/admin/reports/summary
+ * @param {number} period (1, 2, 3, 4)
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getReportSummary = (period) => {
+  return api.get("/api/admin/reports/summary", { params: { period } });
+};
+
+export const getRevenueChart = (period) => {
+  return api.get("/api/admin/reports/revenue-chart", { params: { period } });
+};
+
+export const getOrdersChart = (period) => {
+  return api.get("/api/admin/reports/orders-chart", { params: { period } });
+};
+
+export const getServicesDistribution = (period) => {
+  return api.get("/api/admin/reports/services-distribution", { params: { period } });
+};
+
+export const getTechniciansPerformance = (period) => {
+  return api.get("/api/admin/reports/technicians-performance", { params: { period } });
+};
+
+export const getTopTechnicians = (period, limit = 5) => {
+  return api.get("/api/admin/reports/top-technicians", { params: { period, limit } });
+};
+
+export const getTopServices = (period, limit = 6) => {
+  return api.get("/api/admin/reports/top-services", { params: { period, limit } });
+};
+
+export const exportReport = (Period, Type) => {
+  return api.get("/api/admin/reports/export", { params: { Period, Type }, responseType: 'blob' });
+};
+
+export const getMySettings = () => {
+  return api.get("/api/Settings/MySettings");
+};
+
+export const updateSettings = (data) => {
+  return api.put("/api/Settings/Update-Settings", data);
+};
+
+/**
+ * Fetch Admin Activity Logs.
+ * GET /api/admin/activity-logs
+ * @param {number} page
+ * @param {number} pageSize
+ * @returns {Promise<import("axios").AxiosResponse>}
+ */
+export const getActivityLogs = (page = 1, pageSize = 10) => {
+  return api.get("/api/admin/activity-logs", { params: { page, pageSize } });
 };

@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 class RequestServicePage extends StatefulWidget {
   final String serviceName;
   final int serviceId;
+  final int? subServiceId;
   final IconData serviceIcon;
   final Color serviceColor;
   final String notes;
@@ -26,6 +27,7 @@ class RequestServicePage extends StatefulWidget {
     super.key,
     required this.serviceName,
     required this.serviceId,
+    this.subServiceId,
     required this.serviceIcon,
     required this.serviceColor,
     this.notes = '',
@@ -41,6 +43,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
   final _picker = ImagePicker();
   File? _carImage;
   bool _submitted = false;
+  int _selectedPaymentMethod = 1;
 
   @override
   void dispose() {
@@ -124,11 +127,13 @@ class _RequestServicePageState extends State<RequestServicePage> {
       userId:       userId,
       vehicleId:    1,
       serviceId:    widget.serviceId,
+      subServiceId: widget.subServiceId,
       address:      _addressController.text.trim(),
       phoneNumber:  _phoneController.text.trim(),
       carImagePath: _carImage?.path,
       serviceName:  widget.serviceName,
       notes:        widget.notes.isNotEmpty ? widget.notes : null,
+      paymentMethod: _selectedPaymentMethod,
     );
 
     final newOrder = await orders.createOrder(dto);
@@ -312,6 +317,14 @@ class _RequestServicePageState extends State<RequestServicePage> {
 
                     const SizedBox(height: 24),
 
+                    // ── Payment Method ────────────────────────────────
+                    Text(s.isArabic ? 'طريقة الدفع' : 'Payment Method',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _buildPaymentMethodSelector(s),
+
+                    const SizedBox(height: 24),
+
                     // ── Info boxes ───────────────────────────────
                     _InfoBox(
                       icon: Icons.access_time,
@@ -424,6 +437,36 @@ class _RequestServicePageState extends State<RequestServicePage> {
       ],
     );
   }
+
+  Widget _buildPaymentMethodSelector(AppStrings s) {
+    return Column(
+      children: [
+        _PaymentOption(
+          title: s.isArabic ? 'الدفع عند الاستلام' : 'Cash on Delivery',
+          value: 1,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.money,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+        const SizedBox(height: 8),
+        _PaymentOption(
+          title: s.isArabic ? 'المحافظ الإلكترونية (فودافون كاش وغيرها)' : 'E-Wallets',
+          value: 2,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.account_balance_wallet,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+        const SizedBox(height: 8),
+        _PaymentOption(
+          title: s.isArabic ? 'إنستاباي' : 'InstaPay',
+          value: 3,
+          groupValue: _selectedPaymentMethod,
+          icon: Icons.transform,
+          onChanged: (val) => setState(() => _selectedPaymentMethod = val!),
+        ),
+      ],
+    );
+  }
 }
 
 // ── Helpers ──────────────────────────────────────────────────────
@@ -488,6 +531,63 @@ class _InfoBox extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _PaymentOption extends StatelessWidget {
+  final String title;
+  final int value;
+  final int groupValue;
+  final IconData icon;
+  final ValueChanged<int?> onChanged;
+
+  const _PaymentOption({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.groupValue,
+    required this.icon,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = value == groupValue;
+    return GestureDetector(
+      onTap: () => onChanged(value),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.1) : Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? AppTheme.primaryColor : Colors.grey.withValues(alpha: 0.3),
+            width: isSelected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: isSelected ? AppTheme.primaryColor : Colors.grey, size: 24),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected ? AppTheme.primaryColor : Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ),
+            Radio<int>(
+              value: value,
+              groupValue: groupValue,
+              onChanged: onChanged,
+              activeColor: AppTheme.primaryColor,
+            ),
+          ],
+        ),
       ),
     );
   }

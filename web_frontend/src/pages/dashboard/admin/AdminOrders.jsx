@@ -22,13 +22,12 @@ import {
   MoreVertical,
   User,
   Settings,
-  ClipboardList
+  ClipboardList,
+  Info
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import DashboardHeader from '../../../component/dashboard/DashboardHeader';
 import { searchOrders, acceptOrder, rejectOrder, getOrderById } from '../../../services/adminService';
-import { GiBattery50 as GiBattery, GiOilDrum, GiCarWheel, GiAutoRepair } from 'react-icons/gi';
-import { MdLocalCarWash } from 'react-icons/md';
 import { FiList, FiClock, FiCheckCircle, FiRefreshCw, FiCheckSquare, FiXCircle } from 'react-icons/fi';
 
 import { useAdminData } from '../../../context/AdminDataContext';
@@ -36,6 +35,9 @@ import { useAdminData } from '../../../context/AdminDataContext';
 const ITEMS_PER_PAGE = 8;
 
 const AdminOrders = () => {
+
+  
+
   const [searchParams] = useSearchParams();
   const orderIdFromUrl = searchParams.get('id');
 
@@ -49,7 +51,13 @@ const AdminOrders = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
+const [selectedOrderIcon , setSelectedOrderIcon] = useState(""); 
 
+useEffect(()=>{
+ 
+  setSelectedOrderIcon(getServiceStyle(selectedOrder?.service))
+  
+},[selectedOrder])
   useEffect(() => {
     if (orderIdFromUrl) {
       setSearchTerm(orderIdFromUrl);
@@ -164,6 +172,12 @@ const AdminOrders = () => {
     { key: 'Rejected', label: 'مرفوض', count: statusCounts.Rejected },
   ];
 
+  const paymentMethodMap = {
+    1: 'الدفع عند الاستلام',
+    2: 'المحافظ الإلكترونية',
+    3: 'إنستاباي'
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] font-tajawal">
@@ -184,6 +198,7 @@ const AdminOrders = () => {
       </div>
     );
   }
+
 
   return (
     <div className="font-tajawal min-h-screen">
@@ -322,7 +337,7 @@ const AdminOrders = () => {
                           </div>
                           <div className="flex flex-col">
                             <span className="text-sm font-bold text-slate-200 whitespace-nowrap">{order.service?.name}</span>
-                            <span className="text-[10px] text-slate-500 font-bold">صيانة احترافية</span>
+                            <span className="text-[10px] text-slate-500 font-bold">{order.service?.subServiceName || "صيانة عامة"}</span>
                           </div>
                         </div>
                       </td>
@@ -365,7 +380,7 @@ const AdminOrders = () => {
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-2 text-slate-400">
                           <CreditCard size={14} className="text-[#D9B07C]" />
-                          <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{order.paymentStatus}</span>
+                          <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">{paymentMethodMap[order.paymentMethod] || order.paymentStatus}</span>
                         </div>
                       </td>
 
@@ -404,7 +419,7 @@ const AdminOrders = () => {
                             className="p-2.5 bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white rounded-xl transition-all active:scale-90"
                             title="عرض التفاصيل"
                           >
-                            <Eye size={16} />
+                            <Info size={18} />
                           </button>
                         </div>
                       </td>
@@ -522,7 +537,7 @@ const AdminOrders = () => {
                       <div className="absolute top-0 right-0 w-16 h-16 bg-[#D9B07C]/5 blur-2xl rounded-full -mr-8 -mt-8"></div>
                       <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest block mb-2 relative z-10">التكلفة</span>
                       <div className="flex items-center gap-1 justify-end text-[#D9B07C] relative z-10">
-                        <span className="text-2xl font-black">{selectedOrder.totalPrice}</span>
+                        <span className="text-2xl font-black">{selectedOrder.price}</span>
                         <span className="text-xs font-bold">ج.م</span>
                       </div>
                     </div>
@@ -552,7 +567,7 @@ const AdminOrders = () => {
                         <span className="text-[10px] text-[#D9B07C] block font-black uppercase tracking-widest">العنوان</span>
                         <div className="flex items-start gap-3 text-slate-300">
                           <MapPin size={18} className="text-[#D9B07C] mt-0.5 shrink-0" />
-                          <p className="font-bold text-sm leading-relaxed">{selectedOrder.location || 'غير متوفر'}</p>
+                          <p className="font-bold text-sm leading-relaxed">{selectedOrder.address || 'غير متوفر'}</p>
                         </div>
                       </div>
                     </div>
@@ -571,21 +586,26 @@ const AdminOrders = () => {
                     </div>
                     <div className="p-8 rounded-3xl border border-white/5 space-y-8 shadow-2xl bg-white/5">
                       <div className="flex items-center gap-5">
-                        <div className="p-5 rounded-2xl bg-[#D9B07C] text-black shadow-lg shadow-[#D9B07C]/10">
-                          {getServiceStyle(selectedOrder.service?.name).icon}
+                        <div className="p-3 rounded-2xl bg-[#D9B07C] text-black shadow-lg shadow-[#D9B07C]/10">
+                         
+                          {/* TODO : create icon component  */}
+                          <selectedOrderIcon.IconComponent size={28} />
+                          
                         </div>
                         <div className="text-right">
                           <p className="font-black text-white text-xl">{selectedOrder.service?.name}</p>
-                          <p className="text-[#D9B07C] text-[10px] font-black uppercase tracking-widest mt-0.5">نوع الخدمة المختارة</p>
+                          <p className="text-[#D9B07C] text-[10px] font-black uppercase tracking-widest mt-0.5">
+                            {selectedOrder.service?.subServiceName || "نوع الخدمة المختارة"}
+                          </p>
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t border-white/5">
                         <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
-                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">وقت التنفيذ</span>
+                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">وقت الطلب</span>
                           <div className="flex items-center gap-2 text-white">
                             <Clock size={14} className="text-[#D9B07C]" />
-                            <span className="font-black text-sm">{selectedOrder.executionTime || '---'}</span>
+                            <span className="font-black text-sm">{new Date(selectedOrder.createdAt).toLocaleTimeString('ar-EG') || '---'}</span>
                           </div>
                         </div>
                         <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
@@ -593,6 +613,13 @@ const AdminOrders = () => {
                           <div className="flex items-center gap-2 text-white">
                             <Calendar size={14} className="text-[#D9B07C]" />
                             <span className="font-black text-sm">{new Date(selectedOrder.createdAt).toLocaleDateString('ar-EG')}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-start bg-white/5 p-4 rounded-2xl border border-white/5">
+                          <span className="text-[10px] text-[#D9B07C] font-black uppercase tracking-widest mb-2">تاريخ ووقت الخدمة المطلوب</span>
+                          <div className="flex items-center gap-2 text-white">
+                            <Calendar size={14} className="text-[#D9B07C]" />
+                            <span className="font-black text-[10px] sm:text-[11px] md:text-xs">{selectedOrder.neededServiceTime || 'في أسرع وقت'}</span>
                           </div>
                         </div>
                       </div>
@@ -624,7 +651,9 @@ const AdminOrders = () => {
             <div className="px-8 py-6 bg-white/5 border-t border-white/5 flex justify-between items-center">
               <div className="flex items-center gap-2 text-slate-500">
                 <CreditCard size={18} className="text-[#D9B07C]" />
-                <span className="text-[10px] font-black uppercase tracking-widest">الدفع عند الاستلام</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">
+                  {selectedOrder?.paymentMethod === 2 ? 'المحافظ الإلكترونية' : selectedOrder?.paymentMethod === 3 ? 'إنستاباي' : 'الدفع عند الاستلام'}
+                </span>
               </div>
               <button 
                 onClick={() => setShowModal(false)}

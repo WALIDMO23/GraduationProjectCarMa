@@ -29,14 +29,17 @@ class TireServices extends StatelessWidget {
         ServiceOption(
           title: s.isArabic ? 'نفخ وضبط ضغط الإطارات' : 'Inflate & Adjust Pressure',
           subtitle: s.isArabic ? 'ضبط الضغط للوصول للمستوى المثالي' : 'Adjust pressure to optimal level',
+          subServiceId: 7,
         ),
         ServiceOption(
           title: s.isArabic ? 'تغيير إطار' : 'Replace Tire',
           subtitle: s.isArabic ? 'تركيب إطار احتياطي أو جديد' : 'Install a spare or new tire',
+          subServiceId: 8,
         ),
         ServiceOption(
           title: s.isArabic ? 'لحام إطار' : 'Repair Tire Puncture',
           subtitle: s.isArabic ? 'إصلاح الثقوب البسيطة' : 'Repair minor punctures',
+          subServiceId: 9,
         ),
       ],
     );
