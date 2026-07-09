@@ -6,7 +6,6 @@ import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:dio/dio.dart';
-import 'package:graduation_project/views/services/payment_methods.dart';
 
 class LocationPickerPage extends StatefulWidget {
   const LocationPickerPage({super.key});
