@@ -164,7 +164,7 @@ class AuthProvider extends ChangeNotifier {
         'phoneNumber': phoneNumber,
       });
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
         _currentUser = _currentUser?.copyWith(
           name: name,
           phoneNumber: phoneNumber,
@@ -189,8 +189,11 @@ class AuthProvider extends ChangeNotifier {
       }
       _errorMessage = 'فشل تحديث البيانات';
     } on DioException catch (e) {
-      _errorMessage =
-          e.response?.data['message'] ?? e.message ?? 'فشل تحديث البيانات';
+      if (e.response?.data is Map<String, dynamic>) {
+        _errorMessage = e.response?.data['message'] ?? e.message ?? 'فشل تحديث البيانات';
+      } else {
+        _errorMessage = e.message ?? 'فشل تحديث البيانات';
+      }
     } catch (e) {
       _errorMessage = e.toString();
     }

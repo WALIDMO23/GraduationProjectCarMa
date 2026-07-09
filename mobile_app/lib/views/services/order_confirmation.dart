@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/home/home.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class OrderConfirmationPage extends StatelessWidget {
   const OrderConfirmationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -97,6 +99,7 @@ class OrderConfirmationPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

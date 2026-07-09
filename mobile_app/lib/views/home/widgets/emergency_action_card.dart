@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
+import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:provider/provider.dart';
 
-class EmergencyActionCard extends StatelessWidget {
+class EmergencyActionCard extends StatefulWidget {
   final String title;
   final String svg;
   final Color color;
@@ -25,27 +26,56 @@ class EmergencyActionCard extends StatelessWidget {
   });
 
   @override
+  State<EmergencyActionCard> createState() => _EmergencyActionCardState();
+}
+
+class _EmergencyActionCardState extends State<EmergencyActionCard> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // In dark mode override colors to match the CarMa website palette
+    final Color cardBg = isDark ? AppTheme.carmaSurface : widget.color;
+    final Color cardBorder = isDark
+        ? (_isPressed ? AppTheme.carmaGold : AppTheme.carmaOutline)
+        : widget.borderColor;
+    final Color iconBg = isDark
+        ? AppTheme.carmaGold.withAlpha(25)
+        : widget.backgroundColor;
+    final Color actionColor = isDark ? AppTheme.carmaGold : widget.actionColor;
+    final Color textColor = isDark ? Colors.white : Colors.black;
+
     return InkWell(
-      onTap: onTap,
+      onTap: widget.onTap,
+      onHighlightChanged: (v) => setState(() => _isPressed = v),
       borderRadius: BorderRadius.circular(16),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOut,
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         decoration: BoxDecoration(
-          color: color,
+          color: _isPressed && isDark ? AppTheme.carmaCardFocus : cardBg,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: borderColor),
+          border: Border.all(
+            color: cardBorder,
+            width: _isPressed && isDark ? 1.5 : 1.0,
+          ),
           boxShadow: [
-            BoxShadow(
-              color: const Color(0xff000000).withValues(alpha: 0.10),
-              offset: const Offset(0, 1),
-              blurRadius: 2,
-            ),
-            BoxShadow(
-              color: const Color(0xff000000).withValues(alpha: 0.10),
-              offset: const Offset(0, 1),
-              blurRadius: 3,
-            ),
+            if (_isPressed && isDark)
+              BoxShadow(
+                color: AppTheme.carmaGold.withAlpha(45),
+                blurRadius: 14,
+                spreadRadius: 1,
+                offset: const Offset(0, 2),
+              )
+            else
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.10),
+                offset: const Offset(0, 1),
+                blurRadius: isDark ? 6 : 2,
+              ),
           ],
         ),
         child: Column(
@@ -53,16 +83,22 @@ class EmergencyActionCard extends StatelessWidget {
             const SizedBox(height: 8),
             CircleAvatar(
               radius: 22,
-              backgroundColor: backgroundColor,
-              child: SvgPicture.asset(svg),
+              backgroundColor: iconBg,
+              child: SvgPicture.asset(
+                widget.svg,
+                // SVGs are now gold; in dark mode show as-is, light mode keep original color
+                colorFilter: isDark
+                    ? null
+                    : ColorFilter.mode(widget.actionColor, BlendMode.srcIn),
+              ),
             ),
             const SizedBox(height: 16),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
+                widget.title,
+                style: TextStyle(
+                  color: textColor,
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
@@ -77,8 +113,8 @@ class EmergencyActionCard extends StatelessWidget {
               ),
               child: Text(
                 appStrings(context.watch<LocaleProvider>().isArabic).orderNow,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: isDark ? AppTheme.carmaDark : Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),

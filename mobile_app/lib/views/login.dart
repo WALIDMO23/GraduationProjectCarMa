@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
-import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/create_account.dart';
@@ -8,6 +7,7 @@ import 'package:graduation_project/views/forget_password.dart';
 import 'package:graduation_project/views/home/home.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -94,8 +94,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -106,7 +107,29 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
-                const AppImage(image: 'logo.png', height: 100, width: 100),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 54,
+                      fontWeight: FontWeight.w900,
+                      fontStyle: FontStyle.italic,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Car',
+                        style: TextStyle(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Colors.black,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: 'Ma',
+                        style: TextStyle(color: AppTheme.carmaGold),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 24),
                 Text(
                   'تسجيل الدخول',
@@ -175,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: const Text(
                           'نسيت كلمة السر؟',
                           style: TextStyle(
-                            color: AppTheme.primaryColor,
+                            color: AppTheme.carmaGold,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -222,6 +245,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
+      ),
       ),
     );
   }

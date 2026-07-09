@@ -6,6 +6,7 @@ import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/views/home/home.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:provider/provider.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -136,34 +137,61 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffE2E8F0),
-      appBar: AppBar(
+    return AppBackground(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        title: const Text('إنشاء حساب جديد'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
         ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           physics: const BouncingScrollPhysics(),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: const Color(0xffFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: 32, end: 32, bottom: 24, top: 32,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // General error banner
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontSize: 54,
+                        fontWeight: FontWeight.w900,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Car',
+                          style: TextStyle(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: 'Ma',
+                          style: TextStyle(color: AppTheme.carmaGold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: Text(
+                    'إنشاء حساب جديد',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // General error banner
                   if (_generalError != null) ...[
                     _ErrorBanner(message: _generalError!),
                     const SizedBox(height: 16),
@@ -227,7 +255,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         height: 24,
                         child: Checkbox(
                           value: isChecked,
-                          activeColor: AppTheme.primaryColor,
+                          activeColor: AppTheme.carmaGold,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                           side: BorderSide(color: Theme.of(context).colorScheme.outline),
                           onChanged: (value) {
@@ -249,7 +277,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       const Text(
                         'الشروط والأحكام',
                         style: TextStyle(
-                          color: AppTheme.primaryColor,
+                          color: AppTheme.carmaGold,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -291,7 +319,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         child: const Text(
                           'تسجيل دخول',
                           style: TextStyle(
-                            color: AppTheme.primaryColor,
+                            color: AppTheme.carmaGold,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -299,11 +327,11 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     ],
                   ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
+      ),
       ),
     );
   }

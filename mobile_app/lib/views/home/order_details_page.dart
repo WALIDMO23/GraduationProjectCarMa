@@ -36,16 +36,16 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  Color _statusColor(OrderStatus s) {
+  Color _statusColor(BuildContext context, OrderStatus s) {
     switch (s) {
       case OrderStatus.accepted:
       case OrderStatus.onTheWay:    return AppTheme.successColor;
       case OrderStatus.inProgress:
-      case OrderStatus.underProcess: return AppTheme.primaryColor;
-      case OrderStatus.completed:   return AppTheme.primaryColor;
+      case OrderStatus.underProcess: return Theme.of(context).colorScheme.primary;
+      case OrderStatus.completed:   return Theme.of(context).colorScheme.primary;
       case OrderStatus.rejected:
       case OrderStatus.canceled:    return AppTheme.errorColor;
-      default:                      return AppTheme.warningColor;
+      default:                      return Theme.of(context).colorScheme.primary;
     }
   }
 
@@ -65,12 +65,12 @@ class OrderDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
-    final statusColor = _statusColor(order.orderStatus);
+    final statusColor = _statusColor(context, order.orderStatus);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaDeepDark : AppTheme.primaryColor,
         foregroundColor: Colors.white,
         title: Text(s.isArabic ? 'تفاصيل الطلب' : 'Order Details',
             style: const TextStyle(color: Colors.white)),
@@ -263,20 +263,20 @@ class OrderDetailsPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.warningColor.withValues(alpha: 0.08),
+                  color: statusColor.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppTheme.warningColor.withValues(alpha: 0.3)),
+                  border: Border.all(color: statusColor.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.info_outline, color: AppTheme.warningColor),
+                    Icon(Icons.info_outline, color: statusColor),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         s.isArabic
                             ? 'طلبك قيد المراجعة. سيتم إخطارك عند تعيين الفني.'
                             : 'Your order is being reviewed. You\'ll be notified when a technician is assigned.',
-                        style: TextStyle(color: AppTheme.warningColor, fontSize: 13),
+                        style: TextStyle(color: statusColor, fontSize: 13),
                       ),
                     ),
                   ],
@@ -338,7 +338,7 @@ class _DetailRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: AppTheme.primaryColor),
+          Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 12),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

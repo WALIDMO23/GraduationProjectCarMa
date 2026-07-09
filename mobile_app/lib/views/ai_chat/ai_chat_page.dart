@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/logic/providers/ai_provider.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:graduation_project/views/services/towing_services.dart';
 import 'package:graduation_project/views/services/carWash_services.dart';
 import 'package:graduation_project/views/services/emergency_services.dart';
@@ -18,12 +19,12 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
-  static const Color _bg = Color(0xFF0A0A1A);
-  static const Color _cardBg = Color(0xFF13132B);
-  static const Color _inputBg = Color(0xFF1A1A35);
-  static const Color _purplePrimary = Color(0xFF7C3AED);
-  static const Color _purpleLight = Color(0xFFA78BFA);
-  static const Color _purpleGlow = Color(0xFF5B21B6);
+  Color get _bg => Theme.of(context).scaffoldBackgroundColor;
+  Color get _cardBg => Theme.of(context).colorScheme.surface;
+  Color get _inputBg => Theme.of(context).brightness == Brightness.dark ? const Color(0xFF232323) : Colors.grey.shade200;
+  Color get _primary => Theme.of(context).colorScheme.primary;
+  Color get _light => Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFDE68A) : Theme.of(context).colorScheme.primary.withValues(alpha: 0.7);
+  Color get _glow => Theme.of(context).colorScheme.primary.withValues(alpha: 0.3);
 
   @override
   void initState() {
@@ -83,11 +84,12 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: _bg,
+    return AppBackground(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: _bg,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white70, size: 20),
@@ -100,13 +102,13 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
               height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: const LinearGradient(
-                  colors: [_purplePrimary, _purpleLight],
+                gradient: LinearGradient(
+                  colors: [_primary, _light],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
-                  BoxShadow(color: _purpleGlow.withValues(alpha: 0.5), blurRadius: 8)
+                  BoxShadow(color: _glow.withValues(alpha: 0.5), blurRadius: 8)
                 ],
               ),
               child: const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
@@ -156,6 +158,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
           _buildInputBar(),
         ],
       ),
+      ),
     );
   }
 
@@ -174,16 +177,16 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    _purpleLight.withValues(alpha: 0.8),
-                    _purplePrimary.withValues(alpha: 0.6),
-                    _purpleGlow.withValues(alpha: 0.3),
+                    _light.withValues(alpha: 0.8),
+                    _primary.withValues(alpha: 0.6),
+                    _glow.withValues(alpha: 0.3),
                     Colors.transparent,
                   ],
                   stops: const [0.0, 0.4, 0.7, 1.0],
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: _purplePrimary.withValues(alpha: 0.4),
+                    color: _primary.withValues(alpha: 0.4),
                     blurRadius: 40,
                     spreadRadius: 10,
                   ),
@@ -234,9 +237,9 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
         decoration: BoxDecoration(
           color: _cardBg,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: _purplePrimary.withValues(alpha: 0.4)),
+          border: Border.all(color: _primary.withValues(alpha: 0.4)),
         ),
-        child: Text(text, style: const TextStyle(color: _purpleLight, fontSize: 13)),
+        child: Text(text, style: TextStyle(color: _light, fontSize: 13)),
       ),
     );
   }
@@ -256,8 +259,8 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [_purplePrimary, _purpleGlow],
+                gradient: LinearGradient(
+                  colors: [_primary, _glow],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -268,7 +271,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                   bottomRight: Radius.circular(4),
                 ),
                 boxShadow: [
-                  BoxShadow(color: _purplePrimary.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3)),
+                  BoxShadow(color: _primary.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 3)),
                 ],
               ),
               child: Text(
@@ -279,10 +282,10 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
             ),
           ),
           const SizedBox(width: 8),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 14,
-            backgroundColor: _purplePrimary,
-            child: Icon(Icons.person, color: Colors.white, size: 16),
+            backgroundColor: _primary,
+            child: const Icon(Icons.person, color: Colors.white, size: 16),
           ),
         ],
       ),
@@ -307,10 +310,10 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
             height: 28,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: const LinearGradient(
-                colors: [_purplePrimary, _purpleLight],
+              gradient: LinearGradient(
+                colors: [_primary, _light],
               ),
-              boxShadow: [BoxShadow(color: _purpleGlow.withValues(alpha: 0.4), blurRadius: 6)],
+              boxShadow: [BoxShadow(color: _glow.withValues(alpha: 0.4), blurRadius: 6)],
             ),
             child: const Icon(Icons.auto_awesome, color: Colors.white, size: 14),
           ),
@@ -332,7 +335,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                       bottomLeft: Radius.circular(18),
                       bottomRight: Radius.circular(18),
                     ),
-                    border: Border.all(color: _purplePrimary.withValues(alpha: 0.2)),
+                    border: Border.all(color: _primary.withValues(alpha: 0.2)),
                   ),
                   child: Text(
                     cleanText,
@@ -350,21 +353,21 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                         _buildServiceButton(
                           icon: Icons.local_shipping_rounded,
                           label: '🚛 اطلب ونش',
-                          color: const Color(0xFFEF4444),
+                          color: _primary,
                           onTap: () => _goToService(const TowingServices()),
                         ),
                       if (showWash)
                         _buildServiceButton(
                           icon: Icons.water_drop_rounded,
                           label: '💧 اطلب غسيل',
-                          color: const Color(0xFF3B82F6),
+                          color: _primary,
                           onTap: () => _goToService(const CarWashServices()),
                         ),
                       if (showMaintenance)
                         _buildServiceButton(
                           icon: Icons.build_rounded,
                           label: '🔧 اطلب فني',
-                          color: const Color(0xFF10B981),
+                          color: _primary,
                           onTap: () => _goToService(const EmergencyServices()),
                         ),
                     ],
@@ -414,9 +417,9 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
           Container(
             width: 28,
             height: 28,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(colors: [_purplePrimary, _purpleLight]),
+              gradient: LinearGradient(colors: [_primary, _light]),
             ),
             child: const Icon(Icons.auto_awesome, color: Colors.white, size: 14),
           ),
@@ -426,7 +429,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               color: _cardBg,
               borderRadius: BorderRadius.circular(18),
-              border: Border.all(color: _purplePrimary.withValues(alpha: 0.2)),
+              border: Border.all(color: _primary.withValues(alpha: 0.2)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -449,7 +452,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
         height: 7,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: _purpleLight.withValues(alpha: value),
+          color: _light.withValues(alpha: value),
         ),
       ),
     );
@@ -462,7 +465,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
         decoration: BoxDecoration(
           color: _bg,
-          border: Border(top: BorderSide(color: _purplePrimary.withValues(alpha: 0.15))),
+          border: Border(top: BorderSide(color: _primary.withValues(alpha: 0.15))),
         ),
         child: Row(
           children: [
@@ -471,7 +474,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                 decoration: BoxDecoration(
                   color: _inputBg,
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: _purplePrimary.withValues(alpha: 0.3)),
+                  border: Border.all(color: _primary.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
@@ -481,7 +484,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                         controller: _controller,
                         textDirection: TextDirection.rtl,
                         style: const TextStyle(color: Colors.white, fontSize: 14),
-                        cursorColor: _purpleLight,
+                        cursorColor: _light,
                         decoration: const InputDecoration(
                           hintText: 'اسألني عن عربيتك...',
                           hintStyle: TextStyle(color: Colors.white38, fontSize: 14),
@@ -513,14 +516,14 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                     gradient: ai.isLoading
                         ? const LinearGradient(colors: [Colors.grey, Colors.grey])
-                        : const LinearGradient(
-                            colors: [_purplePrimary, _purpleLight],
+                        : LinearGradient(
+                            colors: [_primary, _light],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                     boxShadow: ai.isLoading
                         ? []
-                        : [BoxShadow(color: _purplePrimary.withValues(alpha: 0.5), blurRadius: 12)],
+                        : [BoxShadow(color: _primary.withValues(alpha: 0.5), blurRadius: 12)],
                   ),
                   child: ai.isLoading
                       ? const Padding(
