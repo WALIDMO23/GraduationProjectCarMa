@@ -21,7 +21,7 @@ namespace CarMaintenance.Services
 
         public async Task<string> GetSmartAssistantResponse(string userMessage)
         {
-            if (string.IsNullOrEmpty(_apiKey))
+            if (string.IsNullOrEmpty(_apiKey) || _apiKey == "YOUR_NEW_GEMINI_API_KEY_HERE")
             {
                 Console.WriteLine("WARNING: GEMINI_API_KEY is not set. Using fallback response.");
                 return GetFallbackResponse(userMessage);
@@ -32,27 +32,76 @@ namespace CarMaintenance.Services
 
             var requestUrl = $"{_apiUrl}?key={_apiKey}";
 
+            // ── Full CarMa AI System Prompt ──────────────────────────────────────
             string systemPrompt = @"
-أنت مساعد ذكي وموظف خدمة عملاء في تطبيق لخدمات السيارات. مهمتك الرد على المستخدمين ومساعدتهم بناءً على حالتهم.
+أنت CarMa AI، المساعد الذكي الرسمي لتطبيق CarMa لخدمات السيارات.
 
-التزم بالقواعد التالية حرفياً:
+مهمتك الأساسية ليست فقط الإجابة على الأسئلة، بل مساعدة المستخدمين على استخدام كل ميزة داخل تطبيق CarMa.
 
-1. إذا كان المستخدم يتحدث عن عطل في الطريق، حادث، إطار مثقوب، أو سيارة لا تعمل:
-   تعاطف معه، انصحه بطلب ونش إنقاذ أو فني صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-   [WINCH_BUTTON] OR [MAINTENANCE_BUTTON]
+لديك معرفة كاملة بالتطبيق بما يشمل:
+- تسجيل الدخول والحساب (Authentication)
+- الملف الشخصي (Profile)
+- السيارات المسجلة (Vehicles)
+- طلبات الخدمة (Service Requests)
+- خدمات الطوارئ (Emergency Services)
+- خدمة البطارية (Battery Service)
+- خدمة الإطارات / البنشر (Tire Service)
+- تغيير الزيت (Oil Change)
+- غسيل السيارة (Car Wash)
+- ونش السحب (Towing)
+- توصيل الوقود (Fuel Delivery)
+- تعيين الفني (Technician Assignment)
+- تتبع الطلب المباشر (Live Order Tracking)
+- المدفوعات (Payments)
+- المحفظة (Wallet)
+- انستا باي (InstaPay)
+- الإشعارات (Notifications)
+- خرائط GPS والبحث (Maps, GPS, Search)
+- سجل الطلبات (Order History)
+- الإعدادات (Settings)
+- الدعم الفني (Support)
+- المحادثة مع الفني (Chat with Technician)
 
-2. إذا كان المستخدم يسأل عن نظافة السيارة أو يطلب غسيل:
-   انصحه بخدمة الغسيل المتنقل، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-   [WASH_BUTTON]
+قواعد سلوكك:
 
-3. إذا كان المستخدم يسأل عن صيانة، تغيير زيت، أو أصوات غريبة في المحرك:
-   انصحه بطلب خدمة صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-   [MAINTENANCE_BUTTON]
+1. دائماً افهم نية المستخدم أولاً.
 
-4. إذا كانت مجرد تحية أو استفسار عام:
-   رد بلباقة وبشكل مختصر بدون كتابة أي من الكلمات السابقة.
+2. إذا أبلغ المستخدم عن مشكلة في سيارته، حدد الخدمة المناسبة:
+   - إطار واقف / بنشر → اطلب خدمة الإطارات [MAINTENANCE_BUTTON]
+   - بطارية فارغة → اطلب خدمة البطارية [MAINTENANCE_BUTTON]
+   - السيارة مش بتتحرك → اطلب ونش [WINCH_BUTTON]
+   - محتاج وقود → اطلب توصيل وقود [MAINTENANCE_BUTTON]
+   - محتاج زيت → اطلب تغيير زيت [MAINTENANCE_BUTTON]
+   - محتاج غسيل → اطلب غسيل السيارة [WASH_BUTTON]
+   - طوارئ / حادث → اطلب خدمة الطوارئ [WINCH_BUTTON]
 
-اجعل ردودك قصيرة، عملية، وباللهجة المصرية.
+3. لا تعطي إجابات عامة من الذكاء الاصطناعي. بدلاً من ذلك، وجّه المستخدم خطوة بخطوة داخل التطبيق.
+
+4. عند طلب خدمة، أخبر المستخدم بالخطوات:
+   مثال: 'هساعدك تطلب ونش. هنختار موقعك الحالي، بعدين هتأكد الطلب، وتختار طريقة الدفع، وهيوصلك أقرب فني.'
+
+5. استخدم رسائل قصيرة باللهجة المصرية:
+   مثل: 'تمام.'، 'خليني أساعدك.'، 'هنبدأ دلوقتي.'، 'ماتقلقش.'
+
+6. كن إيجابياً ومحترفاً ومتعلقاً بالسيارات دائماً.
+
+7. لا تعرض أخطاء API أو تقنية خام للمستخدم أبداً.
+   بدلاً من ذلك، اشرح المشكلة بلطف واقترح المحاولة مجدداً.
+
+8. إذا انتهت جلسة المستخدم، وجّهه لتسجيل الدخول.
+
+9. إذا فشل الدفع، وجّهه لاختيار طريقة دفع أخرى.
+
+10. دعم اللغة العربية والإنجليزية تلقائياً.
+
+11. كن استباقياً: إذا طلب إطاراً، اقترح أيضاً الونش أو الطوارئ إذا بدا محتاجاً.
+
+12. ابقَ دائماً في سياق تطبيق CarMa. لا تتحدث عن مواضيع غير متعلقة.
+
+13. الكلمات المفتاحية للأزرار:
+    [WINCH_BUTTON] = اطلب ونش / طوارئ
+    [WASH_BUTTON] = اطلب غسيل
+    [MAINTENANCE_BUTTON] = اطلب صيانة / فني / بطارية / زيت / إطار / وقود
 ";
 
             var fullPrompt = systemPrompt + "\nUser: " + userMessage;
@@ -81,7 +130,7 @@ namespace CarMaintenance.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine($"[GeminiAI] HTTP {response.StatusCode}: {responseString}");
+                    Console.WriteLine($"[CarMa AI] HTTP {response.StatusCode}: {responseString}");
                     return HandleGeminiError(response.StatusCode.ToString(), responseString, userMessage);
                 }
 
@@ -94,15 +143,15 @@ namespace CarMaintenance.Services
                     .GetProperty("text")
                     .GetString();
 
-                return text ?? "مفيش رد من AI دلوقتي";
+                return text ?? GetFallbackResponse(userMessage);
             }
             catch (TaskCanceledException)
             {
-                return "انتهت مهلة الانتظار. حاول مرة تانية.";
+                return "الاتصال استغرق وقتاً طويلاً. حاول مرة تانية.";
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[GeminiAI] Exception: {ex.Message}");
+                Console.WriteLine($"[CarMa AI] Exception: {ex.Message}");
                 return GetFallbackResponse(userMessage);
             }
         }
@@ -113,35 +162,50 @@ namespace CarMaintenance.Services
             {
                 return GetFallbackResponse(message);
             }
-
-            return "عذراً، حدث خطأ مؤقت في خدمة الذكاء الاصطناعي. حاول مرة تانية بعد شوية.";
+            if (response.Contains("403") || response.Contains("PERMISSION_DENIED"))
+            {
+                return GetFallbackResponse(message);
+            }
+            return GetFallbackResponse(message);
         }
 
         private string GetFallbackResponse(string message)
         {
-            message = message.ToLower();
+            message = message.ToLower().Trim();
 
-            if (message.Contains("عطل") || message.Contains("مش شغالة") || message.Contains("عربية"))
-            {
-                return "غالبًا المشكلة في البطارية أو الكهرباء أو البنزين. حاول تتأكد أو اطلب فني صيانة [MAINTENANCE_BUTTON]";
-            }
+            // Towing / Emergency
+            if (message.Contains("ونش") || message.Contains("حادث") || message.Contains("مش بتتحرك") || message.Contains("لا تتحرك"))
+                return "يبدو إن الحالة تحتاج ونش إنقاذ فورًا. اطلب الخدمة دلوقتي [WINCH_BUTTON]";
 
-            if (message.Contains("ونش") || message.Contains("حادث"))
-            {
-                return "يبدو إن الحالة تحتاج ونش إنقاذ فورًا. اطلب خدمة الطوارئ [WINCH_BUTTON]";
-            }
+            // Tire
+            if (message.Contains("إطار") || message.Contains("بنشر") || message.Contains("عجل"))
+                return "مشكلة الإطار ممكن نحلها بسرعة. هبعتلك فني متخصص [MAINTENANCE_BUTTON]";
 
+            // Battery
+            if (message.Contains("بطارية") || message.Contains("مش بتشتغل") || message.Contains("مش شغالة"))
+                return "البطارية ممكن تكون المشكلة. هبعتلك فني بطارية [MAINTENANCE_BUTTON]";
+
+            // Oil
             if (message.Contains("زيت"))
-            {
-                return "يفضل تغيير الزيت كل 5000 - 10000 كم حسب الاستخدام. ممكن تطلب صيانة [MAINTENANCE_BUTTON]";
-            }
+                return "يفضل تغيير الزيت كل 5000 كم. ممكن تطلب فني دلوقتي [MAINTENANCE_BUTTON]";
 
-            if (message.Contains("غسيل"))
-            {
-                return "نقدر نوصلك خدمة غسيل متنقل في أي مكان [WASH_BUTTON]";
-            }
+            // Fuel
+            if (message.Contains("بنزين") || message.Contains("وقود") || message.Contains("خلص"))
+                return "مش مشكلة! هنوصلك بنزين على طول. اطلب توصيل وقود [MAINTENANCE_BUTTON]";
 
-            return "أهلاً! أنا هنا أساعدك. وصفلي المشكلة وهحاول أساعدك.";
+            // Car Wash
+            if (message.Contains("غسيل") || message.Contains("نظافة") || message.Contains("غسل"))
+                return "هنوصلك فريق غسيل متنقل في أي مكان [WASH_BUTTON]";
+
+            // General car problem
+            if (message.Contains("عطل") || message.Contains("عربية") || message.Contains("سيارة"))
+                return "وصفلي المشكلة أكتر وأنا هساعدك [MAINTENANCE_BUTTON]";
+
+            // Greeting
+            if (message.Contains("مرحبا") || message.Contains("أهلاً") || message.Contains("hello") || message.Contains("hi"))
+                return "أهلاً! أنا CarMa AI، مساعدك الذكي. قولي إيه المشكلة وأنا هساعدك فوراً.";
+
+            return "أهلاً! أنا CarMa AI. وصفلي مشكلتك مع العربية وهساعدك دلوقتي.";
         }
     }
 }
