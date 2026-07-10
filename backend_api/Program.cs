@@ -176,7 +176,8 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"Error aligning database schema: {ex.Message}");
     }
 
-    if (!context.Users.Any(u => u.Role == "admin"))
+    // Seed default admin Elmongy
+    if (!context.Users.Any(u => u.Email == "Elmongy@gmail.com"))
     {
         context.Users.Add(new User
         {
@@ -186,9 +187,22 @@ using (var scope = app.Services.CreateScope())
             PhoneNumber = "01000000000",
             Role = "admin"
         });
-
-        context.SaveChanges();
     }
+
+    // Seed requested admin Walid
+    if (!context.Users.Any(u => u.Email == "WALIDMO@gmail.com"))
+    {
+        context.Users.Add(new User
+        {
+            Name = "Walid",
+            Email = "WALIDMO@gmail.com",
+            PasswordHash = "123456",
+            PhoneNumber = "01200000000",
+            Role = "admin"
+        });
+    }
+
+    context.SaveChanges();
 }
 
 // ======================
