@@ -158,6 +158,16 @@ using (var scope = app.Services.CreateScope())
             ALTER TABLE ""Users"" DROP COLUMN IF EXISTS ""ProfileImageUrl"";
             ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageData"" bytea;
             ALTER TABLE ""Users"" ADD COLUMN IF NOT EXISTS ""ProfileImageContentType"" text;
+
+            CREATE TABLE IF NOT EXISTS ""ChatMessages"" (
+                ""Id"" serial PRIMARY KEY,
+                ""ServiceRequestId"" integer NOT NULL,
+                ""SenderId"" integer NOT NULL,
+                ""SenderName"" text NOT NULL,
+                ""MessageText"" text NOT NULL,
+                ""Timestamp"" timestamp with time zone NOT NULL DEFAULT NOW(),
+                ""IsRead"" boolean NOT NULL DEFAULT FALSE
+            );
         ");
         Console.WriteLine("Database schema and migrations aligned successfully.");
     }

@@ -30,6 +30,7 @@ dependencies:
   pretty_dio_logger: ^1.4.0
   geolocator: ^13.0.1
   signalr_netcore: ^1.4.4
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

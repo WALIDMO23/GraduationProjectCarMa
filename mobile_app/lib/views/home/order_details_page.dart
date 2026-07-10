@@ -4,6 +4,7 @@ import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/data/models/order_model.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'package:graduation_project/views/home/technician_details_page.dart';
 import 'package:provider/provider.dart';
 
 /// Shown when user taps "View Details" on the ActiveOrderCard.
@@ -216,40 +217,68 @@ class OrderDetailsPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppTheme.successColor.withValues(alpha: 0.25)),
                 ),
-                child: Row(
+                child: Column(
                   children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        color: AppTheme.successColor.withValues(alpha: 0.12),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(Icons.engineering, color: AppTheme.successColor, size: 30),
+                    Row(
+                      children: [
+                        Container(
+                          width: 56,
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: AppTheme.successColor.withValues(alpha: 0.12),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(Icons.engineering, color: AppTheme.successColor, size: 30),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(order.technicianName ?? '', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 4),
+                              Row(children: [
+                                const Icon(Icons.star, color: Colors.amber, size: 16),
+                                const SizedBox(width: 4),
+                                Text(order.technicianRating?.toStringAsFixed(1) ?? '—',
+                                    style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
+                              ]),
+                              if (order.technicianPhone != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    order.technicianPhone!,
+                                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                                    textDirection: TextDirection.ltr,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(order.technicianName ?? '', style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 4),
-                          Row(children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 16),
-                            const SizedBox(width: 4),
-                            Text(order.technicianRating?.toStringAsFixed(1) ?? '—',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
-                          ]),
-                          if (order.technicianPhone != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: Text(
-                                order.technicianPhone!,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-                                textDirection: TextDirection.ltr,
-                              ),
-                            ),
-                        ],
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.carmaGold,
+                        foregroundColor: Colors.black,
+                        minimumSize: const Size(double.infinity, 44),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TechnicianDetailsPage(order: order),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.contact_phone_outlined, size: 18),
+                      label: Text(
+                        s.isArabic ? 'تواصل مع الفني' : 'Contact Technician',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

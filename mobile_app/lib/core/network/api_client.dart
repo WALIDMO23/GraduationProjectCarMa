@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:graduation_project/main.dart';
+import 'package:graduation_project/views/login.dart';
 
 class ApiClient {
   // ✅ Android Emulator  → use: http://10.0.2.2:5000/api
@@ -33,8 +36,44 @@ class ApiClient {
           }
           return handler.next(options);
         },
-        onError: (DioException e, handler) {
-          // Here we could handle global errors (e.g. 401 Unauthorized)
+        onError: (DioException e, handler) async {
+          final requestPath = e.requestOptions.path;
+          if (e.response?.statusCode == 401 && !requestPath.contains('/auth/login')) {
+            final context = MyApp.navigatorKey.currentContext;
+            final navState = MyApp.navigatorKey.currentState;
+
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.remove('auth_token');
+            await prefs.remove('user_data');
+            
+            if (context != null && navState != null && context.mounted) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (dialogContext) => AlertDialog(
+                  title: const Text('انتهت الجلسة', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+                  content: const Text(
+                    'الرجاء تسجيل الدخول مرة أخرى لمتابعة استخدام التطبيق.',
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                          navState.pushAndRemoveUntil(
+                            MaterialPageRoute(builder: (_) => const LoginPage()),
+                            (route) => false,
+                          );
+                        },
+                        child: const Text('موافق', style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+          }
           return handler.next(e);
         },
       ),

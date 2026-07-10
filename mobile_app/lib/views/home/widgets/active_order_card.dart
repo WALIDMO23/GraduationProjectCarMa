@@ -6,6 +6,7 @@ import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/views/home/order_details_page.dart';
+import 'package:graduation_project/views/home/technician_details_page.dart';
 import 'package:provider/provider.dart';
 
 
@@ -34,6 +35,7 @@ class ActiveOrderCard extends StatelessWidget {
           return _buildMockCard(context, s); // Show mock if the actual order is done
         }
 
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         String title    = s.orderPending;
         String subtitle = s.orderPendingSub;
         Color statusColor = AppTheme.warningColor;
@@ -122,47 +124,120 @@ class ActiveOrderCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // ── View Details button ──────────────────────
-                GestureDetector(
-                  onTap: () {
-                    final imgPath = ordersProvider.imagePathForOrder(activeOrder.id);
-                    final svcName = ordersProvider.serviceNameForOrder(activeOrder.id) ?? '';
-                    final notes   = ordersProvider.notesForOrder(activeOrder.id);
-                    OrderDetailsPage.show(context, activeOrder,
-                        serviceName: svcName, carImagePath: imgPath, notes: notes);
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? AppTheme.carmaGold
-                          : AppTheme.primaryColor,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          s.viewDetails,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                if (activeOrder.hasTechnician) ...[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            final imgPath = ordersProvider.imagePathForOrder(activeOrder.id);
+                            final svcName = ordersProvider.serviceNameForOrder(activeOrder.id) ?? '';
+                            final notes   = ordersProvider.notesForOrder(activeOrder.id);
+                            OrderDetailsPage.show(context, activeOrder,
+                                serviceName: svcName, carImagePath: imgPath, notes: notes);
+                          },
+                          child: Container(
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF222222) : Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isDark ? AppTheme.carmaOutline : Colors.grey.shade300,
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              s.viewDetails,
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        AppImage(
-                          image: 'arroww.svg',
-                          width: 13,
-                          height: 13,
-                          color: Colors.black,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TechnicianDetailsPage(order: activeOrder),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: AppTheme.carmaGold,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.engineering, color: Colors.black, size: 18),
+                                const SizedBox(width: 6),
+                                Text(
+                                  s.isArabic ? 'تفاصيل الفني' : 'Tech Info',
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                ] else ...[
+                  // ── View Details button ──────────────────────
+                  GestureDetector(
+                    onTap: () {
+                      final imgPath = ordersProvider.imagePathForOrder(activeOrder.id);
+                      final svcName = ordersProvider.serviceNameForOrder(activeOrder.id) ?? '';
+                      final notes   = ordersProvider.notesForOrder(activeOrder.id);
+                      OrderDetailsPage.show(context, activeOrder,
+                          serviceName: svcName, carImagePath: imgPath, notes: notes);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? AppTheme.carmaGold
+                            : AppTheme.primaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            s.viewDetails,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          AppImage(
+                            image: 'arroww.svg',
+                            width: 13,
+                            height: 13,
+                            color: Colors.black,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ]
               ],
             ),
           ),

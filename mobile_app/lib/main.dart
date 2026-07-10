@@ -9,6 +9,7 @@ import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/logic/providers/ai_provider.dart';
 import 'package:graduation_project/logic/providers/notification_provider.dart';
 import 'package:graduation_project/logic/providers/services_provider.dart';
+import 'package:graduation_project/logic/providers/chat_provider.dart';
 
 import 'dart:io';
 
@@ -26,6 +27,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   const MyApp({super.key});
 
   @override
@@ -38,6 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => ServicesProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: Consumer<LocaleProvider>(
         builder: (_, localeProvider, __) {
@@ -45,6 +49,7 @@ class MyApp extends StatelessWidget {
             valueListenable: AppTheme.themeNotifier,
             builder: (_, ThemeMode currentMode, __) {
               return MaterialApp(
+                navigatorKey: navigatorKey,
                 locale: localeProvider.locale,
                 supportedLocales: const [Locale('ar'), Locale('en')],
                 localizationsDelegates: const [

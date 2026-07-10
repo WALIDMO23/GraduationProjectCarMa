@@ -47,6 +47,8 @@ class _RequestServicePageState extends State<RequestServicePage> {
   File? _carImage;
   int _selectedPaymentMethod = 1;
   DateTime? _selectedServiceTime;
+  double? _selectedLatitude;
+  double? _selectedLongitude;
   bool _submitted = false;
 
   @override
@@ -162,6 +164,11 @@ class _RequestServicePageState extends State<RequestServicePage> {
       // \u200E forces left-to-right rendering for the date/time string to prevent RTL mixups
       final formattedTime = '\n\u200E$timeStr';
       finalNotes = finalNotes.isEmpty ? '$prefix$formattedTime' : '$finalNotes\n\n$prefix$formattedTime';
+    }
+
+    if (_selectedLatitude != null && _selectedLongitude != null) {
+      final gpsStr = 'GPS: $_selectedLatitude, $_selectedLongitude';
+      finalNotes = finalNotes.isEmpty ? gpsStr : '$finalNotes\n\n$gpsStr';
     }
 
     final dto = CreateOrderDto(
@@ -429,6 +436,8 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                                 setState(() {
                                                   _addressController.text =
                                                       result['address'];
+                                                  _selectedLatitude = result['lat'];
+                                                  _selectedLongitude = result['lng'];
                                                 });
                                               }
                                             },

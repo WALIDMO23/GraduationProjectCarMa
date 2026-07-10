@@ -1,16 +1,34 @@
 using System.Text;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace CarMaintenance.Services
 {
     public class GeminiAiService
     {
-        private readonly string _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
-        private readonly string _apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+        private readonly string? _apiKey;
+
+        // Use v1 with gemini-2.5-flash – working endpoint (matches reference project)
+        private readonly string _apiUrl =
+            "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
+
+        public GeminiAiService(IConfiguration configuration)
+        {
+            // Prefer environment variable, fall back to appsettings
+            _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY")
+                      ?? configuration["GeminiAI:ApiKey"];
+        }
 
         public async Task<string> GetSmartAssistantResponse(string userMessage)
         {
+            if (string.IsNullOrEmpty(_apiKey))
+            {
+                Console.WriteLine("WARNING: GEMINI_API_KEY is not set. Using fallback response.");
+                return GetFallbackResponse(userMessage);
+            }
+
             using var client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(30);
 
             var requestUrl = $"{_apiUrl}?key={_apiKey}";
 
@@ -19,20 +37,20 @@ namespace CarMaintenance.Services
 
 التزم بالقواعد التالية حرفياً:
 
-إذا كان المستخدم يتحدث عن عطل في الطريق، حادث، إطار مثقوب، أو سيارة لا تعمل:
-تعاطف معه، انصحه بطلب ونش إنقاذ، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-[WINCH_BUTTON]
+1. إذا كان المستخدم يتحدث عن عطل في الطريق، حادث، إطار مثقوب، أو سيارة لا تعمل:
+   تعاطف معه، انصحه بطلب ونش إنقاذ أو فني صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+   [WINCH_BUTTON] OR [MAINTENANCE_BUTTON]
 
-إذا كان المستخدم يسأل عن نظافة السيارة أو يطلب غسيل:
-انصحه بخدمة الغسيل المتنقل، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-[WASH_BUTTON]
+2. إذا كان المستخدم يسأل عن نظافة السيارة أو يطلب غسيل:
+   انصحه بخدمة الغسيل المتنقل، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+   [WASH_BUTTON]
 
-إذا كان المستخدم يسأل عن صيانة، تغيير زيت، أو أصوات غريبة في المحرك:
-انصحه بطلب خدمة صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
-[MAINTENANCE_BUTTON]
+3. إذا كان المستخدم يسأل عن صيانة، تغيير زيت، أو أصوات غريبة في المحرك:
+   انصحه بطلب خدمة صيانة، ويجب أن تنهي رسالتك بهذه الكلمة بالضبط:
+   [MAINTENANCE_BUTTON]
 
-إذا كانت مجرد تحية أو استفسار عام:
-رد بلباقة وبشكل مختصر بدون كتابة أي من الكلمات السابقة.
+4. إذا كانت مجرد تحية أو استفسار عام:
+   رد بلباقة وبشكل مختصر بدون كتابة أي من الكلمات السابقة.
 
 اجعل ردودك قصيرة، عملية، وباللهجة المصرية.
 ";
@@ -61,9 +79,9 @@ namespace CarMaintenance.Services
                 var response = await client.PostAsync(requestUrl, content);
                 var responseString = await response.Content.ReadAsStringAsync();
 
-              
                 if (!response.IsSuccessStatusCode)
                 {
+                    Console.WriteLine($"[GeminiAI] HTTP {response.StatusCode}: {responseString}");
                     return HandleGeminiError(response.StatusCode.ToString(), responseString, userMessage);
                 }
 
@@ -78,13 +96,17 @@ namespace CarMaintenance.Services
 
                 return text ?? "مفيش رد من AI دلوقتي";
             }
-            catch
+            catch (TaskCanceledException)
             {
+                return "انتهت مهلة الانتظار. حاول مرة تانية.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[GeminiAI] Exception: {ex.Message}");
                 return GetFallbackResponse(userMessage);
             }
         }
 
-       
         private string HandleGeminiError(string status, string response, string message)
         {
             if (response.Contains("429") || response.Contains("RESOURCE_EXHAUSTED"))
@@ -92,7 +114,7 @@ namespace CarMaintenance.Services
                 return GetFallbackResponse(message);
             }
 
-            return $"AI ERROR ({status}) - حاول مرة تانية";
+            return "عذراً، حدث خطأ مؤقت في خدمة الذكاء الاصطناعي. حاول مرة تانية بعد شوية.";
         }
 
         private string GetFallbackResponse(string message)
@@ -119,7 +141,7 @@ namespace CarMaintenance.Services
                 return "نقدر نوصلك خدمة غسيل متنقل في أي مكان [WASH_BUTTON]";
             }
 
-            return "حاليًا خدمة الذكاء الاصطناعي مش متاحة، لكن ممكن أوصفلك الحل لو شرحت المشكلة أكتر.";
+            return "أهلاً! أنا هنا أساعدك. وصفلي المشكلة وهحاول أساعدك.";
         }
     }
 }

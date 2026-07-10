@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/data/models/order_model.dart';
+import 'package:graduation_project/views/home/technician_details_page.dart';
 
 /// Shows automatically when admin accepts the order and assigns a technician.
 class TechnicianAcceptedDialog extends StatelessWidget {
@@ -141,7 +142,15 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TechnicianDetailsPage(order: order),
+                    ),
+                  );
+                },
                 child: const Text('حسناً، شكراً لك', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),

@@ -22,6 +22,7 @@ namespace CarMaintenance.Data
         public DbSet<UserSettings> UserSettings { get; set; }
         public DbSet<Workshop> Workshops { get; set; }
         public DbSet<AdminActivityLog> AdminActivityLogs { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
