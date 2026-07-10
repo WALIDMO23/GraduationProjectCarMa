@@ -1,10 +1,23 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/logic/providers/ai_provider.dart';
+import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:graduation_project/views/services/towing_services.dart';
 import 'package:graduation_project/views/services/carWash_services.dart';
 import 'package:graduation_project/views/services/emergency_services.dart';
+import 'package:graduation_project/views/services/battery_services.dart';
+import 'package:graduation_project/views/services/tire_services.dart';
+import 'package:graduation_project/views/services/oil_services.dart';
+import 'package:graduation_project/views/services/location_picker.dart';
+import 'package:graduation_project/views/services/payment_methods.dart';
+import 'package:graduation_project/views/profile/profile.dart';
+import 'package:graduation_project/views/profile/order_history.dart';
+import 'package:graduation_project/views/chat/chat_page.dart';
+import 'package:graduation_project/views/home/order_details_page.dart';
+import 'package:graduation_project/views/home/technician_details_page.dart';
+import 'package:graduation_project/views/services/request_service_page.dart';
 
 class AiChatPage extends StatefulWidget {
   const AiChatPage({super.key});
@@ -58,24 +71,212 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     });
   }
 
-  void _send() {
+  void _send() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
     _controller.clear();
-    context.read<AiProvider>().sendMessage(text);
     _scrollToBottom();
+    
+    final aiProvider = context.read<AiProvider>();
+    await aiProvider.sendMessage(text);
+    
+    if (mounted) {
+      _scrollToBottom();
+      if (aiProvider.messages.isNotEmpty) {
+        final lastMsg = aiProvider.messages.last;
+        if (lastMsg['sender'] == 'bot') {
+          _handleBotAction(lastMsg['text'] ?? '');
+        }
+      }
+    }
+  }
+
+  void _handleBotAction(String rawText) {
+    try {
+      final parsed = jsonDecode(rawText);
+      final action = parsed['action'] as String? ?? 'none';
+      final params = parsed['parameters'] as Map<String, dynamic>? ?? {};
+
+      if (action == 'none') return;
+
+      switch (action) {
+        case 'open_location_picker':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const LocationPickerPage()));
+          break;
+        case 'open_payment':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentMethodsPage()));
+          break;
+        case 'open_profile':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
+          break;
+        case 'open_order_history':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const OrderHistoryPage()));
+          break;
+        case 'open_chat':
+          _openActiveOrderChat();
+          break;
+        case 'open_active_order':
+          _openActiveOrderDetails();
+          break;
+        case 'open_technician':
+          _openActiveOrderTechnician();
+          break;
+        case 'open_towing_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const TowingServices()));
+          break;
+        case 'open_battery_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const BatteryServices()));
+          break;
+        case 'open_tire_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const TireServices()));
+          break;
+        case 'open_oil_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const OilServices()));
+          break;
+        case 'open_carwash_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const CarWashServices()));
+          break;
+        case 'open_emergency_service':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const EmergencyServices()));
+          break;
+        case 'open_fuel_delivery':
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const EmergencyServices(initialServiceIndex: 1)));
+          break;
+        case 'create_service_request':
+          final serviceId = params['serviceId'] as int? ?? 1;
+          final serviceName = params['serviceName'] as String? ?? 'خدمة صيانة';
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RequestServicePage(
+                serviceName: serviceName,
+                serviceId: serviceId,
+                serviceIcon: Icons.build_rounded,
+                serviceColor: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          );
+          break;
+      }
+    } catch (e) {
+      debugPrint('[AiChatPage] Failed to handle bot action: $e');
+    }
+  }
+
+  void _openActiveOrderChat() {
+    final ordersProvider = context.read<OrdersProvider>();
+    final activeOrders = ordersProvider.orders.where((o) => o.isActive).toList();
+    if (activeOrders.isNotEmpty) {
+      final order = activeOrders.first;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => ChatPage(
+            serviceRequestId: order.id,
+            technicianName: order.technicianName ?? 'الفني',
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('لا يوجد طلب نشط حالياً لبدء المحادثة مع الفني.')),
+      );
+    }
+  }
+
+  void _openActiveOrderDetails() {
+    final ordersProvider = context.read<OrdersProvider>();
+    final activeOrders = ordersProvider.orders.where((o) => o.isActive).toList();
+    if (activeOrders.isNotEmpty) {
+      final order = activeOrders.first;
+      OrderDetailsPage.show(
+        context,
+        order,
+        serviceName: ordersProvider.serviceNameForOrder(order.id) ?? 'طلب صيانة',
+        notes: ordersProvider.notesForOrder(order.id),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('لا يوجد طلب نشط حالياً لعرض تفاصيله.')),
+      );
+    }
+  }
+
+  void _openActiveOrderTechnician() {
+    final ordersProvider = context.read<OrdersProvider>();
+    final activeOrders = ordersProvider.orders.where((o) => o.isActive).toList();
+    if (activeOrders.isNotEmpty) {
+      final order = activeOrders.first;
+      if (order.hasTechnician) {
+        TechnicianDetailsPage.show(context, order);
+      } else {
+        OrderDetailsPage.show(
+          context,
+          order,
+          serviceName: ordersProvider.serviceNameForOrder(order.id) ?? 'طلب صيانة',
+          notes: ordersProvider.notesForOrder(order.id),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('لا يوجد طلب نشط حالياً لعرض معلومات الفني.')),
+      );
+    }
   }
 
   // ── Parse service buttons from bot response ──────────────────────────────
-  bool _hasWinch(String text) => text.contains('[WINCH_BUTTON]');
-  bool _hasWash(String text) => text.contains('[WASH_BUTTON]');
-  bool _hasMaintenance(String text) => text.contains('[MAINTENANCE_BUTTON]');
+  bool _hasWinch(String text) {
+    try {
+      final parsed = jsonDecode(text);
+      final action = parsed['action'] ?? '';
+      return action == 'open_towing_service' || action == 'open_emergency_service' || text.contains('[WINCH_BUTTON]');
+    } catch (_) {
+      return text.contains('[WINCH_BUTTON]');
+    }
+  }
 
-  String _cleanText(String text) => text
-      .replaceAll('[WINCH_BUTTON]', '')
-      .replaceAll('[WASH_BUTTON]', '')
-      .replaceAll('[MAINTENANCE_BUTTON]', '')
-      .trim();
+  bool _hasWash(String text) {
+    try {
+      final parsed = jsonDecode(text);
+      final action = parsed['action'] ?? '';
+      return action == 'open_carwash_service' || text.contains('[WASH_BUTTON]');
+    } catch (_) {
+      return text.contains('[WASH_BUTTON]');
+    }
+  }
+
+  bool _hasMaintenance(String text) {
+    try {
+      final parsed = jsonDecode(text);
+      final action = parsed['action'] ?? '';
+      return action == 'open_battery_service' ||
+          action == 'open_tire_service' ||
+          action == 'open_oil_service' ||
+          action == 'open_fuel_delivery' ||
+          action == 'create_service_request' ||
+          text.contains('[MAINTENANCE_BUTTON]');
+    } catch (_) {
+      return text.contains('[MAINTENANCE_BUTTON]');
+    }
+  }
+
+  String _cleanText(String text) {
+    try {
+      final parsed = jsonDecode(text);
+      String msg = parsed['message'] ?? text;
+      return msg
+          .replaceAll('[WINCH_BUTTON]', '')
+          .replaceAll('[WASH_BUTTON]', '')
+          .replaceAll('[MAINTENANCE_BUTTON]', '')
+          .trim();
+    } catch (_) {
+      return text
+          .replaceAll('[WINCH_BUTTON]', '')
+          .replaceAll('[WASH_BUTTON]', '')
+          .replaceAll('[MAINTENANCE_BUTTON]', '')
+          .trim();
+    }
+  }
 
   // ── Navigate to service page ─────────────────────────────────────────────
   void _goToService(Widget page) {

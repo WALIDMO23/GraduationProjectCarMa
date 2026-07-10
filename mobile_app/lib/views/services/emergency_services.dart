@@ -7,7 +7,8 @@ import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
 class EmergencyServices extends StatefulWidget {
-  const EmergencyServices({super.key});
+  final int initialServiceIndex;
+  const EmergencyServices({super.key, this.initialServiceIndex = 0});
 
   @override
   State<EmergencyServices> createState() => _EmergencyServicesState();
@@ -15,8 +16,14 @@ class EmergencyServices extends StatefulWidget {
 
 class _EmergencyServicesState extends State<EmergencyServices> {
   int _selectedImageIndex = 0;
-  int _selectedServiceIndex = 0;
+  late int _selectedServiceIndex;
   final TextEditingController _notesController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedServiceIndex = widget.initialServiceIndex;
+  }
 
   final List<String> _images = [
     'assets/images/emergencya.jpeg',
