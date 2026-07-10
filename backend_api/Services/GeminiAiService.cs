@@ -8,15 +8,13 @@ namespace CarMaintenance.Services
     {
         private readonly string? _apiKey;
 
-        // Use v1 with gemini-2.5-flash – working endpoint
+        // Use v1beta with gemini-2.5-flash – working endpoint
         private readonly string _apiUrl =
-            "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent";
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
         public GeminiAiService(IConfiguration configuration)
         {
-            // Prefer environment variable, fall back to appsettings
-            _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY")
-                      ?? configuration["GeminiAI:ApiKey"];
+            _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
         }
 
         public async Task<string> GetSmartAssistantResponse(string userMessage)
@@ -92,8 +90,9 @@ namespace CarMaintenance.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    Console.WriteLine($"[CarMa AI] HTTP {response.StatusCode}: {responseString}");
-                    return GetFallbackResponseJson(userMessage);
+                    var errMessage = $"HTTP {response.StatusCode}: {responseString}";
+                    Console.WriteLine($"[CarMa AI] {errMessage}");
+                    return errMessage;
                 }
 
                 using JsonDocument doc = JsonDocument.Parse(responseString);
@@ -132,8 +131,9 @@ namespace CarMaintenance.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[CarMa AI] Exception: {ex.Message}");
-                return GetFallbackResponseJson(userMessage);
+                var errMessage = $"Exception: {ex.Message}";
+                Console.WriteLine($"[CarMa AI] {errMessage}");
+                return errMessage;
             }
         }
 
