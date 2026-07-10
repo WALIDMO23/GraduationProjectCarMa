@@ -10,7 +10,7 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - GEMINI_API_KEY=AIzaSyAhu31m2fCYImiBI27e3CIEuoz0cOJlpLk
+      - GEMINI_API_KEY=${GEMINI_API_KEY}  # Set this in ~/.env or export GEMINI_API_KEY=your_key on the server
 
   web_frontend:
     build:
