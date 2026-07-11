@@ -140,6 +140,7 @@ namespace CarMaintenance.Services
             {
                 var errMessage = $"Exception: {ex.Message}";
                 Console.WriteLine($"[CarMa AI] {errMessage}");
+                return errMessage;
             }
         }
 
