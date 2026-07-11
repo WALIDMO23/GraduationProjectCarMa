@@ -10,15 +10,10 @@ namespace CarMaintenance.Services
 
         // Use v1beta with gemini-2.5-flash – working endpoint
         private readonly string _apiUrl =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-
-        public GeminiAiService(IConfiguration configuration)
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";        public async Task<string> GetSmartAssistantResponse(string userMessage)
         {
-            _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
-        }
+            Console.WriteLine($"[CarMa AI] GetSmartAssistantResponse called with userMessage: '{userMessage}'");
 
-        public async Task<string> GetSmartAssistantResponse(string userMessage)
-        {
             if (string.IsNullOrEmpty(_apiKey) || _apiKey == "YOUR_NEW_GEMINI_API_KEY_HERE")
             {
                 Console.WriteLine("WARNING: GEMINI_API_KEY is not set. Using fallback response.");
@@ -29,6 +24,7 @@ namespace CarMaintenance.Services
             client.Timeout = TimeSpan.FromSeconds(30);
 
             var requestUrl = $"{_apiUrl}?key={_apiKey}";
+            Console.WriteLine($"[CarMa AI] Sending request to Google Gemini API (endpoint: {_apiUrl})");
 
             // ── Full CarMa AI System Prompt for structured JSON responses ─────────────────
             string systemPrompt = @"
@@ -88,6 +84,8 @@ namespace CarMaintenance.Services
                 var response = await client.PostAsync(requestUrl, content);
                 var responseString = await response.Content.ReadAsStringAsync();
 
+                Console.WriteLine($"[CarMa AI] Google API returned HTTP {(int)response.StatusCode} {response.StatusCode}");
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var errMessage = $"HTTP {response.StatusCode}: {responseString}";
@@ -125,6 +123,8 @@ namespace CarMaintenance.Services
                 }
                 text = text.Trim();
 
+                Console.WriteLine($"[CarMa AI] Parsed Gemini reply: {text}");
+
                 // Validate it parses as JSON object
                 using var testParse = JsonDocument.Parse(text);
                 return text;
@@ -133,7 +133,6 @@ namespace CarMaintenance.Services
             {
                 var errMessage = $"Exception: {ex.Message}";
                 Console.WriteLine($"[CarMa AI] {errMessage}");
-                return errMessage;
             }
         }
 
