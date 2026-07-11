@@ -10,7 +10,14 @@ namespace CarMaintenance.Services
 
         // Use v1beta with gemini-2.5-flash – working endpoint
         private readonly string _apiUrl =
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";        public async Task<string> GetSmartAssistantResponse(string userMessage)
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+
+        public GeminiAiService(IConfiguration configuration)
+        {
+            _apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+        }
+
+        public async Task<string> GetSmartAssistantResponse(string userMessage)
         {
             Console.WriteLine($"[CarMa AI] GetSmartAssistantResponse called with userMessage: '{userMessage}'");
 
