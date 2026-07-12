@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/location_picker.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class ServiceDetailsPage extends StatefulWidget {
   final String serviceName;
@@ -17,23 +18,24 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
 
   final List<Map<String, dynamic>> _options = [
     {
-      'title': 'ونش هيدروليك',
-      'price': 'يبدأ من 150 ريال',
-      'desc': 'مناسب للسيارات المنخفضة والرياضية.',
+      'title': '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â',
+      'price': '┘è╪ذ╪»╪ث ┘à┘ 150 ╪▒┘è╪د┘',
+      'desc': '┘à┘╪د╪│╪ذ ┘┘╪│┘è╪د╪▒╪د╪ز ╪د┘┘à┘╪«┘╪╢╪ر ┘ê╪د┘╪▒┘è╪د╪╢┘è╪ر.',
       'icon': Icons.car_repair,
     },
     {
-      'title': 'ونش عادي',
-      'price': 'يبدأ من 100 ريال',
-      'desc': 'مناسب لجميع أنواع السيارات.',
+      'title': '┘ê┘╪┤ ╪╣╪د╪»┘è',
+      'price': '┘è╪ذ╪»╪ث ┘à┘ 100 ╪▒┘è╪د┘',
+      'desc': '┘à┘╪د╪│╪ذ ┘╪ش┘à┘è╪╣ ╪ث┘┘ê╪د╪╣ ╪د┘╪│┘è╪د╪▒╪د╪ز.',
       'icon': Icons.local_shipping,
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(widget.serviceName),
         leading: IconButton(
@@ -91,7 +93,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  'خدمة سريعة في أقل من 15 دقيقة',
+                                  '╪«╪»┘à╪ر ╪│╪▒┘è╪╣╪ر ┘┘è ╪ث┘é┘ ┘à┘ 15 ╪»┘é┘è┘é╪ر',
                                   style: TextStyle(
                                     color:
                                         Theme.of(
@@ -103,10 +105,10 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               ],
                             ),
                           ),
-                          const Text(
-                            '150 ريال',
+                           Text(
+                            '150 ╪▒┘è╪د┘',
                             style: TextStyle(
-                              color: AppTheme.primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
@@ -116,7 +118,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'اختر نوع الخدمة',
+                      '╪د╪«╪ز╪▒ ┘┘ê╪╣ ╪د┘╪«╪»┘à╪ر',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 18,
@@ -145,7 +147,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                             decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? AppTheme.primaryColor.withValues(
+                                      ? Theme.of(context).colorScheme.primary.withValues(
                                         alpha: 0.05,
                                       )
                                       : Theme.of(context).colorScheme.surface,
@@ -153,7 +155,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                               border: Border.all(
                                 color:
                                     isSelected
-                                        ? AppTheme.primaryColor
+                                        ? Theme.of(context).colorScheme.primary
                                         : Theme.of(context).colorScheme.outline,
                                 width: isSelected ? 2 : 1,
                               ),
@@ -165,7 +167,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                   decoration: BoxDecoration(
                                     color:
                                         isSelected
-                                            ? AppTheme.primaryColor
+                                            ? Theme.of(context).colorScheme.primary
                                             : Theme.of(context)
                                                 .colorScheme
                                                 .surfaceContainerHighest,
@@ -218,8 +220,8 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                 const SizedBox(width: 16),
                                 Text(
                                   option['price'] as String,
-                                  style: const TextStyle(
-                                    color: AppTheme.primaryColor,
+                                  style:  TextStyle(
+                                    color: Theme.of(context).colorScheme.primary,
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -232,7 +234,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'ملاحظات إضافية',
+                      '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 16,
@@ -244,7 +246,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                       maxLines: 4,
                       onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
-                        hintText: 'اكتب ملاحظاتك هنا...',
+                        hintText: '╪د┘â╪ز╪ذ ┘à┘╪د╪ص╪╕╪د╪ز┘â ┘ç┘╪د...',
                         filled: true,
                         fillColor:
                             Theme.of(
@@ -273,7 +275,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 ],
               ),
               child: AppButton(
-                text: 'التالي: تحديد الموقع',
+                text: '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘┘à┘ê┘é╪╣',
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -286,6 +288,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

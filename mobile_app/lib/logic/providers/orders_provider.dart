@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/network/api_client.dart';
@@ -13,9 +13,9 @@ class OrdersProvider extends ChangeNotifier {
   String? _errorMessage;
 
   // Local metadata (not stored on server)
-  final Map<int, String> _orderImagePaths = {}; // orderId → local image path
-  final Map<int, String> _orderServiceNames = {}; // orderId → service name
-  final Map<int, String> _orderNotes = {}; // orderId → notes
+  final Map<int, String> _orderImagePaths = {}; // orderId ظْ local image path
+  final Map<int, String> _orderServiceNames = {}; // orderId ظْ service name
+  final Map<int, String> _orderNotes = {}; // orderId ظْ notes
 
   // Polling state
   Timer? _pollingTimer;
@@ -32,7 +32,7 @@ class OrdersProvider extends ChangeNotifier {
   String? serviceNameForOrder(int orderId) => _orderServiceNames[orderId];
   String? notesForOrder(int orderId) => _orderNotes[orderId];
 
-  // ── Fetch all orders for a user ──────────────────────────────
+  // ظ¤ظ¤ Fetch all orders for a user ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   Future<void> fetchOrders({int? userId}) async {
     _isLoading = true;
     _errorMessage = null;
@@ -45,9 +45,10 @@ class OrdersProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse<List<OrderModel>>.fromJson(
           response.data,
-          (json) => (json as List<dynamic>)
-              .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
-              .toList(),
+          (json) =>
+              (json as List<dynamic>)
+                  .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
+                  .toList(),
         );
 
         if (apiResponse.success) {
@@ -66,7 +67,7 @@ class OrdersProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Create order then start polling ──────────────────────────
+  // ظ¤ظ¤ Create order then start polling ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   Future<OrderModel?> createOrder(CreateOrderDto dto) async {
     _isLoading = true;
     _errorMessage = null;
@@ -78,8 +79,9 @@ class OrdersProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final body = response.data as Map<String, dynamic>;
 
-        // Backend returns { message, order } — fallback to { data } for compatibility
-        final orderJson = (body['order'] ?? body['data']) as Map<String, dynamic>?;
+        // Backend returns { message, order } ظ¤ fallback to { data } for compatibility
+        final orderJson =
+            (body['order'] ?? body['data']) as Map<String, dynamic>?;
 
         if (orderJson != null) {
           final newOrder = OrderModel.fromJson(orderJson);
@@ -116,7 +118,7 @@ class OrdersProvider extends ChangeNotifier {
     return null;
   }
 
-  // ── Polling: check order status every 5 seconds ───────────────
+  // ظ¤ظ¤ Polling: check order status every 5 seconds ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   void startPolling(int orderId) {
     stopPolling(); // cancel any existing timer
     _lastKnownStatus = OrderStatus.pending;
@@ -149,7 +151,7 @@ class OrdersProvider extends ChangeNotifier {
             _orders[idx] = updatedOrder;
           }
 
-          // If status just changed to Accepted — fire callback!
+          // If status just changed to Accepted ظ¤ fire callback!
           if (_lastKnownStatus != OrderStatus.accepted &&
               updatedOrder.orderStatus == OrderStatus.accepted) {
             onOrderAccepted?.call(updatedOrder);

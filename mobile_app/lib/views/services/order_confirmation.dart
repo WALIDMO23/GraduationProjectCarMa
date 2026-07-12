@@ -1,15 +1,17 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/home/home.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class OrderConfirmationPage extends StatelessWidget {
   const OrderConfirmationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -33,7 +35,7 @@ class OrderConfirmationPage extends StatelessWidget {
               ),
                SizedBox(height: 40),
                Text(
-                'تم تأكيد الطلب بنجاح!',
+                '╪ز┘à ╪ز╪ث┘â┘è╪» ╪د┘╪╖┘╪ذ ╪ذ┘╪ش╪د╪ص!',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 24,
@@ -43,7 +45,7 @@ class OrderConfirmationPage extends StatelessWidget {
               ),
                SizedBox(height: 16),
                Text(
-                'تم إرسال طلبك بنجاح، السائق الآن في طريقه إليك. يمكنك تتبع الطلب من الشاشة الرئيسية.',
+                '╪ز┘à ╪ح╪▒╪│╪د┘ ╪╖┘╪ذ┘â ╪ذ┘╪ش╪د╪ص╪î ╪د┘╪│╪د╪خ┘é ╪د┘╪ت┘ ┘┘è ╪╖╪▒┘è┘é┘ç ╪ح┘┘è┘â. ┘è┘à┘â┘┘â ╪ز╪ز╪ذ╪╣ ╪د┘╪╖┘╪ذ ┘à┘ ╪د┘╪┤╪د╪┤╪ر ╪د┘╪▒╪خ┘è╪│┘è╪ر.',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 16,
@@ -61,30 +63,30 @@ class OrderConfirmationPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildRow(context, 'رقم الطلب', '#10245'),
+                    _buildRow(context, '╪▒┘é┘à ╪د┘╪╖┘╪ذ', '#10245'),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Divider(color: Theme.of(context).colorScheme.outline),
                     ),
-                    _buildRow(context, 'الخدمة', 'ونش هيدروليك'),
+                    _buildRow(context, '╪د┘╪«╪»┘à╪ر', '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â'),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Divider(color: Theme.of(context).colorScheme.outline),
                     ),
-                    _buildRow(context, 'الوقت المقدر للوصول', '10 - 15 دقيقة'),
+                    _buildRow(context, '╪د┘┘ê┘é╪ز ╪د┘┘à┘é╪»╪▒ ┘┘┘ê╪╡┘ê┘', '10 - 15 ╪»┘é┘è┘é╪ر'),
                   ],
                 ),
               ),
               const Spacer(),
               AppButton(
-                text: 'تتبع الطلب',
+                text: '╪ز╪ز╪ذ╪╣ ╪د┘╪╖┘╪ذ',
                 onPressed: () {
                   // TODO: Navigate to active tracking view
                 },
               ),
               const SizedBox(height: 16),
               AppButton(
-                text: 'العودة للرئيسية',
+                text: '╪د┘╪╣┘ê╪»╪ر ┘┘╪▒╪خ┘è╪│┘è╪ر',
                 isOutlined: true,
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
@@ -97,6 +99,7 @@ class OrderConfirmationPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

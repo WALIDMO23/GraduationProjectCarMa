@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
@@ -41,7 +41,7 @@ class ActiveOrderCard extends StatelessWidget {
         if (activeOrder.isAccepted || activeOrder.isInProgress) {
           title    = s.orderOnTheWay;
           subtitle = activeOrder.hasTechnician
-              ? '${activeOrder.technicianName} ${s.isArabic ? "في الطريق إليك" : "is on the way"}'
+              ? '${activeOrder.technicianName} ${s.isArabic ? "┘┘è ╪د┘╪╖╪▒┘è┘é ╪ح┘┘è┘â" : "is on the way"}'
               : s.orderOnTheWaySub;
           statusColor = AppTheme.successColor;
         }
@@ -64,7 +64,7 @@ class ActiveOrderCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ── Status row ──────────────────────────────
+                // ظ¤ظ¤ Status row ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
                 Row(
                   children: [
                     Container(
@@ -122,7 +122,7 @@ class ActiveOrderCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // ── View Details button ──────────────────────
+                // ظ¤ظ¤ View Details button ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
                 GestureDetector(
                   onTap: () {
                     final imgPath = ordersProvider.imagePathForOrder(activeOrder.id);
@@ -135,7 +135,9 @@ class ActiveOrderCard extends StatelessWidget {
                     width: double.infinity,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? AppTheme.carmaGold
+                          : AppTheme.primaryColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     alignment: Alignment.center,
@@ -144,8 +146,8 @@ class ActiveOrderCard extends StatelessWidget {
                       children: [
                         Text(
                           s.viewDetails,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface,
+                          style: const TextStyle(
+                            color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
@@ -155,7 +157,7 @@ class ActiveOrderCard extends StatelessWidget {
                           image: 'arroww.svg',
                           width: 13,
                           height: 13,
-                          color: Theme.of(context).colorScheme.onSurface,
+                          color: Colors.black,
                         ),
                       ],
                     ),
@@ -250,7 +252,7 @@ class ActiveOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'لا توجد طلبات حالية',
+                    '┘╪د ╪ز┘ê╪ش╪» ╪╖┘╪ذ╪د╪ز ╪ص╪د┘┘è╪ر',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 15,

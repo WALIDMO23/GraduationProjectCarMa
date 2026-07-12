@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -6,6 +6,7 @@ import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/views/home/home.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:provider/provider.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -61,41 +62,41 @@ class _CreateAccountState extends State<CreateAccount> {
     bool hasError = false;
 
     if (name.isEmpty) {
-      setState(() => _nameError = 'الرجاء إدخال الاسم الكامل');
+      setState(() => _nameError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪د╪│┘à ╪د┘┘â╪د┘à┘');
       hasError = true;
     }
 
     if (email.isEmpty) {
-      setState(() => _emailError = 'الرجاء إدخال البريد الإلكتروني');
+      setState(() => _emailError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è');
       hasError = true;
     } else if (!email.contains('@') || !email.contains('.')) {
-      setState(() => _emailError = 'صيغة البريد الإلكتروني غير صحيحة');
+      setState(() => _emailError = '╪╡┘è╪║╪ر ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ╪║┘è╪▒ ╪╡╪ص┘è╪ص╪ر');
       hasError = true;
     }
 
     if (phone.isEmpty) {
-      setState(() => _phoneError = 'الرجاء إدخال رقم الهاتف');
+      setState(() => _phoneError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪▒┘é┘à ╪د┘┘ç╪د╪ز┘');
       hasError = true;
     }
 
     if (password.isEmpty) {
-      setState(() => _passwordError = 'الرجاء إدخال كلمة المرور');
+      setState(() => _passwordError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒');
       hasError = true;
     } else if (password.length < 4) {
-      setState(() => _passwordError = 'كلمة المرور يجب أن تكون 4 أحرف على الأقل');
+      setState(() => _passwordError = '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒ ┘è╪ش╪ذ ╪ث┘ ╪ز┘â┘ê┘ 4 ╪ث╪ص╪▒┘ ╪╣┘┘ë ╪د┘╪ث┘é┘');
       hasError = true;
     }
 
     if (confirmPassword.isEmpty) {
-      setState(() => _confirmPasswordError = 'الرجاء تأكيد كلمة المرور');
+      setState(() => _confirmPasswordError = '╪د┘╪▒╪ش╪د╪ة ╪ز╪ث┘â┘è╪» ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒');
       hasError = true;
     } else if (password != confirmPassword) {
-      setState(() => _confirmPasswordError = 'كلمتا المرور غير متطابقتين');
+      setState(() => _confirmPasswordError = '┘â┘┘à╪ز╪د ╪د┘┘à╪▒┘ê╪▒ ╪║┘è╪▒ ┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘');
       hasError = true;
     }
 
     if (!isChecked) {
-      setState(() => _generalError = 'يجب الموافقة على الشروط والأحكام أولاً');
+      setState(() => _generalError = '┘è╪ش╪ذ ╪د┘┘à┘ê╪د┘┘é╪ر ╪╣┘┘ë ╪د┘╪┤╪▒┘ê╪╖ ┘ê╪د┘╪ث╪ص┘â╪د┘à ╪ث┘ê┘╪د┘ï');
       hasError = true;
     }
 
@@ -121,49 +122,76 @@ class _CreateAccountState extends State<CreateAccount> {
       final error = auth.errorMessage ?? '';
 
       // Handles both English (new backend) and Arabic (legacy) messages
-      if (error.contains('مسجّل بالفعل') || error.contains('EMAIL_EXISTS') ||
+      if (error.contains('┘à╪│╪ش┘ّ┘ ╪ذ╪د┘┘╪╣┘') || error.contains('EMAIL_EXISTS') ||
           error.contains('Email already exists') || error.contains('already exists')) {
-        setState(() => _emailError = 'هذا البريد الإلكتروني مسجّل بالفعل، يمكنك تسجيل الدخول');
-      } else if (error.contains('متطابقتين') || error.contains('PASSWORD_MISMATCH')) {
-        setState(() => _confirmPasswordError = 'كلمتا المرور غير متطابقتين');
+        setState(() => _emailError = '┘ç╪░╪د ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ┘à╪│╪ش┘ّ┘ ╪ذ╪د┘┘╪╣┘╪î ┘è┘à┘â┘┘â ╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘');
+      } else if (error.contains('┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘') || error.contains('PASSWORD_MISMATCH')) {
+        setState(() => _confirmPasswordError = '┘â┘┘à╪ز╪د ╪د┘┘à╪▒┘ê╪▒ ╪║┘è╪▒ ┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘');
       } else if (error.contains('Connection') || error.contains('SocketException') || error.contains('Failed host')) {
-        setState(() => _generalError = 'لا يمكن الاتصال بالخادم، تأكد من اتصالك بالإنترنت');
+        setState(() => _generalError = '┘╪د ┘è┘à┘â┘ ╪د┘╪د╪ز╪╡╪د┘ ╪ذ╪د┘╪«╪د╪»┘à╪î ╪ز╪ث┘â╪» ┘à┘ ╪د╪ز╪╡╪د┘┘â ╪ذ╪د┘╪ح┘╪ز╪▒┘╪ز');
       } else {
-        setState(() => _generalError = error.isNotEmpty ? error : 'فشل إنشاء الحساب، حاول مرة أخرى');
+        setState(() => _generalError = error.isNotEmpty ? error : '┘╪┤┘ ╪ح┘╪┤╪د╪ة ╪د┘╪ص╪│╪د╪ذ╪î ╪ص╪د┘ê┘ ┘à╪▒╪ر ╪ث╪«╪▒┘ë');
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffE2E8F0),
-      appBar: AppBar(
+    return AppBackground(
+      child: Scaffold(
         backgroundColor: Colors.transparent,
-        title: const Text('إنشاء حساب جديد'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
         ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           physics: const BouncingScrollPhysics(),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: const Color(0xffFFFFFF),
-            ),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(
-                start: 32, end: 32, bottom: 24, top: 32,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // General error banner
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                        fontSize: 54,
+                        fontWeight: FontWeight.w900,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: 'Car',
+                          style: TextStyle(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: 'Ma',
+                          style: TextStyle(color: AppTheme.carmaGold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(
+                  child: Text(
+                    '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ ╪ش╪»┘è╪»',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // General error banner
                   if (_generalError != null) ...[
                     _ErrorBanner(message: _generalError!),
                     const SizedBox(height: 16),
@@ -171,8 +199,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _nameController,
-                    label: 'الاسم الكامل',
-                    hint: 'أدخل اسمك الكامل',
+                    label: '╪د┘╪د╪│┘à ╪د┘┘â╪د┘à┘',
+                    hint: '╪ث╪»╪«┘ ╪د╪│┘à┘â ╪د┘┘â╪د┘à┘',
                     keyboardType: TextInputType.name,
                     onChanged: (_) => setState(() => _nameError = null),
                   ),
@@ -181,7 +209,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _emailController,
-                    label: 'البريد الإلكتروني',
+                    label: '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è',
                     hint: 'example@email.com',
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (_) => setState(() => _emailError = null),
@@ -191,7 +219,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _phoneController,
-                    label: 'رقم الهاتف',
+                    label: '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘',
                     hint: '5xxxxxxxx',
                     keyboardType: TextInputType.phone,
                     withCuntryCode: false,
@@ -202,8 +230,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _passwordController,
-                    label: 'كلمة المرور',
-                    hint: 'أدخل كلمة المرور',
+                    label: '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+                    hint: '╪ث╪»╪«┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
                     isPassword: true,
                     onChanged: (_) => setState(() => _passwordError = null),
                   ),
@@ -212,8 +240,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _confirmPasswordController,
-                    label: 'تأكيد كلمة المرور',
-                    hint: 'أعد إدخال كلمة المرور',
+                    label: '╪ز╪ث┘â┘è╪» ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+                    hint: '╪ث╪╣╪» ╪ح╪»╪«╪د┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
                     isPassword: true,
                     onChanged: (_) => setState(() => _confirmPasswordError = null),
                   ),
@@ -227,7 +255,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         height: 24,
                         child: Checkbox(
                           value: isChecked,
-                          activeColor: AppTheme.primaryColor,
+                          activeColor: AppTheme.carmaGold,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                           side: BorderSide(color: Theme.of(context).colorScheme.outline),
                           onChanged: (value) {
@@ -240,16 +268,16 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        'أوافق على ',
+                        '╪ث┘ê╪د┘┘é ╪╣┘┘ë ',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
                         ),
                       ),
                       const Text(
-                        'الشروط والأحكام',
+                        '╪د┘╪┤╪▒┘ê╪╖ ┘ê╪د┘╪ث╪ص┘â╪د┘à',
                         style: TextStyle(
-                          color: AppTheme.primaryColor,
+                          color: AppTheme.carmaGold,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
@@ -264,7 +292,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return AppButton(
-                        text: 'إنشاء حساب',
+                        text: '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ',
                         onPressed: _handleRegister,
                       );
                     },
@@ -275,7 +303,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'لديك حساب بالفعل؟ ',
+                        '┘╪»┘è┘â ╪ص╪│╪د╪ذ ╪ذ╪د┘┘╪╣┘╪ا ',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
@@ -289,9 +317,9 @@ class _CreateAccountState extends State<CreateAccount> {
                           );
                         },
                         child: const Text(
-                          'تسجيل دخول',
+                          '╪ز╪│╪ش┘è┘ ╪»╪«┘ê┘',
                           style: TextStyle(
-                            color: AppTheme.primaryColor,
+                            color: AppTheme.carmaGold,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
@@ -299,17 +327,17 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                     ],
                   ),
-                ],
-              ),
+              ],
             ),
           ),
         ),
+      ),
       ),
     );
   }
 }
 
-// ─── Inline error under a field ──────────────────────────────────────────────
+// ظ¤ظ¤ظ¤ Inline error under a field ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
 class _InlineError extends StatelessWidget {
   final String message;
   const _InlineError({required this.message});
@@ -334,7 +362,7 @@ class _InlineError extends StatelessWidget {
   }
 }
 
-// ─── General error banner ─────────────────────────────────────────────────────
+// ظ¤ظ¤ظ¤ General error banner ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
 class _ErrorBanner extends StatelessWidget {
   final String message;
   const _ErrorBanner({required this.message});

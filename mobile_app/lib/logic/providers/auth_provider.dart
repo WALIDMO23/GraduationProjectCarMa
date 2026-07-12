@@ -1,4 +1,5 @@
-import 'dart:convert';
+﻿import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _currentUser != null;
 
-  // ─── Restore session from SharedPreferences (no API call) ──────────────────
+  // ظ¤ظ¤ظ¤ Restore session from SharedPreferences (no API call) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   // New backend JWT uses ClaimTypes.NameIdentifier (userId) not email,
   // so we cache user data locally instead of calling /admin/me
   Future<void> loadCurrentUser() async {
@@ -31,14 +32,17 @@ class AuthProvider extends ChangeNotifier {
       userMap['token'] = token;
       _currentUser = UserModel.fromJson(userMap);
       notifyListeners();
+
+      // Fetch fresh profile data in background
+      fetchProfile();
     } catch (_) {
-      // Corrupt cached data — clear it so user logs in again
+      // Corrupt cached data ظ¤ clear it so user logs in again
       await prefs.remove('auth_token');
       await prefs.remove('user_data');
     }
   }
 
-  // ─── LOGIN ─────────────────────────────────────────────────────────────────
+  // ظ¤ظ¤ظ¤ LOGIN ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   // Backend: POST /api/auth/login
   // Response: { message, token, user: { Id, Name, Email, Role } }
   // Errors (401): "User not found" | "Wrong password"
@@ -48,10 +52,10 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _apiClient.dio.post('/auth/login', data: {
-        'email': email,
-        'password': password,
-      });
+      final response = await _apiClient.dio.post(
+        '/auth/login',
+        data: {'email': email, 'password': password},
+      );
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -89,7 +93,7 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ─── LOGOUT ────────────────────────────────────────────────────────────────
+  // ظ¤ظ¤ظ¤ LOGOUT ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   Future<bool> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
@@ -99,10 +103,10 @@ class AuthProvider extends ChangeNotifier {
     return true;
   }
 
-  // ─── REGISTER ──────────────────────────────────────────────────────────────
+  // ظ¤ظ¤ظ¤ REGISTER ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
   // Backend: POST /api/auth/register
   // New response: { message: "User registered successfully", userId }
-  // (No token or user object returned — auto-login after success)
+  // (No token or user object returned ظ¤ auto-login after success)
   // Errors (400): "Email already exists"
   Future<bool> register({
     required String name,
@@ -116,16 +120,19 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _apiClient.dio.post('/Auth/register', data: {
-        'name': name,
-        'email': email,
-        'phoneNumber': phoneNumber,
-        'password': password,
-        // confirmPassword is validated locally; backend no longer requires it
-      });
+      final response = await _apiClient.dio.post(
+        '/Auth/register',
+        data: {
+          'name': name,
+          'email': email,
+          'phoneNumber': phoneNumber,
+          'password': password,
+          // confirmPassword is validated locally; backend no longer requires it
+        },
+      );
 
       if (response.statusCode == 200) {
-        // New backend returns { message, userId } only — auto login to get token
+        // New backend returns { message, userId } only ظ¤ auto login to get token
         _isLoading = false;
         notifyListeners();
         return await login(email, password);
@@ -146,9 +153,9 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ─── UPDATE PROFILE ────────────────────────────────────────────────────────
-  // Backend: PUT /api/admin/profile
-  // DTO: { fullName, email, phoneNumber }
+  // ظ¤ظ¤ظ¤ UPDATE PROFILE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // Backend: PUT /api/profile/update
+  // DTO: { fullName, name, email, phoneNumber }
   Future<bool> updateProfile({
     required String name,
     required String phoneNumber,
@@ -158,13 +165,17 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _apiClient.dio.put('/admin/profile', data: {
-        'fullName': name,
-        'email': _currentUser?.email ?? '',
-        'phoneNumber': phoneNumber,
-      });
+      final response = await _apiClient.dio.put(
+        '/profile/update',
+        data: {
+          'fullName': name,
+          'name': name,
+          'email': _currentUser?.email ?? '',
+          'phoneNumber': phoneNumber,
+        },
+      );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
         _currentUser = _currentUser?.copyWith(
           name: name,
           phoneNumber: phoneNumber,
@@ -187,10 +198,14 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         return true;
       }
-      _errorMessage = 'فشل تحديث البيانات';
+      _errorMessage = '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
     } on DioException catch (e) {
-      _errorMessage =
-          e.response?.data['message'] ?? e.message ?? 'فشل تحديث البيانات';
+      if (e.response?.data is Map<String, dynamic>) {
+        _errorMessage =
+            e.response?.data['message'] ?? e.message ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
+      } else {
+        _errorMessage = e.message ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
+      }
     } catch (e) {
       _errorMessage = e.toString();
     }
@@ -198,5 +213,68 @@ class AuthProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     return false;
+  }
+
+  // ظ¤ظ¤ظ¤ UPLOAD PROFILE IMAGE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  Future<bool> uploadProfileImage(File imageFile) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(imageFile.path),
+      });
+
+      final response = await _apiClient.dio.post(
+        '/profile/upload-image',
+        data: formData,
+      );
+
+      if (response.statusCode == 200) {
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      _errorMessage = '┘╪┤┘ ╪▒┘╪╣ ╪د┘╪╡┘ê╪▒╪ر';
+    } catch (e) {
+      _errorMessage = e.toString();
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return false;
+  }
+
+  // ظ¤ظ¤ظ¤ FETCH PROFILE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // Backend: GET /api/profile/me
+  Future<void> fetchProfile() async {
+    try {
+      final response = await _apiClient.dio.get('/profile/me');
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (_currentUser != null) {
+          _currentUser = _currentUser!.copyWith(
+            name: data['name'] ?? _currentUser!.name,
+            phoneNumber: data['phoneNumber'] ?? _currentUser!.phoneNumber,
+          );
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'user_data',
+            jsonEncode({
+              'id': _currentUser!.id,
+              'name': _currentUser!.name,
+              'email': _currentUser!.email,
+              'role': _currentUser!.role,
+              'phoneNumber': _currentUser!.phoneNumber,
+            }),
+          );
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      // Ignore errors for silent background fetch
+    }
   }
 }

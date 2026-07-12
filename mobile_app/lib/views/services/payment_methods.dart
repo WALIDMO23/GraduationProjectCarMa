@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
-import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/order_confirmation.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 
 class PaymentMethodsPage extends StatefulWidget {
   const PaymentMethodsPage({super.key});
@@ -15,33 +15,34 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
 
   final List<Map<String, dynamic>> _methods = [
     {
-      'title': 'الدفع نقداً',
+      'title': '╪د┘╪»┘╪╣ ┘┘é╪»╪د┘ï',
       'icon': Icons.money,
-      'desc': 'الدفع للسائق عند الوصول',
+      'desc': '╪د┘╪»┘╪╣ ┘┘╪│╪د╪خ┘é ╪╣┘╪» ╪د┘┘ê╪╡┘ê┘',
     },
     {
-      'title': 'البطاقة الائتمانية / مدى',
+      'title': '╪د┘╪ذ╪╖╪د┘é╪ر ╪د┘╪د╪خ╪ز┘à╪د┘┘è╪ر / ┘à╪»┘ë',
       'icon': Icons.credit_card,
       'desc': '**** **** **** 1234',
     },
     {
-      'title': 'أبل باي (Apple Pay)',
+      'title': '╪ث╪ذ┘ ╪ذ╪د┘è (Apple Pay)',
       'icon': Icons.apple,
-      'desc': 'دفع سريع وآمن',
+      'desc': '╪»┘╪╣ ╪│╪▒┘è╪╣ ┘ê╪ت┘à┘',
     },
     {
-      'title': 'المحفظة',
+      'title': '╪د┘┘à╪ص┘╪╕╪ر',
       'icon': Icons.account_balance_wallet,
-      'desc': 'الرصيد المتاح: 250 ريال',
+      'desc': '╪د┘╪▒╪╡┘è╪» ╪د┘┘à╪ز╪د╪ص: 250 ╪▒┘è╪د┘',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('طريقة الدفع'),
+        title: const Text('╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -69,7 +70,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: AppTheme.primaryColor.withValues(alpha: 0.3),
+                            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
                             blurRadius: 15,
                             offset: const Offset(0, 8),
                           ),
@@ -81,14 +82,14 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'إجمالي المبلغ',
+                                '╪ح╪ش┘à╪د┘┘è ╪د┘┘à╪ذ┘╪║',
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                '150 ريال',
+                                '150 ╪▒┘è╪د┘',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
@@ -104,14 +105,14 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const [
                               Text(
-                                'الخدمة:',
+                                '╪د┘╪«╪»┘à╪ر:',
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                'ونش هيدروليك',
+                                '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -125,7 +126,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      'اختر طريقة الدفع',
+                      '╪د╪«╪ز╪▒ ╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 18,
@@ -154,13 +155,13 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             decoration: BoxDecoration(
                               color:
                                   isSelected
-                                      ? AppTheme.primaryColor.withValues(alpha: 0.05)
+                                      ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.05)
                                       : Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
                                 color:
                                     isSelected
-                                        ? AppTheme.primaryColor
+                                        ? Theme.of(context).colorScheme.primary
                                         : Theme.of(context).colorScheme.outline,
                                 width: isSelected ? 2 : 1,
                               ),
@@ -207,9 +208,9 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                                   ),
                                 ),
                                 if (isSelected)
-                                  const Icon(
+                                   Icon(
                                     Icons.check_circle,
-                                    color: AppTheme.primaryColor,
+                                    color: Theme.of(context).colorScheme.primary,
                                   )
                                 else
                                   Icon(
@@ -239,7 +240,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                 ],
               ),
               child: AppButton(
-                text: 'تأكيد الدفع والطلب',
+                text: '╪ز╪ث┘â┘è╪» ╪د┘╪»┘╪╣ ┘ê╪د┘╪╖┘╪ذ',
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
@@ -252,6 +253,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

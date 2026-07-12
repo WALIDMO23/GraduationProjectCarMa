@@ -1,107 +1,134 @@
-/// Simple string localization. Access via: AppStrings.of(context).login
+﻿/// Simple string localization. Access via: AppStrings.of(context).login
 class AppStrings {
   final bool isArabic;
   const AppStrings._(this.isArabic);
 
   static AppStrings of(context) {
     // Will be called with locale from LocaleProvider
-    return const AppStrings._(true); // default — overridden in widgets
+    return const AppStrings._(true); // default ظ¤ overridden in widgets
   }
 
-  // ─── Auth ─────────────────────────────────────────────────────
-  String get login          => isArabic ? 'تسجيل الدخول'         : 'Login';
-  String get register       => isArabic ? 'إنشاء حساب'           : 'Create Account';
-  String get logout         => isArabic ? 'تسجيل الخروج'         : 'Logout';
-  String get email          => isArabic ? 'البريد الإلكتروني'    : 'Email';
-  String get password       => isArabic ? 'كلمة المرور'           : 'Password';
-  String get confirmPass    => isArabic ? 'تأكيد كلمة المرور'    : 'Confirm Password';
-  String get fullName       => isArabic ? 'الاسم الكامل'         : 'Full Name';
-  String get phone          => isArabic ? 'رقم الهاتف'           : 'Phone Number';
-  String get forgotPassword => isArabic ? 'نسيت كلمة السر؟'      : 'Forgot Password?';
-  String get haveAccount    => isArabic ? 'لديك حساب بالفعل؟ '   : 'Already have an account? ';
-  String get noAccount      => isArabic ? 'ليس لديك حساب؟ '      : 'Don\'t have an account? ';
-  String get welcomeBack    => isArabic ? 'مرحباً بك مجدداً!'    : 'Welcome Back!';
-  String get loginSubtitle  => isArabic ? 'يرجى إدخال بياناتك'   : 'Please enter your details';
+  // ظ¤ظ¤ظ¤ Auth ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get login          => isArabic ? '╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘'         : 'Login';
+  String get register       => isArabic ? '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ'           : 'Create Account';
+  String get logout         => isArabic ? '╪ز╪│╪ش┘è┘ ╪د┘╪«╪▒┘ê╪ش'         : 'Logout';
+  String get email          => isArabic ? '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è'    : 'Email';
+  String get password       => isArabic ? '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒'           : 'Password';
+  String get confirmPass    => isArabic ? '╪ز╪ث┘â┘è╪» ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒'    : 'Confirm Password';
+  String get fullName       => isArabic ? '╪د┘╪د╪│┘à ╪د┘┘â╪د┘à┘'         : 'Full Name';
+  String get phone          => isArabic ? '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘'           : 'Phone Number';
+  String get forgotPassword => isArabic ? '┘╪│┘è╪ز ┘â┘┘à╪ر ╪د┘╪│╪▒╪ا'      : 'Forgot Password?';
+  String get haveAccount    => isArabic ? '┘╪»┘è┘â ╪ص╪│╪د╪ذ ╪ذ╪د┘┘╪╣┘╪ا '   : 'Already have an account? ';
+  String get noAccount      => isArabic ? '┘┘è╪│ ┘╪»┘è┘â ╪ص╪│╪د╪ذ╪ا '      : 'Don\'t have an account? ';
+  String get welcomeBack    => isArabic ? '┘à╪▒╪ص╪ذ╪د┘ï ╪ذ┘â ┘à╪ش╪»╪»╪د┘ï!'    : 'Welcome Back!';
+  String get loginSubtitle  => isArabic ? '┘è╪▒╪ش┘ë ╪ح╪»╪«╪د┘ ╪ذ┘è╪د┘╪د╪ز┘â'   : 'Please enter your details';
 
-  // ── Home ─────────────────────────────────────────────────────
-  String get hello          => isArabic ? 'مرحباً'                : 'Hello';
-  String get howHelp        => isArabic ? 'كيف يمكننا مساعدتك اليوم؟' : 'How can we help you today?';
-  String get emergency      => isArabic ? 'صيانة طارئة'           : 'Emergency Service';
-  String get towing         => isArabic ? 'طلب ونش'               : 'Towing';
-  String get mainServices   => isArabic ? 'الخدمات الأساسية'      : 'Main Services';
-  String get viewAll        => isArabic ? 'عرض الكل'              : 'View All';
-  String get all            => isArabic ? 'الكل'                  : 'All';
-  String get battery        => isArabic ? 'البطارية'              : 'Battery';
-  String get oilChange      => isArabic ? 'تغيير الزيت'           : 'Oil Change';
-  String get tires          => isArabic ? 'الإطارات'              : 'Tires';
-  String get carWash        => isArabic ? 'غسيل السيارة'          : 'Car Wash';
-  String get menu           => isArabic ? 'القائمة'               : 'Menu';
-  String get services       => isArabic ? 'الخدمات'               : 'Services';
+  // ظ¤ظ¤ Home ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get hello          => isArabic ? '┘à╪▒╪ص╪ذ╪د┘ï'                : 'Hello';
+  String get howHelp        => isArabic ? '┘â┘è┘ ┘è┘à┘â┘┘╪د ┘à╪│╪د╪╣╪»╪ز┘â ╪د┘┘è┘ê┘à╪ا' : 'How can we help you today?';
+  String get emergency      => isArabic ? '╪╡┘è╪د┘╪ر ╪╖╪د╪▒╪خ╪ر'           : 'Emergency Service';
+  String get towing         => isArabic ? '╪╖┘╪ذ ┘ê┘╪┤'               : 'Towing';
+  String get mainServices   => isArabic ? '╪د┘╪«╪»┘à╪د╪ز ╪د┘╪ث╪│╪د╪│┘è╪ر'      : 'Main Services';
+  String get viewAll        => isArabic ? '╪╣╪▒╪╢ ╪د┘┘â┘'              : 'View All';
+  String get all            => isArabic ? '╪د┘┘â┘'                  : 'All';
+  String get battery        => isArabic ? '╪د┘╪ذ╪╖╪د╪▒┘è╪ر'              : 'Battery';
+  String get oilChange      => isArabic ? '╪ز╪║┘è┘è╪▒ ╪د┘╪▓┘è╪ز'           : 'Oil Change';
+  String get tires          => isArabic ? '╪د┘╪ح╪╖╪د╪▒╪د╪ز'              : 'Tires';
+  String get carWash        => isArabic ? '╪║╪│┘è┘ ╪د┘╪│┘è╪د╪▒╪ر'          : 'Car Wash';
+  String get menu           => isArabic ? '╪د┘┘é╪د╪خ┘à╪ر'               : 'Menu';
+  String get services       => isArabic ? '╪د┘╪«╪»┘à╪د╪ز'               : 'Services';
 
   // Subtitles for services
-  String get batterySub     => isArabic ? 'شحن / تغيير / شراء بطارية جديدة' : 'Charge / Replace / Buy New Battery';
-  String get oilChangeSub   => isArabic ? 'تغيير الزيت والفلتر - صيانة دورية' : 'Oil & Filter Change - Regular Maintenance';
-  String get tiresSub       => isArabic ? 'نفخ / تغيير / فحص الإطارات' : 'Inflate / Replace / Inspect Tires';
-  String get carWashSub     => isArabic ? 'تنظيف شامل من الداخل والخارج' : 'Comprehensive Interior & Exterior Cleaning';
-  String get emergencySub   => isArabic ? 'عطل مفاجئ؟ نصل إليك في أسرع وقت' : 'Sudden Breakdown? We reach you ASAP';
-  String get towingSub      => isArabic ? 'سحب السيارة من وإلى أي مكان' : 'Tow your car to and from anywhere';
+  String get batterySub     => isArabic ? '╪┤╪ص┘ / ╪ز╪║┘è┘è╪▒ / ╪┤╪▒╪د╪ة ╪ذ╪╖╪د╪▒┘è╪ر ╪ش╪»┘è╪»╪ر' : 'Charge / Replace / Buy New Battery';
+  String get oilChangeSub   => isArabic ? '╪ز╪║┘è┘è╪▒ ╪د┘╪▓┘è╪ز ┘ê╪د┘┘┘╪ز╪▒ - ╪╡┘è╪د┘╪ر ╪»┘ê╪▒┘è╪ر' : 'Oil & Filter Change - Regular Maintenance';
+  String get tiresSub       => isArabic ? '┘┘╪« / ╪ز╪║┘è┘è╪▒ / ┘╪ص╪╡ ╪د┘╪ح╪╖╪د╪▒╪د╪ز' : 'Inflate / Replace / Inspect Tires';
+  String get carWashSub     => isArabic ? '╪ز┘╪╕┘è┘ ╪┤╪د┘à┘ ┘à┘ ╪د┘╪»╪د╪«┘ ┘ê╪د┘╪«╪د╪▒╪ش' : 'Comprehensive Interior & Exterior Cleaning';
+  String get emergencySub   => isArabic ? '╪╣╪╖┘ ┘à┘╪د╪ش╪خ╪ا ┘╪╡┘ ╪ح┘┘è┘â ┘┘è ╪ث╪│╪▒╪╣ ┘ê┘é╪ز' : 'Sudden Breakdown? We reach you ASAP';
+  String get towingSub      => isArabic ? '╪│╪ص╪ذ ╪د┘╪│┘è╪د╪▒╪ر ┘à┘ ┘ê╪ح┘┘ë ╪ث┘è ┘à┘â╪د┘' : 'Tow your car to and from anywhere';
 
   // Prices
-  String get priceEGP       => isArabic ? 'جنيه' : 'EGP';
-  String get priceStarts    => isArabic ? 'يبدأ من' : 'Starts from';
+  String get priceEGP       => isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+  String get priceStarts    => isArabic ? '┘è╪ذ╪»╪ث ┘à┘' : 'Starts from';
 
-  // ─── Orders ───────────────────────────────────────────────────
-  String get orderPending      => isArabic ? 'طلبك قيد المراجعة من الإدارة' : 'Your order is being reviewed';
-  String get orderPendingSub   => isArabic ? 'سنقوم بالرد عليك في أقرب وقت' : 'We will get back to you soon';
-  String get orderOnTheWay     => isArabic ? 'تم تعيين فني صيانة'   : 'Technician Assigned';
-  String get orderOnTheWaySub  => isArabic ? 'الفني في الطريق إليك الآن' : 'Technician is on the way';
-  String get orderUnderProcess => isArabic ? 'الفني يعمل على سيارتك' : 'Technician working on your car';
-  String get orderUnderProcessSub => isArabic ? 'جارٍ إصلاح السيارة الآن' : 'Repair in progress';
-  String get orderCompleted    => isArabic ? 'طلب مكتمل'             : 'Order Completed';
-  String get orderCompletedSub => isArabic ? 'تم الانتهاء من الصيانة بنجاح' : 'Service completed successfully';
-  String get viewDetails       => isArabic ? 'عرض التفاصيل'          : 'View Details';
-  String get orderNow          => isArabic ? 'اطلب الآن'             : 'Order Now';
+  // ظ¤ظ¤ظ¤ Orders ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get orderPending      => isArabic ? '╪╖┘╪ذ┘â ┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر ┘à┘ ╪د┘╪ح╪»╪د╪▒╪ر' : 'Your order is being reviewed';
+  String get orderPendingSub   => isArabic ? '╪│┘┘é┘ê┘à ╪ذ╪د┘╪▒╪» ╪╣┘┘è┘â ┘┘è ╪ث┘é╪▒╪ذ ┘ê┘é╪ز' : 'We will get back to you soon';
+  String get orderOnTheWay     => isArabic ? '╪ز┘à ╪ز╪╣┘è┘è┘ ┘┘┘è ╪╡┘è╪د┘╪ر'   : 'Technician Assigned';
+  String get orderOnTheWaySub  => isArabic ? '╪د┘┘┘┘è ┘┘è ╪د┘╪╖╪▒┘è┘é ╪ح┘┘è┘â ╪د┘╪ت┘' : 'Technician is on the way';
+  String get orderUnderProcess => isArabic ? '╪د┘┘┘┘è ┘è╪╣┘à┘ ╪╣┘┘ë ╪│┘è╪د╪▒╪ز┘â' : 'Technician working on your car';
+  String get orderUnderProcessSub => isArabic ? '╪ش╪د╪▒┘ ╪ح╪╡┘╪د╪ص ╪د┘╪│┘è╪د╪▒╪ر ╪د┘╪ت┘' : 'Repair in progress';
+  String get orderCompleted    => isArabic ? '╪╖┘╪ذ ┘à┘â╪ز┘à┘'             : 'Order Completed';
+  String get orderCompletedSub => isArabic ? '╪ز┘à ╪د┘╪د┘╪ز┘ç╪د╪ة ┘à┘ ╪د┘╪╡┘è╪د┘╪ر ╪ذ┘╪ش╪د╪ص' : 'Service completed successfully';
+  String get viewDetails       => isArabic ? '╪╣╪▒╪╢ ╪د┘╪ز┘╪د╪╡┘è┘'          : 'View Details';
+  String get orderNow          => isArabic ? '╪د╪╖┘╪ذ ╪د┘╪ت┘'             : 'Order Now';
   // Legacy aliases
   String get orderInProgress    => orderOnTheWay;
   String get orderInProgressSub => orderOnTheWaySub;
 
-  // ─── Drawer ───────────────────────────────────────────────────
-  String get myOrders     => isArabic ? 'طلباتي'           : 'My Orders';
-  String get myVehicles   => isArabic ? 'سياراتي'          : 'My Vehicles';
-  String get help         => isArabic ? 'المساعدة'         : 'Help';
-  String get logoutConfirm => isArabic ? 'تسجيل الخروج'   : 'Logout';
+  // ظ¤ظ¤ظ¤ Drawer ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get myOrders     => isArabic ? '╪╖┘╪ذ╪د╪ز┘è'           : 'My Orders';
+  String get myVehicles   => isArabic ? '╪│┘è╪د╪▒╪د╪ز┘è'          : 'My Vehicles';
+  String get help         => isArabic ? '╪د┘┘à╪│╪د╪╣╪»╪ر'         : 'Help';
+  String get logoutConfirm => isArabic ? '╪ز╪│╪ش┘è┘ ╪د┘╪«╪▒┘ê╪ش'   : 'Logout';
 
-  // ─── Profile ──────────────────────────────────────────────────
-  String get profile        => isArabic ? 'الملف الشخصي'          : 'Profile';
-  String get personalInfo   => isArabic ? 'المعلومات الشخصية'     : 'Personal Information';
-  String get stats          => isArabic ? 'الإحصائيات'            : 'Statistics';
-  String get rating         => isArabic ? 'التقييم'               : 'Rating';
-  String get orders         => isArabic ? 'الطلبات'               : 'Orders';
-  String get editProfile    => isArabic ? 'تعديل البيانات'        : 'Edit Profile';
-  String get saveChanges    => isArabic ? 'حفظ التعديلات'         : 'Save Changes';
-  String get memberSince    => isArabic ? 'عضو منذ'               : 'Member since';
-  String get address        => isArabic ? 'العنوان'               : 'Address';
-  String get vehicle        => isArabic ? 'المركبة'               : 'Vehicle';
+  // ظ¤ظ¤ظ¤ Profile ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get profile        => isArabic ? '╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è'          : 'Profile';
+  String get personalInfo   => isArabic ? '╪د┘┘à╪╣┘┘ê┘à╪د╪ز ╪د┘╪┤╪«╪╡┘è╪ر'     : 'Personal Information';
+  String get stats          => isArabic ? '╪د┘╪ح╪ص╪╡╪د╪خ┘è╪د╪ز'            : 'Statistics';
+  String get rating         => isArabic ? '╪د┘╪ز┘é┘è┘è┘à'               : 'Rating';
+  String get orders         => isArabic ? '╪د┘╪╖┘╪ذ╪د╪ز'               : 'Orders';
+  String get editProfile    => isArabic ? '╪ز╪╣╪»┘è┘ ╪د┘╪ذ┘è╪د┘╪د╪ز'        : 'Edit Profile';
+  String get saveChanges    => isArabic ? '╪ص┘╪╕ ╪د┘╪ز╪╣╪»┘è┘╪د╪ز'         : 'Save Changes';
+  String get memberSince    => isArabic ? '╪╣╪╢┘ê ┘à┘╪░'               : 'Member since';
+  String get address        => isArabic ? '╪د┘╪╣┘┘ê╪د┘'               : 'Address';
+  String get vehicle        => isArabic ? '╪د┘┘à╪▒┘â╪ذ╪ر'               : 'Vehicle';
 
-  // ─── Settings ─────────────────────────────────────────────────
-  String get settings       => isArabic ? 'الاعدادات'             : 'Settings';
-  String get generalSettings => isArabic ? 'الإعدادات العامة'     : 'General Settings';
-  String get notifications  => isArabic ? 'الإشعارات'             : 'Notifications';
-  String get notifHint      => isArabic ? 'تلقي إشعارات الطلبات'  : 'Receive order notifications';
-  String get darkMode       => isArabic ? 'الوضع الليلي'          : 'Dark Mode';
-  String get darkModeHint   => isArabic ? 'مظهر داكن للتطبيق'    : 'Dark app appearance';
-  String get language       => isArabic ? 'اللغة'                 : 'Language';
-  String get privacy        => isArabic ? 'الخصوصية والأمان'      : 'Privacy & Security';
-  String get privacyPolicy  => isArabic ? 'سياسة الخصوصية'       : 'Privacy Policy';
-  String get terms          => isArabic ? 'الشروط والاحكام'       : 'Terms & Conditions';
-  String get helpSupport    => isArabic ? 'الدعم والمساعدة'       : 'Help & Support';
-  String get helpCenter     => isArabic ? 'مركز المساعدة'         : 'Help Center';
-  String get contactUs      => isArabic ? 'اتصل بنا'              : 'Contact Us';
-  String get appVersion     => isArabic ? 'اصدار التطبيق'         : 'App Version';
-  String get allRights      => isArabic ? '© 2024 خدمة صيانة السيارات. جميع الحقوق محفوظة.' : '© 2024 Car Maintenance Service. All rights reserved.';
-  String get chooseLanguage => isArabic ? 'اختر اللغة'            : 'Choose Language';
-  String get arabic         => isArabic ? 'العربية'               : 'Arabic';
-  String get english        => isArabic ? 'الإنجليزية'            : 'English';
+  // ظ¤ظ¤ظ¤ Settings ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get settings       => isArabic ? '╪د┘╪د╪╣╪»╪د╪»╪د╪ز'             : 'Settings';
+  String get generalSettings => isArabic ? '╪د┘╪ح╪╣╪»╪د╪»╪د╪ز ╪د┘╪╣╪د┘à╪ر'     : 'General Settings';
+  String get notifications  => isArabic ? '╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز'             : 'Notifications';
+  String get notifHint      => isArabic ? '╪ز┘┘é┘è ╪ح╪┤╪╣╪د╪▒╪د╪ز ╪د┘╪╖┘╪ذ╪د╪ز'  : 'Receive order notifications';
+  String get darkMode       => isArabic ? '╪د┘┘ê╪╢╪╣ ╪د┘┘┘è┘┘è'          : 'Dark Mode';
+  String get darkModeHint   => isArabic ? '┘à╪╕┘ç╪▒ ╪»╪د┘â┘ ┘┘╪ز╪╖╪ذ┘è┘é'    : 'Dark app appearance';
+  String get language       => isArabic ? '╪د┘┘╪║╪ر'                 : 'Language';
+  String get privacy        => isArabic ? '╪د┘╪«╪╡┘ê╪╡┘è╪ر ┘ê╪د┘╪ث┘à╪د┘'      : 'Privacy & Security';
+  String get privacyPolicy  => isArabic ? '╪│┘è╪د╪│╪ر ╪د┘╪«╪╡┘ê╪╡┘è╪ر'       : 'Privacy Policy';
+  String get terms          => isArabic ? '╪د┘╪┤╪▒┘ê╪╖ ┘ê╪د┘╪د╪ص┘â╪د┘à'       : 'Terms & Conditions';
+  String get helpSupport    => isArabic ? '╪د┘╪»╪╣┘à ┘ê╪د┘┘à╪│╪د╪╣╪»╪ر'       : 'Help & Support';
+  String get helpCenter     => isArabic ? '┘à╪▒┘â╪▓ ╪د┘┘à╪│╪د╪╣╪»╪ر'         : 'Help Center';
+  String get contactUs      => isArabic ? '╪د╪ز╪╡┘ ╪ذ┘╪د'              : 'Contact Us';
+  String get appVersion     => isArabic ? '╪د╪╡╪»╪د╪▒ ╪د┘╪ز╪╖╪ذ┘è┘é'         : 'App Version';
+  String get allRights      => isArabic ? '┬ر 2024 ╪«╪»┘à╪ر ╪╡┘è╪د┘╪ر ╪د┘╪│┘è╪د╪▒╪د╪ز. ╪ش┘à┘è╪╣ ╪د┘╪ص┘é┘ê┘é ┘à╪ص┘┘ê╪╕╪ر.' : '┬ر 2024 Car Maintenance Service. All rights reserved.';
+  String get chooseLanguage => isArabic ? '╪د╪«╪ز╪▒ ╪د┘┘╪║╪ر'            : 'Choose Language';
+  String get arabic         => isArabic ? '╪د┘╪╣╪▒╪ذ┘è╪ر'               : 'Arabic';
+  String get english        => isArabic ? '╪د┘╪ح┘╪ش┘┘è╪▓┘è╪ر'            : 'English';
+
+  // ظ¤ظ¤ظ¤ Onboarding ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  String get onboardingNext => isArabic ? '╪د┘╪ز╪د┘┘è' : 'Next';
+
+  // Screen 1
+  String get ob1Feature1Title    => isArabic ? '╪ش┘ê╪»╪ر ┘à┘ê╪س┘ê┘é╪ر'       : 'Reliable Quality';
+  String get ob1Feature1Sub      => isArabic ? '╪«╪»┘à╪ر ╪د╪ص╪ز╪▒╪د┘┘è╪ر'     : 'Professional Service';
+  String get ob1Feature2Title    => isArabic ? '╪▒╪د╪ص╪ر ┘ê╪│┘ç┘ê┘╪ر'       : 'Comfort & Ease';
+  String get ob1Feature2Sub      => isArabic ? '╪د╪ص╪ش╪▓ ┘┘è ╪س┘ê╪د┘┘è'     : 'Book in Seconds';
+  String get ob1Feature3Title    => isArabic ? '┘┘è ╪ث┘è ┘à┘â╪د┘'        : 'Anywhere';
+  String get ob1Feature3Sub      => isArabic ? '┘╪╡┘ ╪ح┘┘è┘â'          : 'We Come to You';
+
+  // Screen 2
+  String get ob2Feature1Title    => isArabic ? '╪ز╪ز╪ذ╪╣ ┘à╪ذ╪د╪┤╪▒'        : 'Live Location';
+  String get ob2Feature1Sub      => isArabic ? '╪ز╪د╪ذ╪╣ ┘ê╪╡┘ê┘┘╪د ┘╪ص╪╕┘è╪د┘ï' : 'Track our arrival in real-time';
+  String get ob2Feature2Title    => isArabic ? '┘ê┘é╪ز ┘à╪▒┘'           : 'Flexible Time';
+  String get ob2Feature2Sub      => isArabic ? '╪د╪«╪ز╪▒ ┘ê┘é╪ز┘â ╪د┘┘à┘╪د╪│╪ذ' : 'Choose the time that suits you';
+  String get ob2Feature3Title    => isArabic ? '╪«╪»┘à╪ر ┘à╪ز┘┘é┘╪ر'       : 'Mobile Service';
+  String get ob2Feature3Sub      => isArabic ? '┘╪ث╪ز┘è ╪ح┘┘è┘â ┘à╪ش┘ç╪▓┘è┘'  : 'We come fully equipped to you';
+
+  // Screen 3
+  String get ob3Feature1Title    => isArabic ? '╪ز┘é┘è┘è┘à ╪╣╪د┘┘è'         : 'Top Rated';
+  String get ob3Feature1Sub      => isArabic ? '╪س┘é╪ر ╪╣┘à┘╪د╪خ┘╪د ╪ز┘à┘è╪▓┘╪د' : 'Highly rated by\nour customers';
+  String get ob3Feature2Title    => isArabic ? '╪╢┘à╪د┘ ╪د┘╪«╪»┘à╪ر'        : 'Warranty';
+  String get ob3Feature2Sub      => isArabic ? '╪«╪»┘à╪ر ╪ز╪س┘é ╪ذ┘ç╪د'      : 'Service you can\nrely on';
+  String get ob3Feature3Title    => isArabic ? '╪»┘╪╣ ╪│┘ç┘'            : 'Easy Payment';
+  String get ob3Feature3Sub      => isArabic ? '╪«┘è╪د╪▒╪د╪ز ╪»┘╪╣ ┘à╪ز╪╣╪»╪»╪ر'  : 'Secure & multiple\npayment options';
 }
 
 /// Extension to get localized strings easily from any widget

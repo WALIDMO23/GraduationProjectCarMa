@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
+import 'package:graduation_project/core/network/api_client.dart';
 import 'package:provider/provider.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -17,6 +21,17 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
+  File? _imageFile;
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -39,26 +54,37 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('الرجاء إدخال الاسم')),
+        const SnackBar(content: Text('╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪د╪│┘à')),
       );
       return;
     }
 
     final auth = context.read<AuthProvider>();
+
+    bool imageUploaded = true;
+    if (_imageFile != null) {
+      imageUploaded = await auth.uploadProfileImage(_imageFile!);
+      if (!imageUploaded && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(auth.errorMessage ?? '┘╪┤┘ ╪▒┘╪╣ ╪د┘╪╡┘ê╪▒╪ر')),
+        );
+      }
+    }
+
     final success = await auth.updateProfile(name: name, phoneNumber: phone);
 
     if (!mounted) return;
-    if (success) {
+    if (success && imageUploaded) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('تم تحديث البيانات بنجاح ✅'),
+          content: Text('╪ز┘à ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز ╪ذ┘╪ش╪د╪ص ظ£à'),
           backgroundColor: Color(0xFF00A63E),
         ),
       );
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(auth.errorMessage ?? 'فشل تحديث البيانات')),
+        SnackBar(content: Text(auth.errorMessage ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز')),
       );
     }
   }
@@ -67,8 +93,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     final s = appStrings(context.read<LocaleProvider>().isArabic);
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(s.editProfile),
         leading: IconButton(
@@ -88,28 +115,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   children: [
                     // Avatar
                     Center(
-                      child: Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3), width: 2),
+                      child: GestureDetector(
+                        onTap: _pickImage,
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.surface,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppTheme.carmaGold.withValues(alpha: 0.3), width: 2),
+                              ),
+                              child: ClipOval(
+                                child: _imageFile != null
+                                    ? Image.file(_imageFile!, width: 100, height: 100, fit: BoxFit.cover)
+                                    : Image.network(
+                                        '${ApiClient.baseUrl}/profile/image/${context.read<AuthProvider>().currentUser?.id}',
+                                        width: 100, height: 100, fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) => Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                      ),
+                              ),
                             ),
-                            child: CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                              child: Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(color: AppTheme.carmaGold, shape: BoxShape.circle),
+                              child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: const BoxDecoration(color: AppTheme.primaryColor, shape: BoxShape.circle),
-                            child: const Icon(Icons.camera_alt, color: Colors.white, size: 16),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -126,7 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(height: 16),
-                    // Email is read-only — shown as info only
+                    // Email is read-only ظ¤ shown as info only
                     Consumer<AuthProvider>(
                       builder: (_, auth, __) => Container(
                         padding: const EdgeInsets.all(16),
@@ -171,6 +205,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

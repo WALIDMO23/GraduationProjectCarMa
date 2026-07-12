@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'package:graduation_project/logic/providers/services_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/request_service_page.dart';
@@ -11,14 +12,12 @@ class ServiceOption {
   final String subtitle;
   final String? price;
   final IconData? icon;
-  final int? subServiceId;
 
   ServiceOption({
     required this.title,
     required this.subtitle,
     this.price,
     this.icon,
-    this.subServiceId,
   });
 }
 
@@ -29,6 +28,7 @@ class ServiceTemplate extends StatefulWidget {
   final String headerIcon;
   final String headerTitle;
   final String headerDescription;
+  /// Fallback price shown while the API is loading. Leave empty to show '...'.
   final String basePrice;
   final List<ServiceOption> options;
   final String notesHintText;
@@ -46,7 +46,7 @@ class ServiceTemplate extends StatefulWidget {
     required this.headerIcon,
     required this.headerTitle,
     required this.headerDescription,
-    required this.basePrice,
+    this.basePrice = '',
     required this.options,
     required this.notesHintText,
     required this.primaryActionColor,
@@ -64,6 +64,18 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
   final TextEditingController _notesController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Fetch services if not already loaded
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = context.read<ServicesProvider>();
+      if (!provider.hasFetched) {
+        provider.fetchServices();
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _notesController.dispose();
     super.dispose();
@@ -72,6 +84,14 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
   @override
   Widget build(BuildContext context) {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
+    final svcProvider = context.watch<ServicesProvider>();
+    final displayPrice = svcProvider.isLoading
+        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
+        : svcProvider.priceFor(
+            serviceId: widget.serviceId,
+            isArabic: s.isArabic,
+            fallback: widget.basePrice.isNotEmpty ? widget.basePrice : 'ظ¤',
+          );
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(title: Text(widget.title)),
@@ -138,7 +158,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          s.isArabic ? 'السعر الأساسي' : 'Base Price',
+                          s.isArabic ? '╪د┘╪│╪╣╪▒ ╪د┘╪ث╪│╪د╪│┘è' : 'Base Price',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -146,7 +166,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                           ),
                         ),
                         Text(
-                          widget.basePrice,
+                          displayPrice,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
@@ -163,7 +183,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
             
             // Options title
             Text(
-              s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
+              s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -183,7 +203,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
             
             // Notes mapping
             Text(
-              s.isArabic ? 'ملاحظات إضافية (اختياري)' : 'Additional Notes (Optional)',
+              s.isArabic ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)' : 'Additional Notes (Optional)',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -247,7 +267,6 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                 builder: (context) => RequestServicePage(
                   serviceName: widget.headerTitle,
                   serviceId: widget.serviceId,
-                  subServiceId: widget.options[_selectedServiceIndex].subServiceId,
                   serviceIcon: Icons.build_rounded,
                   serviceColor: widget.primaryActionColor,
                   notes: _notesController.text.trim(),
@@ -261,7 +280,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
               const Icon(Icons.location_on_rounded, size: 22),
               const SizedBox(width: 8),
               Text(
-                s.isArabic ? 'التالي: تحديد الموقع' : 'Next: Set Details',
+                s.isArabic ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘┘à┘ê┘é╪╣' : 'Next: Set Details',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

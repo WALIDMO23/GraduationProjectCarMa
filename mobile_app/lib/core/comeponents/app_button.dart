@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
+import 'package:graduation_project/core/theme/app_theme.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -50,7 +51,9 @@ class AppButton extends StatelessWidget {
                 : LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xff1C398E), Color(0xff1447E6)],
+                  colors: Theme.of(context).brightness == Brightness.dark
+                      ? [AppTheme.carmaGold, AppTheme.carmaGoldDim]
+                      : const [Color(0xff1C398E), Color(0xff1447E6)],
                 ),
         color: isLoading ? Colors.grey : null,
       ),
@@ -62,19 +65,25 @@ class AppButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         child:
             isLoading
-                ? const SizedBox(
+                ?  SizedBox(
                   height: 20,
                   width: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.white,
+                    color: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaDark : Colors.white,
                   ),
                 )
                 : Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     if (icon != null) ...[icon!, const SizedBox(width: 8)],
-                    Text(text),
+                    Text(
+                      text,
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaDark : Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
       ),

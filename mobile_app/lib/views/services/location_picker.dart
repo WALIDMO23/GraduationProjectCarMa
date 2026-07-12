@@ -1,8 +1,7 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
-import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/payment_methods.dart';
 
 class LocationPickerPage extends StatefulWidget {
@@ -74,7 +73,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                         Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(width: 8),
                         Text(
-                          'ابحث عن موقعك...',
+                          '╪د╪ذ╪ص╪س ╪╣┘ ┘à┘ê┘é╪╣┘â...',
                           style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14),
                         ),
                       ],
@@ -95,7 +94,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                 final GoogleMapController controller = await _controller.future;
                 controller.animateCamera(CameraUpdate.newCameraPosition(_initialPosition));
               },
-              child: const Icon(Icons.my_location, color: AppTheme.primaryColor),
+              child: Icon(Icons.my_location, color: Theme.of(context).colorScheme.primary),
             ),
           ),
 
@@ -117,10 +116,10 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                      ),
                    ),
                    // Pin
-                   const Icon(
+                    Icon(
                     Icons.location_on,
                     size: 56,
-                    color: AppTheme.primaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ],
               ),
@@ -162,7 +161,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   ),
                    SizedBox(height: 24),
                    Text(
-                    'تأكيد موقعك الحالي',
+                    '╪ز╪ث┘â┘è╪» ┘à┘ê┘é╪╣┘â ╪د┘╪ص╪د┘┘è',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 18,
@@ -175,19 +174,19 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.surfaceContainerHighest ,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppTheme.primaryColor.withValues(alpha: 0.3)),
+                      border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)),
                     ),
                     child: Row(
                       children: [
                          Container(
                            padding: const EdgeInsets.all(10),
                            decoration: BoxDecoration(
-                             color: AppTheme.primaryColor.withValues(alpha: 0.1),
+                             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
                              shape: BoxShape.circle,
                            ),
-                           child: const Icon(
+                           child:  Icon(
                              Icons.location_city,
-                             color: AppTheme.primaryColor,
+                             color: Theme.of(context).colorScheme.primary,
                            ),
                          ),
                          SizedBox(width: 16),
@@ -196,7 +195,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:  [
                               Text(
-                                'القاهرة، مصر',
+                                '╪د┘┘é╪د┘ç╪▒╪ر╪î ┘à╪╡╪▒',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurface,
                                   fontWeight: FontWeight.bold,
@@ -205,7 +204,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'المعادي، شارع 9، بجوار المحطة',
+                                '╪د┘┘à╪╣╪د╪»┘è╪î ╪┤╪د╪▒╪╣ 9╪î ╪ذ╪ش┘ê╪د╪▒ ╪د┘┘à╪ص╪╖╪ر',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 13,
@@ -221,7 +220,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   ),
                   const SizedBox(height: 24),
                   AppButton(
-                    text: 'تأكيد الموقع والمتابعة',
+                    text: '╪ز╪ث┘â┘è╪» ╪د┘┘à┘ê┘é╪╣ ┘ê╪د┘┘à╪ز╪د╪ذ╪╣╪ر',
                     onPressed: () {
                       Navigator.push(
                         context,

@@ -1,4 +1,4 @@
-class ChatRequest {
+﻿class ChatRequest {
   final String message;
 
   ChatRequest({required this.message});

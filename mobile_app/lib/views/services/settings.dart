@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
+import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -26,34 +27,55 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
-          s.settings,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return AppBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          iconTheme: const IconThemeData(color: Colors.white),
+          leading: Center(
+            child: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.35),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+            ),
           ),
+          title: Text(
+            s.settings,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildGeneralSettingsStack(s),
-            const SizedBox(height: 24),
-            _buildPrivacySecurityStack(s),
-            const SizedBox(height: 24),
-            _buildHelpSupportStack(s),
-            const SizedBox(height: 32),
-            _buildFooterInfo(s),
-            const SizedBox(height: 16),
-          ],
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              _buildGeneralSettingsStack(s),
+              const SizedBox(height: 24),
+              _buildPrivacySecurityStack(s),
+              const SizedBox(height: 24),
+              _buildHelpSupportStack(s),
+              const SizedBox(height: 32),
+              _buildFooterInfo(s),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
@@ -114,7 +136,10 @@ class _SettingsPageState extends State<SettingsPage> {
               _buildDivider(),
               _buildArrowCategory(
                 title: s.language,
-                hint: context.watch<LocaleProvider>().isArabic ? s.arabic : s.english,
+                hint:
+                    context.watch<LocaleProvider>().isArabic
+                        ? s.arabic
+                        : s.english,
                 iconPath: 'language.svg',
                 iconBgColor: const Color(0xFFE0E7FF),
                 onTap: () => _showLanguageDialog(context),
@@ -326,7 +351,7 @@ class _SettingsPageState extends State<SettingsPage> {
           value: value,
           onChanged: onChanged,
           activeColor: Colors.white,
-          activeTrackColor: AppTheme.primaryColor,
+          activeTrackColor: Theme.of(context).colorScheme.primary,
           inactiveThumbColor: Colors.white,
           inactiveTrackColor: Theme.of(context).colorScheme.outline,
           trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
@@ -435,22 +460,31 @@ class _SettingsPageState extends State<SettingsPage> {
     final locale = context.read<LocaleProvider>();
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        title: Text(appStrings(locale.isArabic).chooseLanguage),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _langOption(context, 'العربية', '🇸🇦', 'ar', locale),
-            const SizedBox(height: 12),
-            _langOption(context, 'English', '🇺🇸', 'en', locale),
-          ],
-        ),
-      ),
+      builder:
+          (_) => AlertDialog(
+            title: Text(appStrings(locale.isArabic).chooseLanguage),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _langOption(context, '╪د┘╪╣╪▒╪ذ┘è╪ر', '≡اç╕≡اçخ', 'ar', locale),
+                const SizedBox(height: 12),
+                _langOption(context, 'English', '≡اç║≡اç╕', 'en', locale),
+              ],
+            ),
+          ),
     );
   }
 
-  Widget _langOption(BuildContext context, String label, String flag, String code, LocaleProvider locale) {
+  Widget _langOption(
+    BuildContext context,
+    String label,
+    String flag,
+    String code,
+    LocaleProvider locale,
+  ) {
     final isSelected = locale.locale.languageCode == code;
     return InkWell(
       onTap: () {
@@ -461,19 +495,39 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor.withValues(alpha: 0.1) : Colors.transparent,
+          color:
+              isSelected
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+                  : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? AppTheme.primaryColor : Theme.of(context).colorScheme.outline,
+            color:
+                isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.outline,
           ),
         ),
         child: Row(
           children: [
             Text(flag, style: const TextStyle(fontSize: 24)),
             const SizedBox(width: 12),
-            Text(label, style: TextStyle(fontSize: 16, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal, color: isSelected ? AppTheme.primaryColor : Theme.of(context).colorScheme.onSurface)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                color:
+                    isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
             const Spacer(),
-            if (isSelected) const Icon(Icons.check_circle, color: AppTheme.primaryColor),
+            if (isSelected)
+              Icon(
+                Icons.check_circle,
+                color: Theme.of(context).colorScheme.primary,
+              ),
           ],
         ),
       ),
