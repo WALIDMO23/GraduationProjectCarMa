@@ -356,6 +356,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                                       (context) => RequestServicePage(
                                         serviceName: fullServiceName,
                                         serviceId: 5,
+                                        subServiceId: _selectedServiceIndex + 1,
                                         serviceIcon: Icons.warning_amber_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,
                                         notes: _notesController.text.trim(),

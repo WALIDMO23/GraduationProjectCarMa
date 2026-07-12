@@ -349,6 +349,7 @@ class _TowingServicesState extends State<TowingServices> {
                                       (context) => RequestServicePage(
                                         serviceName: fullServiceName,
                                         serviceId: 6,
+                                        subServiceId: _selectedServiceIndex + 1,
                                         serviceIcon: Icons.fire_truck_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,
                                         notes: _notesController.text.trim(),

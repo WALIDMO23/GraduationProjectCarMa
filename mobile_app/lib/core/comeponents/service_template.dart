@@ -12,14 +12,12 @@ class ServiceOption {
   final String subtitle;
   final String? price;
   final IconData? icon;
-  final int? subServiceId;
 
   ServiceOption({
     required this.title,
     required this.subtitle,
     this.price,
     this.icon,
-    this.subServiceId,
   });
 }
 
@@ -269,7 +267,6 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                 builder: (context) => RequestServicePage(
                   serviceName: widget.headerTitle,
                   serviceId: widget.serviceId,
-                  subServiceId: widget.options[_selectedServiceIndex].subServiceId,
                   serviceIcon: Icons.build_rounded,
                   serviceColor: widget.primaryActionColor,
                   notes: _notesController.text.trim(),

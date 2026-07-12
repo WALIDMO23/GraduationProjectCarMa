@@ -173,7 +173,6 @@ class _RequestServicePageState extends State<RequestServicePage> {
 
     final dto = CreateOrderDto(
       userId:       userId,
-      vehicleId:    1,
       serviceId:    widget.serviceId,
       subServiceId: widget.subServiceId,
       address:      _addressController.text.trim(),

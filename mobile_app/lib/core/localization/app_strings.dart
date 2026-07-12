@@ -102,6 +102,33 @@ class AppStrings {
   String get chooseLanguage => isArabic ? 'اختر اللغة'            : 'Choose Language';
   String get arabic         => isArabic ? 'العربية'               : 'Arabic';
   String get english        => isArabic ? 'الإنجليزية'            : 'English';
+
+  // ─── Onboarding ─────────────────────────────────────────────────
+  String get onboardingNext => isArabic ? 'التالي' : 'Next';
+
+  // Screen 1
+  String get ob1Feature1Title    => isArabic ? 'جودة موثوقة'       : 'Reliable Quality';
+  String get ob1Feature1Sub      => isArabic ? 'خدمة احترافية'     : 'Professional Service';
+  String get ob1Feature2Title    => isArabic ? 'راحة وسهولة'       : 'Comfort & Ease';
+  String get ob1Feature2Sub      => isArabic ? 'احجز في ثواني'     : 'Book in Seconds';
+  String get ob1Feature3Title    => isArabic ? 'في أي مكان'        : 'Anywhere';
+  String get ob1Feature3Sub      => isArabic ? 'نصل إليك'          : 'We Come to You';
+
+  // Screen 2
+  String get ob2Feature1Title    => isArabic ? 'تتبع مباشر'        : 'Live Location';
+  String get ob2Feature1Sub      => isArabic ? 'تابع وصولنا لحظياً' : 'Track our arrival in real-time';
+  String get ob2Feature2Title    => isArabic ? 'وقت مرن'           : 'Flexible Time';
+  String get ob2Feature2Sub      => isArabic ? 'اختر وقتك المناسب' : 'Choose the time that suits you';
+  String get ob2Feature3Title    => isArabic ? 'خدمة متنقلة'       : 'Mobile Service';
+  String get ob2Feature3Sub      => isArabic ? 'نأتي إليك مجهزين'  : 'We come fully equipped to you';
+
+  // Screen 3
+  String get ob3Feature1Title    => isArabic ? 'تقييم عالي'         : 'Top Rated';
+  String get ob3Feature1Sub      => isArabic ? 'ثقة عملائنا تميزنا' : 'Highly rated by\nour customers';
+  String get ob3Feature2Title    => isArabic ? 'ضمان الخدمة'        : 'Warranty';
+  String get ob3Feature2Sub      => isArabic ? 'خدمة تثق بها'      : 'Service you can\nrely on';
+  String get ob3Feature3Title    => isArabic ? 'دفع سهل'            : 'Easy Payment';
+  String get ob3Feature3Sub      => isArabic ? 'خيارات دفع متعددة'  : 'Secure & multiple\npayment options';
 }
 
 /// Extension to get localized strings easily from any widget

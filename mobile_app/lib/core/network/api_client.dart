@@ -12,6 +12,8 @@ class ApiClient {
   static const String _baseUrl =
       'http://107.21.214.224:8080/api'; // AWS EC2 Instance (Static Elastic IP)
 
+  static String get baseUrl => _baseUrl;
+
   final Dio _dio;
 
   ApiClient()
@@ -79,15 +81,15 @@ class ApiClient {
       ),
     );
     _dio.interceptors.add(
-        PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseBody: true,
-          responseHeader: false,
-          compact: true,
-          maxWidth: 90,
-        ),
-      );
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        compact: true,
+        maxWidth: 90,
+      ),
+    );
   }
 
   Dio get dio => _dio;

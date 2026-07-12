@@ -46,14 +46,12 @@ class OrderModel {
   final int userId;
   final int vehicleId;
   final int serviceId;
-  final int? subServiceId;
-  final String? subServiceName;
   final OrderStatus orderStatus;
   final String address;
   final String phoneNumber;
   final double price;
   final bool isPaid;
-  final int paymentMethod;
+  final String paymentMethod;
 
   // Technician info (filled when admin accepts)
   final int? technicianId;
@@ -70,14 +68,12 @@ class OrderModel {
     required this.userId,
     required this.vehicleId,
     required this.serviceId,
-    this.subServiceId,
-    this.subServiceName,
     required this.orderStatus,
     required this.address,
     required this.phoneNumber,
     this.price = 0.0,
     this.isPaid = false,
-    this.paymentMethod = 1,
+    this.paymentMethod = 'Cash',
     this.technicianId,
     this.technicianName,
     this.technicianPhone,
@@ -93,14 +89,12 @@ class OrderModel {
       userId:          json['userId'] as int? ?? 0,
       vehicleId:       json['vehicleId'] as int? ?? 0,
       serviceId:       json['serviceId'] as int? ?? 0,
-      subServiceId:    json['subServiceId'] as int?,
-      subServiceName:  json['subServiceName'] as String?,
       orderStatus:     _orderStatusFromString(json['orderStatus']),
       address:         json['address'] as String? ?? '',
       phoneNumber:     json['phoneNumber'] as String? ?? '',
       price:           (json['price'] as num?)?.toDouble() ?? 0.0,
       isPaid:          json['isPaid'] as bool? ?? false,
-      paymentMethod:   json['paymentMethod'] as int? ?? 1,
+      paymentMethod:   _parsePaymentMethod(json['paymentMethod']),
       technicianId:    json['technicianId'] as int?,
       technicianName:  json['technicianName'] as String?,
       technicianPhone: json['technicianPhone'] as String?,
@@ -120,11 +114,24 @@ class OrderModel {
   bool get isCompleted => orderStatus == OrderStatus.completed;
   bool get isRejected  => orderStatus == OrderStatus.rejected;
   bool get isActive    => !isCompleted && !isRejected;
+
+  static String _parsePaymentMethod(dynamic value) {
+    if (value is int) {
+      switch (value) {
+        case 1: return 'Cash';
+        case 2: return 'Wallets';
+        case 3: return 'Instapay';
+        default: return 'Unknown';
+      }
+    } else if (value is String) {
+      return value;
+    }
+    return 'Cash';
+  }
 }
 
 class CreateOrderDto {
   final int userId;
-  final int vehicleId;
   final int serviceId;
   final int? subServiceId;
   final String address;
@@ -132,11 +139,12 @@ class CreateOrderDto {
   final String? carImagePath; // local path (stored on device only)
   final String? serviceName;  // stored locally for display
   final String? notes;        // stored locally for display
-  final int paymentMethod;
+  final DateTime? neededServiceTime;
+  int paymentMethod;          // 1 = cod, 2 = wallets, 3 = instapay
+  String imageUrl;
 
   CreateOrderDto({
     required this.userId,
-    required this.vehicleId,
     required this.serviceId,
     this.subServiceId,
     required this.address,
@@ -144,19 +152,23 @@ class CreateOrderDto {
     this.carImagePath,
     this.serviceName,
     this.notes,
+    this.neededServiceTime,
     this.paymentMethod = 1,
+    this.imageUrl = "string",
   });
 
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
-      'vehicleId': vehicleId,
       'serviceId': serviceId,
       if (subServiceId != null) 'subServiceId': subServiceId,
       'address': address,
       'phoneNumber': phoneNumber,
+      'imageUrl': imageUrl,
+      if (neededServiceTime != null) 'neededServiceTime': neededServiceTime!.toIso8601String(),
+      if (notes != null) 'notes': notes,
       'paymentMethod': paymentMethod,
-      // Note: image and serviceName are stored locally, not sent to backend
+      // Note: carImagePath and serviceName are stored locally, not sent to backend
     };
   }
 }

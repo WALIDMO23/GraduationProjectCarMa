@@ -350,6 +350,7 @@ class _TireServicesState extends State<TireServices> {
                                       (context) => RequestServicePage(
                                         serviceName: fullServiceName,
                                         serviceId: 3,
+                                        subServiceId: _selectedServiceIndex + 1,
                                         serviceIcon: Icons.tire_repair_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,
                                         notes: _notesController.text.trim(),

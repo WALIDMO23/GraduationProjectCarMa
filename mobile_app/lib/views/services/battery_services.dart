@@ -350,6 +350,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                                       (context) => RequestServicePage(
                                         serviceName: fullServiceName,
                                         serviceId: 2,
+                                        subServiceId: _selectedServiceIndex + 1,
                                         serviceIcon: Icons.battery_charging_full_rounded,
                                         serviceColor: Theme.of(context).colorScheme.primary,
                                         notes: _notesController.text.trim(),

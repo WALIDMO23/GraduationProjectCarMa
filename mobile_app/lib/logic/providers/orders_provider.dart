@@ -45,9 +45,10 @@ class OrdersProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final apiResponse = ApiResponse<List<OrderModel>>.fromJson(
           response.data,
-          (json) => (json as List<dynamic>)
-              .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
-              .toList(),
+          (json) =>
+              (json as List<dynamic>)
+                  .map((e) => OrderModel.fromJson(e as Map<String, dynamic>))
+                  .toList(),
         );
 
         if (apiResponse.success) {
@@ -79,7 +80,8 @@ class OrdersProvider extends ChangeNotifier {
         final body = response.data as Map<String, dynamic>;
 
         // Backend returns { message, order } — fallback to { data } for compatibility
-        final orderJson = (body['order'] ?? body['data']) as Map<String, dynamic>?;
+        final orderJson =
+            (body['order'] ?? body['data']) as Map<String, dynamic>?;
 
         if (orderJson != null) {
           final newOrder = OrderModel.fromJson(orderJson);

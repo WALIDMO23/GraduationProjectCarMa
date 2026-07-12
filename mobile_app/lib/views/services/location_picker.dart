@@ -111,6 +111,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
         data: {
           'QueryText': query,
           'MaxResults': 8,
+          'BiasPosition': [_currentCenter.longitude, _currentCenter.latitude],
         },
         options: Options(
           headers: {
