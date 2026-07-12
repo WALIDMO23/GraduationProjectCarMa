@@ -43,3 +43,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Temporary folders and files
+/temp_backend/
+/temp_frontend/
+/temp_github_repo/
+*.zip
+hs_err_pid*.log
