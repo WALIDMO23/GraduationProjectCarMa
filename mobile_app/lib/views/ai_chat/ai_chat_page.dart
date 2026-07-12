@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:graduation_project/logic/providers/ai_provider.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
@@ -66,7 +66,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     _scrollToBottom();
   }
 
-  // ظ¤ظ¤ Parse service buttons from bot response ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Parse service buttons from bot response ──────────────────────────────
   bool _hasWinch(String text) => text.contains('[WINCH_BUTTON]');
   bool _hasWash(String text) => text.contains('[WASH_BUTTON]');
   bool _hasMaintenance(String text) => text.contains('[MAINTENANCE_BUTTON]');
@@ -77,7 +77,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
       .replaceAll('[MAINTENANCE_BUTTON]', '')
       .trim();
 
-  // ظ¤ظ¤ Navigate to service page ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Navigate to service page ─────────────────────────────────────────────
   void _goToService(Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
@@ -118,7 +118,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('CarMa AI', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
-                Text('┘à╪│╪د╪╣╪»┘â ╪د┘╪░┘â┘è', style: TextStyle(color: Colors.white54, fontSize: 11)),
+                Text('مساعدك الذكي', style: TextStyle(color: Colors.white54, fontSize: 11)),
               ],
             ),
           ],
@@ -162,7 +162,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     );
   }
 
-  // ظ¤ظ¤ Empty State ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Empty State ───────────────────────────────────────────────────────────
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -197,7 +197,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 32),
           const Text(
-            '╪د╪│╪ث┘ ╪ث┘è ╪ص╪د╪ش╪ر',
+            'اسأل أي حاجة',
             style: TextStyle(
               color: Colors.white,
               fontSize: 26,
@@ -207,7 +207,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
           ),
           const SizedBox(height: 8),
           const Text(
-            '┘ç╪│╪د╪╣╪»┘â ┘┘è ╪ث┘è ┘à╪┤┘â┘╪ر ┘à╪╣ ╪╣╪▒╪ذ┘è╪ز┘â',
+            'هساعدك في أي مشكلة مع عربيتك',
             style: TextStyle(color: Colors.white54, fontSize: 14),
           ),
           const SizedBox(height: 40),
@@ -216,9 +216,9 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
             runSpacing: 10,
             alignment: WrapAlignment.center,
             children: [
-              _buildSuggestionChip('╪╣┘╪»┘è ╪ح╪╖╪د╪▒ ┘ê╪د┘é┘'),
-              _buildSuggestionChip('╪╣╪د┘ê╪▓ ╪ث╪║╪│┘ ╪╣╪▒╪ذ┘è╪ز┘è'),
-              _buildSuggestionChip('┘┘è┘ç ╪╡┘ê╪ز ╪║╪▒┘è╪ذ ┘┘è ╪د┘┘à┘ê╪ز┘ê╪▒'),
+              _buildSuggestionChip('عندي إطار واقف'),
+              _buildSuggestionChip('عاوز أغسل عربيتي'),
+              _buildSuggestionChip('فيه صوت غريب في الموتور'),
             ],
           ),
         ],
@@ -244,7 +244,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     );
   }
 
-  // ظ¤ظ¤ User Bubble ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── User Bubble ───────────────────────────────────────────────────────────
   Widget _buildUserBubble(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -292,7 +292,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     );
   }
 
-  // ظ¤ظ¤ Bot Bubble ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Bot Bubble ────────────────────────────────────────────────────────────
   Widget _buildBotBubble(String rawText) {
     final cleanText = _cleanText(rawText);
     final showWinch = _hasWinch(rawText);
@@ -352,21 +352,21 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                       if (showWinch)
                         _buildServiceButton(
                           icon: Icons.local_shipping_rounded,
-                          label: '≡اأؤ ╪د╪╖┘╪ذ ┘ê┘╪┤',
+                          label: '🚛 اطلب ونش',
                           color: _primary,
                           onTap: () => _goToService(const TowingServices()),
                         ),
                       if (showWash)
                         _buildServiceButton(
                           icon: Icons.water_drop_rounded,
-                          label: '≡اْد ╪د╪╖┘╪ذ ╪║╪│┘è┘',
+                          label: '💧 اطلب غسيل',
                           color: _primary,
                           onTap: () => _goToService(const CarWashServices()),
                         ),
                       if (showMaintenance)
                         _buildServiceButton(
                           icon: Icons.build_rounded,
-                          label: '≡ا¤د ╪د╪╖┘╪ذ ┘┘┘è',
+                          label: '🔧 اطلب فني',
                           color: _primary,
                           onTap: () => _goToService(const EmergencyServices()),
                         ),
@@ -408,7 +408,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     );
   }
 
-  // ظ¤ظ¤ Typing Indicator ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Typing Indicator ──────────────────────────────────────────────────────
   Widget _buildTypingIndicator() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -458,7 +458,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
     );
   }
 
-  // ظ¤ظ¤ Input Bar ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Input Bar ─────────────────────────────────────────────────────────────
   Widget _buildInputBar() {
     return SafeArea(
       child: Container(
@@ -486,7 +486,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
                         style: const TextStyle(color: Colors.white, fontSize: 14),
                         cursorColor: _light,
                         decoration: const InputDecoration(
-                          hintText: '╪د╪│╪ث┘┘┘è ╪╣┘ ╪╣╪▒╪ذ┘è╪ز┘â...',
+                          hintText: 'اسألني عن عربيتك...',
                           hintStyle: TextStyle(color: Colors.white38, fontSize: 14),
                           border: InputBorder.none,
                           enabledBorder: InputBorder.none,

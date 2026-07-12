@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signalr_netcore/signalr_client.dart';
@@ -26,12 +26,12 @@ class NotificationProvider extends ChangeNotifier {
   bool get hasMore => _hasMore;
   bool get isConnected => _isConnected;
 
-  // ظ¤ظ¤ Initialization ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Initialization ───────────────────────────────────────────
   Future<void> init() async {
     await Future.wait([fetchNotifications(refresh: true), _connectSignalR()]);
   }
 
-  // ظ¤ظ¤ REST: Fetch Notifications ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── REST: Fetch Notifications ────────────────────────────────
   Future<void> fetchNotifications({bool refresh = false}) async {
     if (_isLoading) return;
 
@@ -76,7 +76,7 @@ class NotificationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ظ¤ظ¤ REST: Mark One As Read ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── REST: Mark One As Read ───────────────────────────────────
   Future<void> markAsRead(int id) async {
     // Optimistic update
     final idx = _notifications.indexWhere((n) => n.id == id);
@@ -98,7 +98,7 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
-  // ظ¤ظ¤ REST: Mark All As Read ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── REST: Mark All As Read ───────────────────────────────────
   Future<void> markAllAsRead() async {
     // Optimistic update
     for (final n in _notifications) {
@@ -117,7 +117,7 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
-  // ظ¤ظ¤ REST: Delete Notification ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── REST: Delete Notification ────────────────────────────────
   Future<void> deleteNotification(int id) async {
     // Optimistic remove
     final removed = _notifications.firstWhere(
@@ -151,7 +151,7 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
-  // ظ¤ظ¤ REST: Clear All (delete from backend) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── REST: Clear All (delete from backend) ────────────────────
   Future<void> clearAll() async {
     if (_notifications.isEmpty) return;
     final toDelete = List<AppNotification>.from(_notifications);
@@ -161,7 +161,7 @@ class NotificationProvider extends ChangeNotifier {
     _unreadCount = 0;
     notifyListeners();
 
-    // Delete each from backend in parallel (fire and forget ظô UI is already cleared)
+    // Delete each from backend in parallel (fire and forget – UI is already cleared)
     await Future.wait(
       toDelete.map((n) async {
         try {
@@ -171,7 +171,7 @@ class NotificationProvider extends ChangeNotifier {
     );
   }
 
-  // ظ¤ظ¤ SignalR: Connect ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── SignalR: Connect ─────────────────────────────────────────
   Future<void> _connectSignalR() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -193,7 +193,7 @@ class NotificationProvider extends ChangeNotifier {
               .withAutomaticReconnect()
               .build();
 
-      // ظ¤ظ¤ Listen for events ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+      // ── Listen for events ──────────────────────────────────
       _hubConnection!.on('notification.created', (args) {
         if (args != null && args.isNotEmpty && args[0] != null) {
           try {
@@ -260,7 +260,7 @@ class NotificationProvider extends ChangeNotifier {
         }
       });
 
-      // ظ¤ظ¤ Connection state callbacks ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+      // ── Connection state callbacks ──────────────────────────
       _hubConnection!.onclose(({error}) {
         _isConnected = false;
         notifyListeners();
@@ -280,7 +280,7 @@ class NotificationProvider extends ChangeNotifier {
     }
   }
 
-  // ظ¤ظ¤ Disconnect ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Disconnect ───────────────────────────────────────────────
   Future<void> disconnect() async {
     try {
       await _hubConnection?.stop();

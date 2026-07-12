@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/home/home.dart';
@@ -35,7 +35,7 @@ class OrderConfirmationPage extends StatelessWidget {
               ),
                SizedBox(height: 40),
                Text(
-                '╪ز┘à ╪ز╪ث┘â┘è╪» ╪د┘╪╖┘╪ذ ╪ذ┘╪ش╪د╪ص!',
+                'تم تأكيد الطلب بنجاح!',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 24,
@@ -45,7 +45,7 @@ class OrderConfirmationPage extends StatelessWidget {
               ),
                SizedBox(height: 16),
                Text(
-                '╪ز┘à ╪ح╪▒╪│╪د┘ ╪╖┘╪ذ┘â ╪ذ┘╪ش╪د╪ص╪î ╪د┘╪│╪د╪خ┘é ╪د┘╪ت┘ ┘┘è ╪╖╪▒┘è┘é┘ç ╪ح┘┘è┘â. ┘è┘à┘â┘┘â ╪ز╪ز╪ذ╪╣ ╪د┘╪╖┘╪ذ ┘à┘ ╪د┘╪┤╪د╪┤╪ر ╪د┘╪▒╪خ┘è╪│┘è╪ر.',
+                'تم إرسال طلبك بنجاح، السائق الآن في طريقه إليك. يمكنك تتبع الطلب من الشاشة الرئيسية.',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                   fontSize: 16,
@@ -63,30 +63,30 @@ class OrderConfirmationPage extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildRow(context, '╪▒┘é┘à ╪د┘╪╖┘╪ذ', '#10245'),
+                    _buildRow(context, 'رقم الطلب', '#10245'),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Divider(color: Theme.of(context).colorScheme.outline),
                     ),
-                    _buildRow(context, '╪د┘╪«╪»┘à╪ر', '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â'),
+                    _buildRow(context, 'الخدمة', 'ونش هيدروليك'),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Divider(color: Theme.of(context).colorScheme.outline),
                     ),
-                    _buildRow(context, '╪د┘┘ê┘é╪ز ╪د┘┘à┘é╪»╪▒ ┘┘┘ê╪╡┘ê┘', '10 - 15 ╪»┘é┘è┘é╪ر'),
+                    _buildRow(context, 'الوقت المقدر للوصول', '10 - 15 دقيقة'),
                   ],
                 ),
               ),
               const Spacer(),
               AppButton(
-                text: '╪ز╪ز╪ذ╪╣ ╪د┘╪╖┘╪ذ',
+                text: 'تتبع الطلب',
                 onPressed: () {
                   // TODO: Navigate to active tracking view
                 },
               ),
               const SizedBox(height: 16),
               AppButton(
-                text: '╪د┘╪╣┘ê╪»╪ر ┘┘╪▒╪خ┘è╪│┘è╪ر',
+                text: 'العودة للرئيسية',
                 isOutlined: true,
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(

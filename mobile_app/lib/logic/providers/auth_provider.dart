@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -18,7 +18,7 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _currentUser != null;
 
-  // ظ¤ظ¤ظ¤ Restore session from SharedPreferences (no API call) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── Restore session from SharedPreferences (no API call) ──────────────────
   // New backend JWT uses ClaimTypes.NameIdentifier (userId) not email,
   // so we cache user data locally instead of calling /admin/me
   Future<void> loadCurrentUser() async {
@@ -36,13 +36,13 @@ class AuthProvider extends ChangeNotifier {
       // Fetch fresh profile data in background
       fetchProfile();
     } catch (_) {
-      // Corrupt cached data ظ¤ clear it so user logs in again
+      // Corrupt cached data — clear it so user logs in again
       await prefs.remove('auth_token');
       await prefs.remove('user_data');
     }
   }
 
-  // ظ¤ظ¤ظ¤ LOGIN ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── LOGIN ─────────────────────────────────────────────────────────────────
   // Backend: POST /api/auth/login
   // Response: { message, token, user: { Id, Name, Email, Role } }
   // Errors (401): "User not found" | "Wrong password"
@@ -93,7 +93,7 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ظ¤ظ¤ظ¤ LOGOUT ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── LOGOUT ────────────────────────────────────────────────────────────────
   Future<bool> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
@@ -103,10 +103,10 @@ class AuthProvider extends ChangeNotifier {
     return true;
   }
 
-  // ظ¤ظ¤ظ¤ REGISTER ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── REGISTER ──────────────────────────────────────────────────────────────
   // Backend: POST /api/auth/register
   // New response: { message: "User registered successfully", userId }
-  // (No token or user object returned ظ¤ auto-login after success)
+  // (No token or user object returned — auto-login after success)
   // Errors (400): "Email already exists"
   Future<bool> register({
     required String name,
@@ -132,7 +132,7 @@ class AuthProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        // New backend returns { message, userId } only ظ¤ auto login to get token
+        // New backend returns { message, userId } only — auto login to get token
         _isLoading = false;
         notifyListeners();
         return await login(email, password);
@@ -153,7 +153,7 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ظ¤ظ¤ظ¤ UPDATE PROFILE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── UPDATE PROFILE ────────────────────────────────────────────────────────
   // Backend: PUT /api/profile/update
   // DTO: { fullName, name, email, phoneNumber }
   Future<bool> updateProfile({
@@ -198,13 +198,13 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         return true;
       }
-      _errorMessage = '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
+      _errorMessage = 'فشل تحديث البيانات';
     } on DioException catch (e) {
       if (e.response?.data is Map<String, dynamic>) {
         _errorMessage =
-            e.response?.data['message'] ?? e.message ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
+            e.response?.data['message'] ?? e.message ?? 'فشل تحديث البيانات';
       } else {
-        _errorMessage = e.message ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز';
+        _errorMessage = e.message ?? 'فشل تحديث البيانات';
       }
     } catch (e) {
       _errorMessage = e.toString();
@@ -215,7 +215,7 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ظ¤ظ¤ظ¤ UPLOAD PROFILE IMAGE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── UPLOAD PROFILE IMAGE ──────────────────────────────────────────────────
   Future<bool> uploadProfileImage(File imageFile) async {
     _isLoading = true;
     _errorMessage = null;
@@ -236,7 +236,7 @@ class AuthProvider extends ChangeNotifier {
         notifyListeners();
         return true;
       }
-      _errorMessage = '┘╪┤┘ ╪▒┘╪╣ ╪د┘╪╡┘ê╪▒╪ر';
+      _errorMessage = 'فشل رفع الصورة';
     } catch (e) {
       _errorMessage = e.toString();
     }
@@ -246,7 +246,7 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
-  // ظ¤ظ¤ظ¤ FETCH PROFILE ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ─── FETCH PROFILE ─────────────────────────────────────────────────────────
   // Backend: GET /api/profile/me
   Future<void> fetchProfile() async {
     try {

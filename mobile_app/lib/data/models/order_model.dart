@@ -1,4 +1,4 @@
-﻿enum OrderStatus {
+enum OrderStatus {
   pending,
   accepted,
   inProgress,

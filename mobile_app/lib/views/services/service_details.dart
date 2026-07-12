@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/services/location_picker.dart';
@@ -18,15 +18,15 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
 
   final List<Map<String, dynamic>> _options = [
     {
-      'title': '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â',
-      'price': '┘è╪ذ╪»╪ث ┘à┘ 150 ╪▒┘è╪د┘',
-      'desc': '┘à┘╪د╪│╪ذ ┘┘╪│┘è╪د╪▒╪د╪ز ╪د┘┘à┘╪«┘╪╢╪ر ┘ê╪د┘╪▒┘è╪د╪╢┘è╪ر.',
+      'title': 'ونش هيدروليك',
+      'price': 'يبدأ من 150 ريال',
+      'desc': 'مناسب للسيارات المنخفضة والرياضية.',
       'icon': Icons.car_repair,
     },
     {
-      'title': '┘ê┘╪┤ ╪╣╪د╪»┘è',
-      'price': '┘è╪ذ╪»╪ث ┘à┘ 100 ╪▒┘è╪د┘',
-      'desc': '┘à┘╪د╪│╪ذ ┘╪ش┘à┘è╪╣ ╪ث┘┘ê╪د╪╣ ╪د┘╪│┘è╪د╪▒╪د╪ز.',
+      'title': 'ونش عادي',
+      'price': 'يبدأ من 100 ريال',
+      'desc': 'مناسب لجميع أنواع السيارات.',
       'icon': Icons.local_shipping,
     },
   ];
@@ -93,7 +93,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  '╪«╪»┘à╪ر ╪│╪▒┘è╪╣╪ر ┘┘è ╪ث┘é┘ ┘à┘ 15 ╪»┘é┘è┘é╪ر',
+                                  'خدمة سريعة في أقل من 15 دقيقة',
                                   style: TextStyle(
                                     color:
                                         Theme.of(
@@ -106,7 +106,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                             ),
                           ),
                            Text(
-                            '150 ╪▒┘è╪د┘',
+                            '150 ريال',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontSize: 18,
@@ -118,7 +118,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      '╪د╪«╪ز╪▒ ┘┘ê╪╣ ╪د┘╪«╪»┘à╪ر',
+                      'اختر نوع الخدمة',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 18,
@@ -234,7 +234,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر',
+                      'ملاحظات إضافية',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 16,
@@ -246,7 +246,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                       maxLines: 4,
                       onTapOutside: (event) => FocusScope.of(context).unfocus(),
                       decoration: InputDecoration(
-                        hintText: '╪د┘â╪ز╪ذ ┘à┘╪د╪ص╪╕╪د╪ز┘â ┘ç┘╪د...',
+                        hintText: 'اكتب ملاحظاتك هنا...',
                         filled: true,
                         fillColor:
                             Theme.of(
@@ -275,7 +275,7 @@ class _ServiceDetailsPageState extends State<ServiceDetailsPage> {
                 ],
               ),
               child: AppButton(
-                text: '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘┘à┘ê┘é╪╣',
+                text: 'التالي: تحديد الموقع',
                 onPressed: () {
                   Navigator.push(
                     context,

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
@@ -30,9 +30,9 @@ class _ServiceItemCardState extends State<ServiceItemCard> {
     final svcProvider = context.watch<ServicesProvider>();
     final int serviceId = widget.service['serviceId'] ?? 1;
     final svc = svcProvider.serviceById(serviceId);
-    String displayPrice = 'ظ¤';
+    String displayPrice = '—';
     if (svcProvider.isLoading) {
-      displayPrice = s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...';
+      displayPrice = s.isArabic ? 'جاري التحميل...' : 'Loading...';
     } else if (svc != null) {
       final double baseP = svc.price;
       int lowest = baseP.round();
@@ -44,12 +44,12 @@ class _ServiceItemCardState extends State<ServiceItemCard> {
         case 5: lowest = (baseP * 0.44).round(); break; // Emergency
         case 6: lowest = (baseP * 0.75).round(); break; // Towing
       }
-      displayPrice = s.isArabic ? '┘è╪ذ╪»╪ث ┘à┘ $lowest ╪ش┘┘è┘ç' : 'Starts from $lowest EGP';
+      displayPrice = s.isArabic ? 'يبدأ من $lowest جنيه' : 'Starts from $lowest EGP';
     }
     final String iconName = widget.service['icon'];
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // In dark mode ظْ always use CarMa gold; light mode ظْ use gradient accent
+    // In dark mode → always use CarMa gold; light mode → use gradient accent
     final List<Color> gradient =
         widget.service['gradient'] as List<Color>? ?? AppGradients.gradient1;
     final Color accentColor =
@@ -153,7 +153,7 @@ class _ServiceItemCardState extends State<ServiceItemCard> {
                       Row(
                         children: [
                           Text(
-                            s.isArabic ? '╪د┘╪│╪╣╪▒: ' : 'Price: ',
+                            s.isArabic ? 'السعر: ' : 'Price: ',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w600,
@@ -186,7 +186,7 @@ class _ServiceItemCardState extends State<ServiceItemCard> {
               ),
               alignment: Alignment.center,
               child: Text(
-                s.isArabic ? '╪د╪ذ╪»╪ث' : 'Start',
+                s.isArabic ? 'ابدأ' : 'Start',
                 style: TextStyle(
                   color: isDark ? AppTheme.carmaDark : Colors.white,
                   fontSize: 14,

@@ -1,8 +1,8 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // ظ¤ظ¤ Light theme colors ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Light theme colors ─────────────────────────────────────────
   static const Color primaryColor = Color(0xff1D4ED8);
   static const Color secondaryColor = Color(0xffF97316);
   static const Color errorColor = Color(0xffEF4444);
@@ -13,10 +13,10 @@ class AppTheme {
   static const Color borderColor = Color(0xffE2E8F0);
   static const Color warningColor = Color(0xffFFA726);
 
-  // ظ¤ظ¤ CarMa brand / dark theme colors (matches website) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
-  static const Color carmaGold = Color(0xFFD9B07C);       // #D9B07C ظô primary gold
-  static const Color carmaDark = Color(0xFF121212);        // #121212 ظô main background
-  static const Color carmaDeepDark = Color(0xFF050505);   // #050505 ظô deepest bg
+  // ── CarMa brand / dark theme colors (matches website) ──────────
+  static const Color carmaGold = Color(0xFFD9B07C);       // #D9B07C – primary gold
+  static const Color carmaDark = Color(0xFF121212);        // #121212 – main background
+  static const Color carmaDeepDark = Color(0xFF050505);   // #050505 – deepest bg
   static const Color carmaSurface = Color(0xFF1A1A1A);    // card / surface
   static const Color carmaCardFocus = Color(0xFF232323);  // focused / selected card
   static const Color carmaOutline = Color(0xFF2A2A2A);    // card border
@@ -27,14 +27,14 @@ class AppTheme {
     ThemeMode.dark,
   );
 
-  /// Arabic UI: Tajawal ظ¤ modern, clean, iOS-like for Arabic
-  /// English UI: Inter ظ¤ closest to SF Pro (Apple's system font)
+  /// Arabic UI: Tajawal — modern, clean, iOS-like for Arabic
+  /// English UI: Inter — closest to SF Pro (Apple's system font)
   static String get arabicFont => GoogleFonts.tajawal().fontFamily!;
   static String get englishFont => GoogleFonts.almarai().fontFamily!;
 
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+  // ══════════════════════════════════════════════════════════════
   //  LIGHT THEME
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+  // ══════════════════════════════════════════════════════════════
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: primaryColor,
@@ -125,10 +125,10 @@ class AppTheme {
     );
   }
 
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
-  //  DARK THEME  ظô matches CarMa website exactly
-  //  Colors: #D9B07C (gold) ┬╖ #121212 (bg) ┬╖ #050505 (deep bg)
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+  // ══════════════════════════════════════════════════════════════
+  //  DARK THEME  – matches CarMa website exactly
+  //  Colors: #D9B07C (gold) · #121212 (bg) · #050505 (deep bg)
+  // ══════════════════════════════════════════════════════════════
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,
@@ -136,13 +136,13 @@ class AppTheme {
       scaffoldBackgroundColor: carmaDark,
       fontFamily: GoogleFonts.tajawal().fontFamily,
       colorScheme: const ColorScheme.dark(
-        primary: carmaGold,           // gold accent ظô used for selected states
+        primary: carmaGold,           // gold accent – used for selected states
         secondary: carmaGoldDim,      // darker gold
         error: Color(0xffEF4444),
-        surface: carmaSurface,        // #1A1A1A ظô cards / drawers
+        surface: carmaSurface,        // #1A1A1A – cards / drawers
         onSurface: Colors.white,
         onSurfaceVariant: carmaSubtleText,   // muted text
-        outline: carmaOutline,        // #2A2A2A ظô card borders
+        outline: carmaOutline,        // #2A2A2A – card borders
         primaryContainer: carmaCardFocus,    // focused/selected card bg
         onPrimary: carmaDark,         // text on gold buttons
       ),

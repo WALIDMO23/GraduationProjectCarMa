@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/views/onboarding_screen.dart';
 
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
 
-    // Subtle entrance animation: fade in + scale 0.95 ظْ 1.0
+    // Subtle entrance animation: fade in + scale 0.95 → 1.0
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -76,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    // ظ¤ظ¤ Car Logo ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                    // ── Car Logo ──────────────────────────────────────
                     Positioned(
                       top: 50,
                       child: Image.asset(
@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
                       ),
                     ),
 
-                    // ظ¤ظ¤ "CarMa" text ظ¤ directly under the logo ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                    // ── "CarMa" text — directly under the logo ───────
                     Positioned(
                       bottom: 50,
                       child: RichText(

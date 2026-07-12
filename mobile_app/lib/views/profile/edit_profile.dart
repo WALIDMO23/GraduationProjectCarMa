@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
@@ -54,7 +54,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪د╪│┘à')),
+        const SnackBar(content: Text('الرجاء إدخال الاسم')),
       );
       return;
     }
@@ -66,7 +66,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       imageUploaded = await auth.uploadProfileImage(_imageFile!);
       if (!imageUploaded && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(auth.errorMessage ?? '┘╪┤┘ ╪▒┘╪╣ ╪د┘╪╡┘ê╪▒╪ر')),
+          SnackBar(content: Text(auth.errorMessage ?? 'فشل رفع الصورة')),
         );
       }
     }
@@ -77,14 +77,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (success && imageUploaded) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('╪ز┘à ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز ╪ذ┘╪ش╪د╪ص ظ£à'),
+          content: Text('تم تحديث البيانات بنجاح ✅'),
           backgroundColor: Color(0xFF00A63E),
         ),
       );
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(auth.errorMessage ?? '┘╪┤┘ ╪ز╪ص╪»┘è╪س ╪د┘╪ذ┘è╪د┘╪د╪ز')),
+        SnackBar(content: Text(auth.errorMessage ?? 'فشل تحديث البيانات')),
       );
     }
   }
@@ -160,7 +160,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       keyboardType: TextInputType.phone,
                     ),
                     const SizedBox(height: 16),
-                    // Email is read-only ظ¤ shown as info only
+                    // Email is read-only — shown as info only
                     Consumer<AuthProvider>(
                       builder: (_, auth, __) => Container(
                         padding: const EdgeInsets.all(16),

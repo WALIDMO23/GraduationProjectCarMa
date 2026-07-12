@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 
 import 'package:graduation_project/logic/providers/locale_provider.dart';
@@ -42,8 +42,8 @@ class _TowingServicesState extends State<TowingServices> {
     final baseP = svcProvider.serviceById(6)?.price ?? 600.0;
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -54,7 +54,7 @@ class _TowingServicesState extends State<TowingServices> {
         resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed background image ──────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
@@ -67,13 +67,13 @@ class _TowingServicesState extends State<TowingServices> {
             ),
           ),
 
-          // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+          // ── CustomScrollView (transparent header + content card) ────
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               // SliverAppBar contains gradient + thumbnails
-              // They scroll with the header ظْ disappear behind card when scrolled up
+              // They scroll with the header → disappear behind card when scrolled up
               SliverAppBar(
                 expandedHeight: imageH - overlapH,
                 pinned: false,
@@ -107,7 +107,7 @@ class _TowingServicesState extends State<TowingServices> {
                         ),
                       ),
 
-                      // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                      // Thumbnails — inside FlexibleSpaceBar → scroll with header
                       Positioned(
                         bottom: 14,
                         left: 0,
@@ -176,7 +176,7 @@ class _TowingServicesState extends State<TowingServices> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Title + price ──────────────────────
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -230,7 +230,7 @@ class _TowingServicesState extends State<TowingServices> {
                               child: Column(
                                 children: [
                                   Text(
-                                    s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                    s.isArabic ? 'السعر' : 'Price',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context).colorScheme.primary,
@@ -259,9 +259,9 @@ class _TowingServicesState extends State<TowingServices> {
                         ),
                         const SizedBox(height: 16),
 
-                        // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Service Details ─────────────────────
                         Text(
-                          s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                          s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -274,10 +274,10 @@ class _TowingServicesState extends State<TowingServices> {
 
                         const SizedBox(height: 24),
 
-                        // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Notes ───────────────────────────────
                         Text(
                           s.isArabic
-                              ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                              ? 'ملاحظات إضافية (اختياري)'
                               : 'Additional Notes (Optional)',
                           style: TextStyle(
                             fontSize: 15,
@@ -292,7 +292,7 @@ class _TowingServicesState extends State<TowingServices> {
                           decoration: InputDecoration(
                             hintText:
                                 s.isArabic
-                                    ? '╪د┘â╪ز╪ذ ┘à┘â╪د┘┘â ╪د┘╪ص╪د┘┘è ┘ê╪د┘┘ê╪ش┘ç╪ر╪î ╪ث┘ê ╪ز┘╪د╪╡┘è┘ ╪ث╪«╪▒┘ë...'
+                                    ? 'اكتب مكانك الحالي والوجهة، أو تفاصيل أخرى...'
                                     : 'Write your current location, destination, or other details...',
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
@@ -319,7 +319,7 @@ class _TowingServicesState extends State<TowingServices> {
 
                         const SizedBox(height: 28),
 
-                        // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                        // ── Book button (inside content → no keyboard issue) ─
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -334,12 +334,12 @@ class _TowingServicesState extends State<TowingServices> {
                             ),
                             onPressed: () {
                               final options = [
-                                s.isArabic ? '┘ê┘╪┤ ╪ح┘┘é╪د╪░ ┘à╪│╪╖╪ص' : 'Flatbed Tow Truck',
-                                s.isArabic ? '┘ê┘╪┤ ╪│╪ص╪ذ (╪┤┘ê┘â┘ç)' : 'Wheel-Lift Tow Truck',
-                                s.isArabic ? '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â' : 'Hydraulic Tow Truck',
+                                s.isArabic ? 'ونش إنقاذ مسطح' : 'Flatbed Tow Truck',
+                                s.isArabic ? 'ونش سحب (شوكه)' : 'Wheel-Lift Tow Truck',
+                                s.isArabic ? 'ونش هيدروليك' : 'Hydraulic Tow Truck',
                               ];
                               final selectedSub = options[_selectedServiceIndex];
-                              final currency = s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
                               final fullServiceName = '${s.towing}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
                               Navigator.push(
@@ -367,7 +367,7 @@ class _TowingServicesState extends State<TowingServices> {
                                 const SizedBox(width: 8),
                                 Text(
                                   s.isArabic
-                                      ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                      ? 'التالي: تحديد التفاصيل'
                                       : 'Next: Set Details',
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -388,7 +388,7 @@ class _TowingServicesState extends State<TowingServices> {
             ],
           ),
 
-          // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed back button (always visible) ─────────────────────
           Positioned(
             top: topPad + 8,
             left: 12,
@@ -417,16 +417,16 @@ class _TowingServicesState extends State<TowingServices> {
   List<Widget> _buildOptions(BuildContext context, AppStrings s, List<int> prices) {
     final options = [
       (
-        title: s.isArabic ? '┘ê┘╪┤ ╪ح┘┘é╪د╪░ ┘à╪│╪╖╪ص' : 'Flatbed Tow Truck',
-        sub: s.isArabic ? '┘à┘╪د╪│╪ذ ┘┘╪│┘è╪د╪▒╪د╪ز ╪د┘┘à╪╣╪╖┘╪ر ╪ذ╪د┘┘â╪د┘à┘' : 'Suitable for completely broken down cars',
+        title: s.isArabic ? 'ونش إنقاذ مسطح' : 'Flatbed Tow Truck',
+        sub: s.isArabic ? 'مناسب للسيارات المعطلة بالكامل' : 'Suitable for completely broken down cars',
       ),
       (
-        title: s.isArabic ? '┘ê┘╪┤ ╪│╪ص╪ذ (╪┤┘ê┘â┘ç)' : 'Wheel-Lift Tow Truck',
-        sub: s.isArabic ? '┘┘╪│╪ص╪ذ ╪د┘╪│╪▒┘è╪╣ ╪»╪د╪«┘ ╪د┘┘à╪»┘è┘╪ر' : 'For quick towing inside the city',
+        title: s.isArabic ? 'ونش سحب (شوكه)' : 'Wheel-Lift Tow Truck',
+        sub: s.isArabic ? 'للسحب السريع داخل المدينة' : 'For quick towing inside the city',
       ),
       (
-        title: s.isArabic ? '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â' : 'Hydraulic Tow Truck',
-        sub: s.isArabic ? '┘┘╪│┘è╪د╪▒╪د╪ز ╪د┘╪▒┘è╪د╪╢┘è╪ر ┘ê╪د┘┘à┘╪«┘╪╢╪ر' : 'For sports and low cars',
+        title: s.isArabic ? 'ونش هيدروليك' : 'Hydraulic Tow Truck',
+        sub: s.isArabic ? 'للسيارات الرياضية والمنخفضة' : 'For sports and low cars',
       ),
     ];
 
@@ -507,7 +507,7 @@ class _TowingServicesState extends State<TowingServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

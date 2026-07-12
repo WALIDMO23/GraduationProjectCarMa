@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-/// Unified service request page ظ¤ submits order to backend,
+/// Unified service request page — submits order to backend,
 /// shows waiting screen, triggers TechnicianAcceptedDialog on acceptance.
 class RequestServicePage extends StatefulWidget {
   final String serviceName;
@@ -53,7 +53,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
     super.dispose();
   }
 
-  // ظ¤ظ¤ Pick image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Pick image ─────────────────────────────────────────────────
   Future<void> _pickImage(ImageSource source) async {
     Navigator.pop(
       context,
@@ -95,7 +95,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  s.isArabic ? '╪د╪«╪ز╪▒ ┘à╪╡╪»╪▒ ╪د┘╪╡┘ê╪▒╪ر' : 'Choose Image Source',
+                  s.isArabic ? 'اختر مصدر الصورة' : 'Choose Image Source',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                     Expanded(
                       child: _SourceButton(
                         icon: Icons.camera_alt_rounded,
-                        label: s.isArabic ? '╪د┘┘â╪د┘à┘è╪▒╪د' : 'Camera',
+                        label: s.isArabic ? 'الكاميرا' : 'Camera',
                         color: Theme.of(context).colorScheme.primary,
                         onTap: () => _pickImage(ImageSource.camera),
                       ),
@@ -116,7 +116,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                     Expanded(
                       child: _SourceButton(
                         icon: Icons.photo_library_rounded,
-                        label: s.isArabic ? '╪د┘┘à╪╣╪▒╪╢' : 'Gallery',
+                        label: s.isArabic ? 'المعرض' : 'Gallery',
                         color: AppTheme.secondaryColor,
                         onTap: () => _pickImage(ImageSource.gallery),
                       ),
@@ -130,14 +130,14 @@ class _RequestServicePageState extends State<RequestServicePage> {
     );
   }
 
-  // ظ¤ظ¤ Navigate to Payment Method Screen ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Navigate to Payment Method Screen ─────────────────────────
   void _submit(AppStrings s) {
     if (_addressController.text.trim().isEmpty ||
         _phoneController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            s.isArabic ? '╪د┘╪▒╪ش╪د╪ة ┘à┘╪ة ╪ش┘à┘è╪╣ ╪د┘╪ص┘é┘ê┘' : 'Please fill all fields',
+            s.isArabic ? 'الرجاء ملء جميع الحقول' : 'Please fill all fields',
           ),
         ),
       );
@@ -150,7 +150,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
     String finalNotes = widget.notes;
     if (_selectedServiceTime != null) {
       final timeStr = DateFormat('dd-MM-yyyy  hh:mm a', 'en').format(_selectedServiceTime!);
-      final prefix = s.isArabic ? '┘à┘ê╪╣╪» ╪د┘╪«╪»┘à╪ر ╪د┘┘à┘╪╢┘:' : 'Preferred Service Time:';
+      final prefix = s.isArabic ? 'موعد الخدمة المفضل:' : 'Preferred Service Time:';
       // \u200E forces left-to-right rendering for the date/time string to prevent RTL mixups
       final formattedTime = '\n\u200E$timeStr';
       finalNotes = finalNotes.isEmpty ? '$prefix$formattedTime' : '$finalNotes\n\n$prefix$formattedTime';
@@ -215,7 +215,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
 
 
 
-  // ظ¤ظ¤ Form screen ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Form screen ────────────────────────────────────────────────
   Widget _buildFormScreen(AppStrings s) {
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 260.0 + topPad;
@@ -295,7 +295,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                     children: [
                                       Text(
                                         s.isArabic
-                                            ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪╖┘╪ذ'
+                                            ? 'تفاصيل الطلب'
                                             : 'Order Details',
                                         style: Theme.of(
                                           context,
@@ -312,7 +312,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                         decoration: InputDecoration(
                                           hintText:
                                               s.isArabic
-                                                  ? '╪د┘╪╣┘┘ê╪د┘ ╪ذ╪د┘╪ز┘╪╡┘è┘'
+                                                  ? 'العنوان بالتفصيل'
                                                   : 'Detailed address',
                                           prefixIcon: const Icon(
                                             Icons.location_on_outlined,
@@ -330,7 +330,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                         controller: _phoneController,
                                         hint:
                                             s.isArabic
-                                                ? '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘'
+                                                ? 'رقم الهاتف'
                                                 : 'Phone number',
                                         prefixIconData: Icons.phone_android,
                                         keyboardType: TextInputType.phone,
@@ -339,7 +339,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
 
                                       Text(
                                         s.isArabic
-                                            ? '╪╡┘ê╪▒╪ر ╪د┘╪│┘è╪د╪▒╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                                            ? 'صورة السيارة (اختياري)'
                                             : 'Car Photo (optional)',
                                         style: Theme.of(
                                           context,
@@ -357,7 +357,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                       const SizedBox(height: 24),
                                       Text(
                                         s.isArabic
-                                            ? '╪ز┘ê┘é┘è╪ز ╪د┘╪«╪»┘à╪ر'
+                                            ? 'توقيت الخدمة'
                                             : 'Service Time',
                                         style: Theme.of(
                                           context,
@@ -386,11 +386,11 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                             ).colorScheme.primary,
                                         title:
                                             s.isArabic
-                                                ? '┘ê┘é╪ز ╪د┘╪د╪│╪ز╪ش╪د╪ذ╪ر'
+                                                ? 'وقت الاستجابة'
                                                 : 'Response Time',
                                         subtitle:
                                             s.isArabic
-                                                ? '╪│┘è╪ز┘à ╪د┘╪▒╪» ╪«┘╪د┘ 5 ╪»┘é╪د╪خ┘é ┘à┘ ╪د┘╪ح╪▒╪│╪د┘'
+                                                ? 'سيتم الرد خلال 5 دقائق من الإرسال'
                                                 : 'We respond within 5 minutes',
                                       ),
                                       const SizedBox(height: 12),
@@ -399,11 +399,11 @@ class _RequestServicePageState extends State<RequestServicePage> {
                                         color: AppTheme.successColor,
                                         title:
                                             s.isArabic
-                                                ? '┘┘┘è┘ê┘ ┘à╪╣╪ز┘à╪»┘ê┘'
+                                                ? 'فنيون معتمدون'
                                                 : 'Certified Technicians',
                                         subtitle:
                                             s.isArabic
-                                                ? '╪ش┘à┘è╪╣ ┘┘┘è┘è┘╪د ╪ص╪د╪╡┘┘ê┘ ╪╣┘┘ë ╪┤┘ç╪د╪»╪د╪ز ┘à╪╣╪ز┘à╪»╪ر'
+                                                ? 'جميع فنيينا حاصلون على شهادات معتمدة'
                                                 : 'All technicians are fully certified',
                                       ),
                                       SizedBox(height: 40 + MediaQuery.of(context).viewInsets.bottom),
@@ -439,7 +439,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                               ),
                             )
                             : AppButton(
-                              text: s.isArabic ? '╪ح╪▒╪│╪د┘ ╪د┘╪╖┘╪ذ' : 'Send Request',
+                              text: s.isArabic ? 'إرسال الطلب' : 'Send Request',
                               onPressed: () => _submit(s),
                             ),
                   ),
@@ -482,7 +482,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
             ),
             const SizedBox(height: 12),
             Text(
-              s.isArabic ? '╪د╪╢╪║╪╖ ┘╪ح╪╢╪د┘╪ر ╪╡┘ê╪▒╪ر ╪د┘╪│┘è╪د╪▒╪ر' : 'Tap to add car photo',
+              s.isArabic ? 'اضغط لإضافة صورة السيارة' : 'Tap to add car photo',
               style: TextStyle(
                 color: widget.serviceColor,
                 fontWeight: FontWeight.w600,
@@ -491,7 +491,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
             ),
             const SizedBox(height: 4),
             Text(
-              s.isArabic ? '┘â╪د┘à┘è╪▒╪د ╪ث┘ê ┘à╪╣╪▒╪╢ ╪د┘╪╡┘ê╪▒' : 'Camera or gallery',
+              s.isArabic ? 'كاميرا أو معرض الصور' : 'Camera or gallery',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 12,
@@ -546,7 +546,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
                   const Icon(Icons.edit, color: Colors.white, size: 16),
                   const SizedBox(width: 4),
                   Text(
-                    s.isArabic ? '╪ز╪║┘è┘è╪▒' : 'Change',
+                    s.isArabic ? 'تغيير' : 'Change',
                     style: const TextStyle(color: Colors.white, fontSize: 13),
                   ),
                 ],
@@ -559,7 +559,7 @@ class _RequestServicePageState extends State<RequestServicePage> {
   }
 }
 
-// ظ¤ظ¤ Helpers ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ── Helpers ──────────────────────────────────────────────────────
 
 class _SourceButton extends StatelessWidget {
   final IconData icon;

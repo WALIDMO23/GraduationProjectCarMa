@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
@@ -41,7 +41,7 @@ class ActiveOrderCard extends StatelessWidget {
         if (activeOrder.isAccepted || activeOrder.isInProgress) {
           title    = s.orderOnTheWay;
           subtitle = activeOrder.hasTechnician
-              ? '${activeOrder.technicianName} ${s.isArabic ? "┘┘è ╪د┘╪╖╪▒┘è┘é ╪ح┘┘è┘â" : "is on the way"}'
+              ? '${activeOrder.technicianName} ${s.isArabic ? "في الطريق إليك" : "is on the way"}'
               : s.orderOnTheWaySub;
           statusColor = AppTheme.successColor;
         }
@@ -64,7 +64,7 @@ class ActiveOrderCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // ظ¤ظ¤ Status row ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                // ── Status row ──────────────────────────────
                 Row(
                   children: [
                     Container(
@@ -122,7 +122,7 @@ class ActiveOrderCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // ظ¤ظ¤ View Details button ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                // ── View Details button ──────────────────────
                 GestureDetector(
                   onTap: () {
                     final imgPath = ordersProvider.imagePathForOrder(activeOrder.id);
@@ -252,7 +252,7 @@ class ActiveOrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '┘╪د ╪ز┘ê╪ش╪» ╪╖┘╪ذ╪د╪ز ╪ص╪د┘┘è╪ر',
+                    'لا توجد طلبات حالية',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 15,

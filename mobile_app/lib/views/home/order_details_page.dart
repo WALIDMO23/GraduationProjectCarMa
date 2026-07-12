@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -57,7 +57,7 @@ class OrderDetailsPage extends StatelessWidget {
       case OrderStatus.underProcess: return str.orderUnderProcess;
       case OrderStatus.completed:   return str.orderCompleted;
       case OrderStatus.rejected:
-      case OrderStatus.canceled:    return str.isArabic ? '┘à╪▒┘┘ê╪╢' : 'Rejected';
+      case OrderStatus.canceled:    return str.isArabic ? 'مرفوض' : 'Rejected';
       default:                      return str.orderPending;
     }
   }
@@ -72,7 +72,7 @@ class OrderDetailsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppTheme.carmaDeepDark : AppTheme.primaryColor,
         foregroundColor: Colors.white,
-        title: Text(s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪╖┘╪ذ' : 'Order Details',
+        title: Text(s.isArabic ? 'تفاصيل الطلب' : 'Order Details',
             style: const TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
@@ -83,7 +83,7 @@ class OrderDetailsPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
-            // ظ¤ظ¤ Status Banner ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Status Banner ─────────────────────────────────────
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -126,7 +126,7 @@ class OrderDetailsPage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              '${s.isArabic ? "╪د┘┘ê╪╡┘ê┘ ╪«┘╪د┘" : "Arriving in"} ${order.estimatedArrival} ${s.isArabic ? "╪»┘é┘è┘é╪ر" : "min"}',
+                              '${s.isArabic ? "الوصول خلال" : "Arriving in"} ${order.estimatedArrival} ${s.isArabic ? "دقيقة" : "min"}',
                               style: TextStyle(color: statusColor, fontSize: 13, fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -150,9 +150,9 @@ class OrderDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // ظ¤ظ¤ Car Photo ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Car Photo ─────────────────────────────────────────
             if (carImagePath != null) ...[
-              _SectionTitle(s.isArabic ? '╪╡┘ê╪▒╪ر ╪د┘╪│┘è╪د╪▒╪ر' : 'Car Photo'),
+              _SectionTitle(s.isArabic ? 'صورة السيارة' : 'Car Photo'),
               const SizedBox(height: 12),
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
@@ -166,48 +166,48 @@ class OrderDetailsPage extends StatelessWidget {
               const SizedBox(height: 24),
             ],
 
-            // ظ¤ظ¤ Service Info ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
-            _SectionTitle(s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details'),
+            // ── Service Info ──────────────────────────────────────
+            _SectionTitle(s.isArabic ? 'تفاصيل الخدمة' : 'Service Details'),
             const SizedBox(height: 12),
             _InfoCard(children: [
               _DetailRow(
                 icon: Icons.build_rounded,
-                label: s.isArabic ? '╪د┘╪«╪»┘à╪ر' : 'Service',
+                label: s.isArabic ? 'الخدمة' : 'Service',
                 value: serviceName.isNotEmpty ? serviceName : 'Service #${order.serviceId}',
               ),
               _Divider(),
               _DetailRow(
                 icon: Icons.location_on_outlined,
-                label: s.isArabic ? '╪د┘╪╣┘┘ê╪د┘' : 'Address',
+                label: s.isArabic ? 'العنوان' : 'Address',
                 value: order.address,
               ),
               _Divider(),
               _DetailRow(
                 icon: Icons.phone_android,
-                label: s.isArabic ? '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘' : 'Phone',
+                label: s.isArabic ? 'رقم الهاتف' : 'Phone',
                 value: order.phoneNumber,
                 isPhone: true,
               ),
               _Divider(),
               _DetailRow(
                 icon: Icons.calendar_today_outlined,
-                label: s.isArabic ? '╪ز╪د╪▒┘è╪« ╪د┘╪╖┘╪ذ' : 'Order Date',
+                label: s.isArabic ? 'تاريخ الطلب' : 'Order Date',
                 value: _formatDate(order.createdAt, s.isArabic),
               ),
               if (notes != null && notes!.isNotEmpty) ...[
                 _Divider(),
                 _DetailRow(
                   icon: Icons.notes_rounded,
-                  label: s.isArabic ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر' : 'Additional Notes',
+                  label: s.isArabic ? 'ملاحظات إضافية' : 'Additional Notes',
                   value: notes!,
                 ),
               ],
             ]),
             const SizedBox(height: 20),
 
-            // ظ¤ظ¤ Technician Info (if assigned) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Technician Info (if assigned) ─────────────────────
             if (order.hasTechnician) ...[
-              _SectionTitle(s.isArabic ? '┘à╪╣┘┘ê┘à╪د╪ز ╪د┘┘┘┘è' : 'Technician Info'),
+              _SectionTitle(s.isArabic ? 'معلومات الفني' : 'Technician Info'),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -237,7 +237,7 @@ class OrderDetailsPage extends StatelessWidget {
                           Row(children: [
                             const Icon(Icons.star, color: Colors.amber, size: 16),
                             const SizedBox(width: 4),
-                            Text(order.technicianRating?.toStringAsFixed(1) ?? 'ظ¤',
+                            Text(order.technicianRating?.toStringAsFixed(1) ?? '—',
                                 style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 13)),
                           ]),
                           if (order.technicianPhone != null)
@@ -258,7 +258,7 @@ class OrderDetailsPage extends StatelessWidget {
               const SizedBox(height: 20),
             ],
 
-            // ظ¤ظ¤ Pending note ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Pending note ──────────────────────────────────────
             if (order.isPending)
               Container(
                 padding: const EdgeInsets.all(16),
@@ -274,7 +274,7 @@ class OrderDetailsPage extends StatelessWidget {
                     Expanded(
                       child: Text(
                         s.isArabic
-                            ? '╪╖┘╪ذ┘â ┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر. ╪│┘è╪ز┘à ╪ح╪«╪╖╪د╪▒┘â ╪╣┘╪» ╪ز╪╣┘è┘è┘ ╪د┘┘┘┘è.'
+                            ? 'طلبك قيد المراجعة. سيتم إخطارك عند تعيين الفني.'
                             : 'Your order is being reviewed. You\'ll be notified when a technician is assigned.',
                         style: TextStyle(color: statusColor, fontSize: 13),
                       ),
@@ -292,13 +292,13 @@ class OrderDetailsPage extends StatelessWidget {
 
   String _formatDate(DateTime dt, bool isArabic) {
     final months = isArabic
-        ? ['┘è┘╪د┘è╪▒', '┘╪ذ╪▒╪د┘è╪▒', '┘à╪د╪▒╪│', '╪ث╪ذ╪▒┘è┘', '┘à╪د┘è┘ê', '┘è┘ê┘┘è┘ê', '┘è┘ê┘┘è┘ê', '╪ث╪║╪│╪╖╪│', '╪│╪ذ╪ز┘à╪ذ╪▒', '╪ث┘â╪ز┘ê╪ذ╪▒', '┘┘ê┘┘à╪ذ╪▒', '╪»┘è╪│┘à╪ذ╪▒']
+        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
         : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
   }
 }
 
-// ظ¤ظ¤ Helpers ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ── Helpers ──────────────────────────────────────────────────────
 
 class _SectionTitle extends StatelessWidget {
   final String text;

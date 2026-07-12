@@ -1,10 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 
 class AppGradients {
-  // ظ¤ظ¤ CarMa gold gradients (dark-mode primary) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
-  static const List<Color> gradient1 = [Color(0xFFE8C98A), Color(0xFFD9B07C)]; // gold lightظْgold
-  static const List<Color> gradient2 = [Color(0xFFD9B07C), Color(0xFFBF8C4E)]; // goldظْdarker gold
+  // ── CarMa gold gradients (dark-mode primary) ──────────────────
+  static const List<Color> gradient1 = [Color(0xFFE8C98A), Color(0xFFD9B07C)]; // gold light→gold
+  static const List<Color> gradient2 = [Color(0xFFD9B07C), Color(0xFFBF8C4E)]; // gold→darker gold
   static const List<Color> gradient3 = [Color(0xFFBF9B6E), Color(0xFF8B6734)]; // warm amber
   static const List<Color> gradient4 = [Color(0xFF8B6734), Color(0xFF5C4220)]; // deep amber
   static const List<Color> gradient5 = [Color(0xFF1A1A1A), Color(0xFF050505)]; // dark (drawer header)

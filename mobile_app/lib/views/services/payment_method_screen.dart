@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
@@ -9,9 +9,9 @@ import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/views/home/widgets/technician_accepted_dialog.dart';
 import 'package:provider/provider.dart';
 
-/// Payment Method Screen ظ¤ shown after the user fills out the service
-/// request form and presses "╪ح╪▒╪│╪د┘ ╪د┘╪╖┘╪ذ". Only Cash is currently enabled;
-/// InstaPay, Fawry, Vodafone Cash and Apple Pay are displayed as "┘é╪▒┘è╪ذ╪د┘ï".
+/// Payment Method Screen — shown after the user fills out the service
+/// request form and presses "إرسال الطلب". Only Cash is currently enabled;
+/// InstaPay, Fawry, Vodafone Cash and Apple Pay are displayed as "قريباً".
 class PaymentMethodScreen extends StatefulWidget {
   /// The pre-built DTO carrying all order data from the form.
   final CreateOrderDto orderDto;
@@ -62,15 +62,15 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     super.dispose();
   }
 
-  // ظ¤ظ¤ Payment method definitions ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Payment method definitions ─────────────────────────────────
   List<PaymentMethodData> _buildMethods(bool isArabic) {
     return [
       PaymentMethodData(
         id: 'cash',
-        title: isArabic ? '╪د┘╪»┘╪╣ ╪ذ╪╣╪» ╪د┘╪د┘╪ز┘ç╪د╪ة ┘à┘ ╪د┘╪«╪»┘à╪ر' : 'Cash after service',
+        title: isArabic ? 'الدفع بعد الانتهاء من الخدمة' : 'Cash after service',
         subtitle:
             isArabic
-                ? '╪د╪»┘╪╣ ┘à╪ذ╪د╪┤╪▒╪ر ╪ذ╪╣╪» ╪ز┘┘┘è╪░ ╪د┘╪«╪»┘à╪ر'
+                ? 'ادفع مباشرة بعد تنفيذ الخدمة'
                 : 'Pay directly after service completion',
         iconWidget: _buildIconContainer(
           Icons.payments_rounded,
@@ -80,8 +80,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
       ),
       PaymentMethodData(
         id: 'instapay',
-        title: isArabic ? '╪د┘╪│╪ز╪د ╪ذ╪د┘è' : 'InstaPay',
-        subtitle: isArabic ? '╪د┘╪»┘╪╣ ╪╣╪ذ╪▒ ╪د┘╪│╪ز╪د ╪ذ╪د┘è' : 'Pay via InstaPay',
+        title: isArabic ? 'انستا باي' : 'InstaPay',
+        subtitle: isArabic ? 'الدفع عبر انستا باي' : 'Pay via InstaPay',
         iconWidget: Container(
           width: 44,
           height: 44,
@@ -105,8 +105,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
       ),
       PaymentMethodData(
         id: 'fawry',
-        title: isArabic ? '┘┘ê╪▒┘è' : 'Fawry',
-        subtitle: isArabic ? '╪د┘╪»┘╪╣ ╪╣╪ذ╪▒ ┘┘ê╪▒┘è' : 'Pay via Fawry',
+        title: isArabic ? 'فوري' : 'Fawry',
+        subtitle: isArabic ? 'الدفع عبر فوري' : 'Pay via Fawry',
         iconWidget: Container(
           width: 44,
           height: 44,
@@ -130,8 +130,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
       ),
       PaymentMethodData(
         id: 'vodafone_cash',
-        title: isArabic ? '┘┘ê╪»╪د┘┘ê┘ ┘â╪د╪┤' : 'Vodafone Cash',
-        subtitle: isArabic ? '╪د┘╪»┘╪╣ ╪╣╪ذ╪▒ ┘┘ê╪»╪د┘┘ê┘ ┘â╪د╪┤' : 'Pay via Vodafone Cash',
+        title: isArabic ? 'فودافون كاش' : 'Vodafone Cash',
+        subtitle: isArabic ? 'الدفع عبر فودافون كاش' : 'Pay via Vodafone Cash',
         iconWidget: Container(
           width: 44,
           height: 44,
@@ -152,8 +152,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
       ),
       PaymentMethodData(
         id: 'apple_pay',
-        title: isArabic ? '╪ث╪ذ┘ ╪ذ╪د┘è' : 'Apple Pay',
-        subtitle: isArabic ? '╪د┘╪»┘╪╣ ╪╣╪ذ╪▒ ╪ث╪ذ┘ ╪ذ╪د┘è' : 'Pay via Apple Pay',
+        title: isArabic ? 'أبل باي' : 'Apple Pay',
+        subtitle: isArabic ? 'الدفع عبر أبل باي' : 'Pay via Apple Pay',
         iconWidget: Container(
           width: 44,
           height: 44,
@@ -188,7 +188,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     );
   }
 
-  // ظ¤ظ¤ Submit order ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Submit order ───────────────────────────────────────────────
   Future<void> _confirmOrder(AppStrings s, String paymentMethodId) async {
     final orders = context.read<OrdersProvider>();
 
@@ -214,7 +214,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
         SnackBar(
           content: Text(
             orders.errorMessage ??
-                (s.isArabic ? '┘╪┤┘ ╪ح╪▒╪│╪د┘ ╪د┘╪╖┘╪ذ' : 'Failed to send order'),
+                (s.isArabic ? 'فشل إرسال الطلب' : 'Failed to send order'),
           ),
           behavior: SnackBarBehavior.floating,
           shape:
@@ -224,9 +224,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     }
   }
 
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+  // ══════════════════════════════════════════════════════════════
   //  BUILD
-  // ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+  // ══════════════════════════════════════════════════════════════
   @override
   Widget build(BuildContext context) {
     final isArabic = context.watch<LocaleProvider>().isArabic;
@@ -243,7 +243,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     );
   }
 
-  // ظ¤ظ¤ Payment selection screen ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Payment selection screen ──────────────────────────────────
   Widget _buildPaymentScreen(AppStrings s, bool isArabic) {
     final methods = _buildMethods(isArabic);
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -251,7 +251,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     return SafeArea(
       child: Column(
         children: [
-          // ظ¤ظ¤ App bar ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── App bar ───────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -277,7 +277,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
             ),
           ),
 
-          // ظ¤ظ¤ Scrollable content ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Scrollable content ────────────────────────────────
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -287,16 +287,16 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ظ¤ظ¤ Header ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                    // ── Header ─────────────────────────────────
                     Text(
-                      s.isArabic ? '╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣' : 'Payment Method',
+                      s.isArabic ? 'طريقة الدفع' : 'Payment Method',
                       style: Theme.of(context).textTheme.headlineSmall
                           ?.copyWith(fontWeight: FontWeight.w800, fontSize: 26),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       s.isArabic
-                          ? '╪د╪«╪ز╪▒ ╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣ ╪د┘┘à┘╪د╪│╪ذ╪ر ┘╪ح╪ز┘à╪د┘à ╪د┘╪╖┘╪ذ'
+                          ? 'اختر طريقة الدفع المناسبة لإتمام الطلب'
                           : 'Choose the appropriate payment method to complete the order',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -306,7 +306,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                     ),
                     const SizedBox(height: 28),
 
-                    // ظ¤ظ¤ Payment method cards ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                    // ── Payment method cards ───────────────────
                     ...List.generate(methods.length, (index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 14),
@@ -324,7 +324,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
 
                     const SizedBox(height: 16),
 
-                    // ظ¤ظ¤ Secure payment note ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                    // ── Secure payment note ────────────────────
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
@@ -351,7 +351,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                           Expanded(
                             child: Text(
                               s.isArabic
-                                  ? '╪ش┘à┘è╪╣ ╪د┘┘à╪╣╪د┘à┘╪د╪ز ┘à╪ج┘à┘╪ر ┘ê┘à╪ص┘à┘è╪ر ╪ذ╪د┘┘â╪د┘à┘'
+                                  ? 'جميع المعاملات مؤمنة ومحمية بالكامل'
                                   : 'All transactions are fully secured',
                               style: TextStyle(
                                 color:
@@ -371,7 +371,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
             ),
           ),
 
-          // ظ¤ظ¤ Bottom confirm button ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Bottom confirm button ─────────────────────────────
           Consumer<OrdersProvider>(
             builder: (_, orders, __) {
               final canConfirm =
@@ -403,7 +403,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                           ),
                         )
                         : _ConfirmButton(
-                          text: s.isArabic ? '╪ز╪ث┘â┘è╪» ╪د┘╪╖┘╪ذ' : 'Confirm Order',
+                          text: s.isArabic ? 'تأكيد الطلب' : 'Confirm Order',
                           enabled: canConfirm,
                           onPressed:
                               canConfirm
@@ -421,7 +421,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     );
   }
 
-  // ظ¤ظ¤ Order success screen ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Order success screen ──────────────────────────────────────
   Widget _buildSuccessScreen(AppStrings s) {
     return SafeArea(
       child: Center(
@@ -455,8 +455,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
               const SizedBox(height: 28),
               Text(
                 s.isArabic
-                    ? '╪ز┘à ╪ح╪▒╪│╪د┘ ╪╖┘╪ذ┘â ╪ذ┘╪ش╪د╪ص! ظ£à'
-                    : 'Order Sent Successfully! ظ£à',
+                    ? 'تم إرسال طلبك بنجاح! ✅'
+                    : 'Order Sent Successfully! ✅',
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -466,7 +466,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
               const SizedBox(height: 12),
               Text(
                 s.isArabic
-                    ? '╪╖┘╪ذ┘â ╪د┘╪ت┘ ┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر ┘à┘ ┘é┘╪ذ┘ ╪د┘╪ح╪»╪د╪▒╪ر.\n╪│┘è╪ز┘à ╪ح╪«╪╖╪د╪▒┘â ┘┘ê╪▒ ╪د┘┘à┘ê╪د┘┘é╪ر ┘ê╪ز╪╣┘è┘è┘ ╪د┘┘┘┘è.'
+                    ? 'طلبك الآن قيد المراجعة من قِبل الإدارة.\nسيتم إخطارك فور الموافقة وتعيين الفني.'
                     : 'Your order is being reviewed.\nYou will be notified when a technician is assigned.',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -500,7 +500,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                     const SizedBox(width: 8),
                     Text(
                       s.isArabic
-                          ? '╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣: ╪د┘╪»┘╪╣ ╪ذ╪╣╪» ╪د┘╪«╪»┘à╪ر'
+                          ? 'طريقة الدفع: الدفع بعد الخدمة'
                           : 'Payment: Cash after service',
                       style: TextStyle(
                         color: AppTheme.successColor,
@@ -531,7 +531,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
                     elevation: 0,
                   ),
                   child: Text(
-                    s.isArabic ? '╪د┘╪╣┘ê╪»╪ر ┘┘╪▒╪خ┘è╪│┘è╪ر' : 'Back to Home',
+                    s.isArabic ? 'العودة للرئيسية' : 'Back to Home',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -542,7 +542,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
               const SizedBox(height: 16),
               Text(
                 s.isArabic
-                    ? '┘è┘à┘â┘┘â ┘à╪ز╪د╪ذ╪╣╪ر ╪ص╪د┘╪ر ╪د┘╪╖┘╪ذ ┘à┘ ╪د┘╪┤╪د╪┤╪ر ╪د┘╪▒╪خ┘è╪│┘è╪ر'
+                    ? 'يمكنك متابعة حالة الطلب من الشاشة الرئيسية'
                     : 'You can track the order status from the home screen',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -558,9 +558,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
   }
 }
 
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 //  DATA MODEL
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 
 /// Data model for a single payment method entry.
 class PaymentMethodData {
@@ -579,9 +579,9 @@ class PaymentMethodData {
   });
 }
 
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 //  REUSABLE PAYMENT METHOD CARD
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 
 class PaymentMethodCard extends StatelessWidget {
   final PaymentMethodData data;
@@ -603,12 +603,12 @@ class PaymentMethodCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final primary = Theme.of(context).colorScheme.primary;
 
-    // ظ¤ظ¤ Card colors based on state ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+    // ── Card colors based on state ──────────────────────────────
     final Color bgColor;
     final Color borderColor;
 
     if (isSelected) {
-      // Selected ظ¤ primary accent
+      // Selected — primary accent
       bgColor =
           isDark
               ? primary.withValues(alpha: 0.08)
@@ -641,11 +641,11 @@ class PaymentMethodCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // ظ¤ظ¤ Icon / logo ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Icon / logo ──────────────────────────────────────
           data.iconWidget,
           const SizedBox(width: 14),
 
-          // ظ¤ظ¤ Title & subtitle ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Title & subtitle ──────────────────────────────────
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -670,7 +670,7 @@ class PaymentMethodCard extends StatelessWidget {
             ),
           ),
 
-          // ظ¤ظ¤ Trailing indicator ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Trailing indicator ────────────────────────────────
           if (data.enabled)
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -707,13 +707,13 @@ class PaymentMethodCard extends StatelessWidget {
       ),
     );
 
-    // Wrap the card: if disabled, add "┘é╪▒┘è╪ذ╪د┘ï" badge
+    // Wrap the card: if disabled, add "قريباً" badge
     if (!data.enabled) {
       return Stack(
         clipBehavior: Clip.none,
         children: [
           card,
-          // ظ¤ظ¤ "┘é╪▒┘è╪ذ╪د┘ï" badge ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── "قريباً" badge ─────────────────────────────────
           Positioned(
             top: -8,
             left: 12,
@@ -736,7 +736,7 @@ class PaymentMethodCard extends StatelessWidget {
                 ],
               ),
               child: Text(
-                isArabic ? '┘é╪▒┘è╪ذ╪د┘ï' : 'Soon',
+                isArabic ? 'قريباً' : 'Soon',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 10,
@@ -750,7 +750,7 @@ class PaymentMethodCard extends StatelessWidget {
       );
     }
 
-    // Enabled card ظ¤ tappable with ink splash
+    // Enabled card — tappable with ink splash
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -762,9 +762,9 @@ class PaymentMethodCard extends StatelessWidget {
   }
 }
 
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 //  CONFIRM BUTTON
-// ظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـظـ
+// ══════════════════════════════════════════════════════════════════
 
 class _ConfirmButton extends StatelessWidget {
   final String text;

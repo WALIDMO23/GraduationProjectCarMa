@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/services_provider.dart';
@@ -18,7 +18,7 @@ class _CarWashServicesState extends State<CarWashServices> {
   int _selectedServiceIndex = 0;
   final TextEditingController _notesController = TextEditingController();
 
-  // washg removed ظ¤ same image as washf (identical file size)
+  // washg removed — same image as washf (identical file size)
   final List<String> _images = [
     'assets/images/wash.jpeg',
     'assets/images/washb.jpeg',
@@ -46,8 +46,8 @@ class _CarWashServicesState extends State<CarWashServices> {
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice =
         svcProvider.isLoading
-            ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-            : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+            ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+            : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -58,7 +58,7 @@ class _CarWashServicesState extends State<CarWashServices> {
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
-            // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Fixed background image ──────────────────────────────────
             Positioned(
               top: 0,
               left: 0,
@@ -71,13 +71,13 @@ class _CarWashServicesState extends State<CarWashServices> {
               ),
             ),
 
-            // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+            // ── CustomScrollView (transparent header + content card) ────
             CustomScrollView(
               physics: const BouncingScrollPhysics(),
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               slivers: [
                 // SliverAppBar contains gradient + thumbnails
-                // They scroll with the header ظْ disappear behind card when scrolled up
+                // They scroll with the header → disappear behind card when scrolled up
                 SliverAppBar(
                   expandedHeight: imageH - overlapH,
                   pinned: false,
@@ -111,7 +111,7 @@ class _CarWashServicesState extends State<CarWashServices> {
                           ),
                         ),
 
-                        // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                        // Thumbnails — inside FlexibleSpaceBar → scroll with header
                         Positioned(
                           bottom: 14,
                           left: 0,
@@ -180,7 +180,7 @@ class _CarWashServicesState extends State<CarWashServices> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                              // ── Title + price ──────────────────────
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -237,7 +237,7 @@ class _CarWashServicesState extends State<CarWashServices> {
                                     child: Column(
                                       children: [
                                         Text(
-                                          s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                          s.isArabic ? 'السعر' : 'Price',
                                           style: TextStyle(
                                             fontSize: 11,
                                             color:
@@ -272,10 +272,10 @@ class _CarWashServicesState extends State<CarWashServices> {
                               ),
                               const SizedBox(height: 16),
 
-                              // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                              // ── Service Details ─────────────────────
                               Text(
                                 s.isArabic
-                                    ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر'
+                                    ? 'تفاصيل الخدمة'
                                     : 'Service Details',
                                 style: TextStyle(
                                   fontSize: 17,
@@ -290,10 +290,10 @@ class _CarWashServicesState extends State<CarWashServices> {
 
                               const SizedBox(height: 24),
 
-                              // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                              // ── Notes ───────────────────────────────
                               Text(
                                 s.isArabic
-                                    ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                                    ? 'ملاحظات إضافية (اختياري)'
                                     : 'Additional Notes (Optional)',
                                 style: TextStyle(
                                   fontSize: 15,
@@ -309,7 +309,7 @@ class _CarWashServicesState extends State<CarWashServices> {
                                 decoration: InputDecoration(
                                   hintText:
                                       s.isArabic
-                                          ? '┘à╪س╪د┘: ╪╣┘┘ê╪د┘ ╪د┘┘à┘╪▓┘ ┘╪ز┘┘┘è╪░ ╪د┘╪«╪»┘à╪ر╪î ╪ح┘╪«.'
+                                          ? 'مثال: عنوان المنزل لتنفيذ الخدمة، إلخ.'
                                           : 'Example: Home address for service, etc.',
                                   filled: true,
                                   fillColor:
@@ -338,7 +338,7 @@ class _CarWashServicesState extends State<CarWashServices> {
 
                               const SizedBox(height: 28),
 
-                              // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                              // ── Book button (inside content → no keyboard issue) ─
                               SizedBox(
                                 width: double.infinity,
                                 height: 56,
@@ -355,17 +355,17 @@ class _CarWashServicesState extends State<CarWashServices> {
                                   onPressed: () {
                                     final options = [
                                       s.isArabic
-                                          ? '╪║╪│┘è┘ ╪«╪د╪▒╪ش┘è ┘┘é╪╖'
+                                          ? 'غسيل خارجي فقط'
                                           : 'Exterior Wash Only',
                                       s.isArabic
-                                          ? '╪║╪│┘è┘ ╪»╪د╪«┘┘è ┘ê╪«╪د╪▒╪ش┘è'
+                                          ? 'غسيل داخلي وخارجي'
                                           : 'Interior & Exterior Wash',
-                                      s.isArabic ? '╪ز┘╪╕┘è┘ ╪ش╪د┘' : 'Dry Clean',
+                                      s.isArabic ? 'تنظيف جاف' : 'Dry Clean',
                                     ];
                                     final selectedSub =
                                         options[_selectedServiceIndex];
                                     final currency =
-                                        s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                                        s.isArabic ? 'جنيه' : 'EGP';
                                     final fullServiceName =
                                         '${s.carWash}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
@@ -400,7 +400,7 @@ class _CarWashServicesState extends State<CarWashServices> {
                                       const SizedBox(width: 8),
                                       Text(
                                         s.isArabic
-                                            ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                            ? 'التالي: تحديد التفاصيل'
                                             : 'Next: Set Details',
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -421,7 +421,7 @@ class _CarWashServicesState extends State<CarWashServices> {
               ],
             ),
 
-            // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Fixed back button (always visible) ─────────────────────
             Positioned(
               top: topPad + 8,
               left: 12,
@@ -454,21 +454,21 @@ class _CarWashServicesState extends State<CarWashServices> {
   ) {
     final options = [
       (
-        title: s.isArabic ? '╪║╪│┘è┘ ╪«╪د╪▒╪ش┘è ┘┘é╪╖' : 'Exterior Wash Only',
+        title: s.isArabic ? 'غسيل خارجي فقط' : 'Exterior Wash Only',
         sub:
             s.isArabic
-                ? '╪ز┘╪╕┘è┘ ╪د┘┘ç┘è┘â┘ ┘ê╪ز┘┘à┘è╪╣ ╪د┘╪▓╪ش╪د╪ش'
+                ? 'تنظيف الهيكل وتلميع الزجاج'
                 : 'Clean body and polish glass',
       ),
       (
-        title: s.isArabic ? '╪║╪│┘è┘ ╪»╪د╪«┘┘è ┘ê╪«╪د╪▒╪ش┘è' : 'Interior & Exterior Wash',
-        sub: s.isArabic ? '╪ز┘╪╕┘è┘ ╪┤╪د┘à┘ ┘┘╪│┘è╪د╪▒╪ر' : 'Comprehensive car wash',
+        title: s.isArabic ? 'غسيل داخلي وخارجي' : 'Interior & Exterior Wash',
+        sub: s.isArabic ? 'تنظيف شامل للسيارة' : 'Comprehensive car wash',
       ),
       (
-        title: s.isArabic ? '╪ز┘╪╕┘è┘ ╪ش╪د┘' : 'Dry Clean',
+        title: s.isArabic ? 'تنظيف جاف' : 'Dry Clean',
         sub:
             s.isArabic
-                ? '╪ح╪▓╪د┘╪ر ╪د┘╪ذ┘é╪╣ ╪د┘╪╣┘à┘è┘é╪ر ┘ê╪ز┘╪╕┘è┘ ╪د┘┘╪▒╪┤'
+                ? 'إزالة البقع العميقة وتنظيف الفرش'
                 : 'Remove deep stains and clean upholstery',
       ),
     ];
@@ -552,7 +552,7 @@ class _CarWashServicesState extends State<CarWashServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

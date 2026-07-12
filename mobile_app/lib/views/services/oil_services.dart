@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/services_provider.dart';
@@ -40,8 +40,8 @@ class _OilServicesState extends State<OilServices> {
     final baseP = svcProvider.serviceById(1)?.price ?? 300.0;
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -52,7 +52,7 @@ class _OilServicesState extends State<OilServices> {
         resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed background image ──────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
@@ -65,13 +65,13 @@ class _OilServicesState extends State<OilServices> {
             ),
           ),
 
-          // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+          // ── CustomScrollView (transparent header + content card) ────
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               // SliverAppBar contains gradient + thumbnails
-              // They scroll with the header ظْ disappear behind card when scrolled up
+              // They scroll with the header → disappear behind card when scrolled up
               SliverAppBar(
                 expandedHeight: imageH - overlapH,
                 pinned: false,
@@ -105,7 +105,7 @@ class _OilServicesState extends State<OilServices> {
                         ),
                       ),
 
-                      // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                      // Thumbnails — inside FlexibleSpaceBar → scroll with header
                       Positioned(
                         bottom: 14,
                         left: 0,
@@ -174,7 +174,7 @@ class _OilServicesState extends State<OilServices> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Title + price ──────────────────────
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -228,7 +228,7 @@ class _OilServicesState extends State<OilServices> {
                               child: Column(
                                 children: [
                                   Text(
-                                    s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                    s.isArabic ? 'السعر' : 'Price',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context).colorScheme.primary,
@@ -257,9 +257,9 @@ class _OilServicesState extends State<OilServices> {
                         ),
                         const SizedBox(height: 16),
 
-                        // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Service Details ─────────────────────
                         Text(
-                          s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                          s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -272,10 +272,10 @@ class _OilServicesState extends State<OilServices> {
 
                         const SizedBox(height: 24),
 
-                        // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Notes ───────────────────────────────
                         Text(
                           s.isArabic
-                              ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                              ? 'ملاحظات إضافية (اختياري)'
                               : 'Additional Notes (Optional)',
                           style: TextStyle(
                             fontSize: 15,
@@ -290,7 +290,7 @@ class _OilServicesState extends State<OilServices> {
                           decoration: InputDecoration(
                             hintText:
                                 s.isArabic
-                                    ? '┘à╪س╪د┘: ┘┘ê╪╣ ╪د┘╪▓┘è╪ز ╪د┘┘à┘╪╢┘╪î ┘╪▓┘ê╪ش╪ر ╪د┘╪▓┘è╪ز╪î ╪ح┘╪«.'
+                                    ? 'مثال: نوع الزيت المفضل، لزوجة الزيت، إلخ.'
                                     : 'Example: Preferred oil type, viscosity, etc.',
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
@@ -317,7 +317,7 @@ class _OilServicesState extends State<OilServices> {
 
                         const SizedBox(height: 28),
 
-                        // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                        // ── Book button (inside content → no keyboard issue) ─
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -332,12 +332,12 @@ class _OilServicesState extends State<OilServices> {
                             ),
                             onPressed: () {
                               final options = [
-                                s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪▓┘è╪ز ╪د┘┘à╪ص╪▒┘â' : 'Engine Oil Change',
-                                s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪▓┘è╪ز ╪د┘┘╪ز┘è╪│' : 'Transmission Oil Change',
-                                s.isArabic ? '┘╪ص╪╡ ┘à╪│╪ز┘ê┘ë ╪د┘╪▓┘è┘ê╪ز' : 'Check Oil Levels',
+                                s.isArabic ? 'تغيير زيت المحرك' : 'Engine Oil Change',
+                                s.isArabic ? 'تغيير زيت الفتيس' : 'Transmission Oil Change',
+                                s.isArabic ? 'فحص مستوى الزيوت' : 'Check Oil Levels',
                               ];
                               final selectedSub = options[_selectedServiceIndex];
-                              final currency = s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
                               final fullServiceName = '${s.oilChange}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
                               Navigator.push(
@@ -364,7 +364,7 @@ class _OilServicesState extends State<OilServices> {
                                 const SizedBox(width: 8),
                                 Text(
                                   s.isArabic
-                                      ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                      ? 'التالي: تحديد التفاصيل'
                                       : 'Next: Set Details',
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -385,7 +385,7 @@ class _OilServicesState extends State<OilServices> {
             ],
           ),
 
-          // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed back button (always visible) ─────────────────────
           Positioned(
             top: topPad + 8,
             left: 12,
@@ -414,16 +414,16 @@ class _OilServicesState extends State<OilServices> {
   List<Widget> _buildOptions(BuildContext context, AppStrings s, List<int> prices) {
     final options = [
       (
-        title: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪▓┘è╪ز ╪د┘┘à╪ص╪▒┘â' : 'Engine Oil Change',
-        sub: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪د┘╪▓┘è╪ز ┘à╪╣ ┘┘╪ز╪▒ ╪ش╪»┘è╪»' : 'Change oil with a new filter',
+        title: s.isArabic ? 'تغيير زيت المحرك' : 'Engine Oil Change',
+        sub: s.isArabic ? 'تغيير الزيت مع فلتر جديد' : 'Change oil with a new filter',
       ),
       (
-        title: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪▓┘è╪ز ╪د┘┘╪ز┘è╪│' : 'Transmission Oil Change',
-        sub: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪▓┘è╪ز ┘╪د┘é┘ ╪د┘╪ص╪▒┘â╪ر' : 'Change transmission fluid',
+        title: s.isArabic ? 'تغيير زيت الفتيس' : 'Transmission Oil Change',
+        sub: s.isArabic ? 'تغيير زيت ناقل الحركة' : 'Change transmission fluid',
       ),
       (
-        title: s.isArabic ? '┘╪ص╪╡ ┘à╪│╪ز┘ê┘ë ╪د┘╪▓┘è┘ê╪ز' : 'Check Oil Levels',
-        sub: s.isArabic ? '┘à╪▒╪د╪ش╪╣╪ر ┘ê╪ز╪▓┘ê┘è╪» ╪د┘╪▓┘è┘ê╪ز ╪د┘┘╪د┘é╪╡╪ر' : 'Inspect and top up missing oils',
+        title: s.isArabic ? 'فحص مستوى الزيوت' : 'Check Oil Levels',
+        sub: s.isArabic ? 'مراجعة وتزويد الزيوت الناقصة' : 'Inspect and top up missing oils',
       ),
     ];
 
@@ -504,7 +504,7 @@ class _OilServicesState extends State<OilServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

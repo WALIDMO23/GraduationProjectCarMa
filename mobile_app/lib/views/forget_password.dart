@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
@@ -16,7 +16,7 @@ class ForgetPassword extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text(
-            '╪د╪│╪ز╪╣╪د╪»╪ر ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+            'استعادة كلمة المرور',
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurface,
               fontSize: 20,
@@ -62,7 +62,7 @@ class ForgetPassword extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        '╪ث╪»╪«┘ ╪ذ╪▒┘è╪»┘â ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ╪د┘┘à╪▒╪ز╪ذ╪╖ ╪ذ╪ص╪│╪د╪ذ┘â╪î ┘ê╪│┘╪▒╪│┘ ┘┘â ╪▒╪د╪ذ╪╖┘ï╪د ┘╪ح╪╣╪د╪»╪ر ╪ز╪╣┘è┘è┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒.',
+                        'أدخل بريدك الإلكتروني المرتبط بحسابك، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -73,13 +73,13 @@ class ForgetPassword extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
                       const AppInput(
-                        label: '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è',
+                        label: 'البريد الإلكتروني',
                         hint: 'example@email.com',
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 32),
                       AppButton(
-                        text: '╪ح╪▒╪│╪د┘ ╪د┘╪▒╪د╪ذ╪╖',
+                        text: 'إرسال الرابط',
                         onPressed: () {
                           // TODO: Send link logic
                         },
@@ -91,7 +91,7 @@ class ForgetPassword extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '┘┘à ╪ز╪ز┘┘é ╪د┘╪ذ╪▒┘è╪»╪ا ',
+                        'لم تتلق البريد؟ ',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
@@ -103,7 +103,7 @@ class ForgetPassword extends StatelessWidget {
                           // TODO: Resend logic
                         },
                         child: const Text(
-                          '╪ح╪╣╪د╪»╪ر ╪د┘╪ح╪▒╪│╪د┘',
+                          'إعادة الإرسال',
                           style: TextStyle(
                             color: AppTheme.carmaGold,
                             fontSize: 14,

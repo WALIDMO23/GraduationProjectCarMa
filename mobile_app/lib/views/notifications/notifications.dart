@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
@@ -46,27 +46,27 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
     if (difference.inDays > 365) {
       final years = (difference.inDays / 365).floor();
-      return isArabic ? '┘à┘╪░ $years ╪│┘╪ر' : '$years years ago';
+      return isArabic ? 'منذ $years سنة' : '$years years ago';
     } else if (difference.inDays > 30) {
       final months = (difference.inDays / 30).floor();
-      return isArabic ? '┘à┘╪░ $months ╪┤┘ç╪▒' : '$months months ago';
+      return isArabic ? 'منذ $months شهر' : '$months months ago';
     } else if (difference.inDays > 7) {
       final weeks = (difference.inDays / 7).floor();
-      return isArabic ? '┘à┘╪░ $weeks ╪ث╪│╪ذ┘ê╪╣' : '$weeks weeks ago';
+      return isArabic ? 'منذ $weeks أسبوع' : '$weeks weeks ago';
     } else if (difference.inDays >= 1) {
       return isArabic
-          ? '┘à┘╪░ ${difference.inDays} ┘è┘ê┘à'
+          ? 'منذ ${difference.inDays} يوم'
           : '${difference.inDays} days ago';
     } else if (difference.inHours >= 1) {
       return isArabic
-          ? '┘à┘╪░ ${difference.inHours} ╪│╪د╪╣╪ر'
+          ? 'منذ ${difference.inHours} ساعة'
           : '${difference.inHours} hours ago';
     } else if (difference.inMinutes >= 1) {
       return isArabic
-          ? '┘à┘╪░ ${difference.inMinutes} ╪»┘é┘è┘é╪ر'
+          ? 'منذ ${difference.inMinutes} دقيقة'
           : '${difference.inMinutes} minutes ago';
     } else {
-      return isArabic ? '╪د┘╪ت┘' : 'Just now';
+      return isArabic ? 'الآن' : 'Just now';
     }
   }
 
@@ -112,7 +112,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               if (provider.unreadCount > 0)
                 Text(
                   s.isArabic
-                      ? '${provider.unreadCount} ╪ح╪┤╪╣╪د╪▒ ╪ش╪»┘è╪»'
+                      ? '${provider.unreadCount} إشعار جديد'
                       : '${provider.unreadCount} new',
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.85),
@@ -128,7 +128,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               TextButton(
                 onPressed: () => provider.markAllAsRead(),
                 child: Text(
-                  s.isArabic ? '┘é╪▒╪د╪ة╪ر ╪د┘┘â┘' : 'Read All',
+                  s.isArabic ? 'قراءة الكل' : 'Read All',
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -139,7 +139,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             TextButton(
               onPressed: () => provider.clearAll(),
               child: Text(
-                s.isArabic ? '┘à╪│╪ص ╪د┘┘â┘' : 'Clear All',
+                s.isArabic ? 'مسح الكل' : 'Clear All',
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -194,7 +194,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              s.isArabic ? '┘╪د ╪ز┘ê╪ش╪» ╪ح╪┤╪╣╪د╪▒╪د╪ز' : 'No notifications',
+              s.isArabic ? 'لا توجد إشعارات' : 'No notifications',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 18,
@@ -204,7 +204,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
             const SizedBox(height: 8),
             Text(
               s.isArabic
-                  ? '╪│╪ز╪╕┘ç╪▒ ╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز ╪د┘╪ش╪»┘è╪»╪ر ┘ç┘╪د'
+                  ? 'ستظهر الإشعارات الجديدة هنا'
                   : 'New notifications will appear here',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,

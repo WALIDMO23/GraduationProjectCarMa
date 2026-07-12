@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
@@ -469,9 +469,9 @@ class _SettingsPageState extends State<SettingsPage> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _langOption(context, '╪د┘╪╣╪▒╪ذ┘è╪ر', '≡اç╕≡اçخ', 'ar', locale),
+                _langOption(context, 'العربية', '🇸🇦', 'ar', locale),
                 const SizedBox(height: 12),
-                _langOption(context, 'English', '≡اç║≡اç╕', 'en', locale),
+                _langOption(context, 'English', '🇺🇸', 'en', locale),
               ],
             ),
           ),

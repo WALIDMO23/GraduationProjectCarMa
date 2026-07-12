@@ -1,4 +1,4 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:graduation_project/core/network/api_client.dart';
 import 'package:graduation_project/data/models/service_model.dart';
@@ -20,7 +20,7 @@ class ServicesProvider extends ChangeNotifier {
   String?            get errorMessage => _errorMessage;
   bool               get hasFetched   => _hasFetched;
 
-  // ظ¤ظ¤ Fetch all services from GET /api/admin/services ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+  // ── Fetch all services from GET /api/admin/services ──────────
   // AdminController exposes this endpoint with [AllowAnonymous],
   // so no auth token is required. It returns a plain JSON array.
   Future<void> fetchServices() async {
@@ -64,7 +64,7 @@ class ServicesProvider extends ChangeNotifier {
   String priceFor({
     required int serviceId,
     required bool isArabic,
-    String fallback = 'ظ¤',
+    String fallback = '—',
   }) {
     final svc = serviceById(serviceId);
     return svc?.formattedPrice(isArabic) ?? fallback;

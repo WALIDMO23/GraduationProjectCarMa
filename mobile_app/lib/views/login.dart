@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -49,15 +49,15 @@ class _LoginPageState extends State<LoginPage> {
     // Local validation first
     bool hasError = false;
     if (email.isEmpty) {
-      setState(() => _emailError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è');
+      setState(() => _emailError = 'الرجاء إدخال البريد الإلكتروني');
       hasError = true;
     } else if (!email.contains('@') || !email.contains('.')) {
-      setState(() => _emailError = '╪╡┘è╪║╪ر ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ╪║┘è╪▒ ╪╡╪ص┘è╪ص╪ر');
+      setState(() => _emailError = 'صيغة البريد الإلكتروني غير صحيحة');
       hasError = true;
     }
 
     if (password.isEmpty) {
-      setState(() => _passwordError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒');
+      setState(() => _passwordError = 'الرجاء إدخال كلمة المرور');
       hasError = true;
     }
 
@@ -78,16 +78,16 @@ class _LoginPageState extends State<LoginPage> {
 
       // Map backend error messages to the right field
       // Handles both English (new backend) and Arabic (legacy) messages
-      if (error.contains('╪║┘è╪▒ ┘à╪│╪ش┘') || error.contains('USER_NOT_FOUND') ||
+      if (error.contains('غير مسجل') || error.contains('USER_NOT_FOUND') ||
           error.contains('User not found') || error.contains('not found')) {
-        setState(() => _emailError = '┘ç╪░╪د ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ╪║┘è╪▒ ┘à╪│╪ش┘ّ┘ ┘╪»┘è┘╪د');
-      } else if (error.contains('╪د┘┘à╪▒┘ê╪▒') || error.contains('WRONG_PASSWORD') ||
+        setState(() => _emailError = 'هذا البريد الإلكتروني غير مسجّل لدينا');
+      } else if (error.contains('المرور') || error.contains('WRONG_PASSWORD') ||
           error.contains('Wrong password') || error.contains('Wrong pass')) {
-        setState(() => _passwordError = '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒ ╪║┘è╪▒ ╪╡╪ص┘è╪ص╪ر');
+        setState(() => _passwordError = 'كلمة المرور غير صحيحة');
       } else if (error.contains('Connection') || error.contains('SocketException') || error.contains('Failed host')) {
-        setState(() => _generalError = '┘╪د ┘è┘à┘â┘ ╪د┘╪د╪ز╪╡╪د┘ ╪ذ╪د┘╪«╪د╪»┘à╪î ╪ز╪ث┘â╪» ┘à┘ ╪د╪ز╪╡╪د┘┘â ╪ذ╪د┘╪ح┘╪ز╪▒┘╪ز');
+        setState(() => _generalError = 'لا يمكن الاتصال بالخادم، تأكد من اتصالك بالإنترنت');
       } else {
-        setState(() => _generalError = error.isNotEmpty ? error : '┘╪┤┘ ╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘╪î ╪ص╪د┘ê┘ ┘à╪▒╪ر ╪ث╪«╪▒┘ë');
+        setState(() => _generalError = error.isNotEmpty ? error : 'فشل تسجيل الدخول، حاول مرة أخرى');
       }
     }
   }
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  '╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘',
+                  'تسجيل الدخول',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 28,
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '┘à╪▒╪ص╪ذ╪د┘ï ╪ذ┘â ┘à╪ش╪»╪»╪د┘ï! ┘è╪▒╪ش┘ë ╪ح╪»╪«╪د┘ ╪ذ┘è╪د┘╪د╪ز┘â',
+                  'مرحباً بك مجدداً! يرجى إدخال بياناتك',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 16,
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 48),
 
-                // ظ¤ظ¤ General Error Banner ظ¤ظ¤
+                // ── General Error Banner ──
                 if (_generalError != null) ...[
                   _ErrorBanner(message: _generalError!),
                   const SizedBox(height: 16),
@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     AppInput(
                       controller: _emailController,
-                      label: '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è',
+                      label: 'البريد الإلكتروني',
                       hint: 'example@email.com',
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (_) => setState(() => _emailError = null),
@@ -172,8 +172,8 @@ class _LoginPageState extends State<LoginPage> {
 
                     AppInput(
                       controller: _passwordController,
-                      label: '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
-                      hint: '╪ث╪»╪«┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+                      label: 'كلمة المرور',
+                      hint: 'أدخل كلمة المرور',
                       isPassword: true,
                       onChanged: (_) => setState(() => _passwordError = null),
                     ),
@@ -196,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: const Text(
-                          '┘╪│┘è╪ز ┘â┘┘à╪ر ╪د┘╪│╪▒╪ا',
+                          'نسيت كلمة السر؟',
                           style: TextStyle(
                             color: AppTheme.carmaGold,
                             fontSize: 14,
@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                           return const Center(child: CircularProgressIndicator());
                         }
                         return AppButton(
-                          text: '╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘',
+                          text: 'تسجيل الدخول',
                           onPressed: _handleLogin,
                         );
                       },
@@ -223,14 +223,14 @@ class _LoginPageState extends State<LoginPage> {
                         Expanded(child: Divider(color: Theme.of(context).colorScheme.outline, thickness: 1)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Text('╪ث┘ê', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14)),
+                          child: Text('أو', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14)),
                         ),
                         Expanded(child: Divider(color: Theme.of(context).colorScheme.outline, thickness: 1)),
                       ],
                     ),
                     const SizedBox(height: 24),
                     AppButton(
-                      text: '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ ╪ش╪»┘è╪»',
+                      text: 'إنشاء حساب جديد',
                       isOutlined: true,
                       onPressed: () {
                         Navigator.push(
@@ -251,7 +251,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-// ظ¤ظ¤ظ¤ Inline error under a field ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ─── Inline error under a field ──────────────────────────────────────────────
 class _InlineError extends StatelessWidget {
   final String message;
   const _InlineError({required this.message});
@@ -276,7 +276,7 @@ class _InlineError extends StatelessWidget {
   }
 }
 
-// ظ¤ظ¤ظ¤ General error banner at top of form ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ─── General error banner at top of form ─────────────────────────────────────
 class _ErrorBanner extends StatelessWidget {
   final String message;
   const _ErrorBanner({required this.message});

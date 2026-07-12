@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 /// Matches the backend's NewNotificationDto
 class AppNotification {
@@ -51,65 +51,65 @@ class AppNotification {
     );
   }
 
-  // ظ¤ظ¤ Original SVG-based icon mapping (matches the original UI) ظ¤ظ¤
+  // ── Original SVG-based icon mapping (matches the original UI) ──
 
-  /// SVG asset filename ظ¤ matches original design exactly
+  /// SVG asset filename — matches original design exactly
   String get iconAsset {
     final t = type.toLowerCase();
     final ttl = title.toLowerCase();
     if (t.contains('pending') || t.contains('review') || t.contains('waiting') ||
-        ttl.contains('┘à╪▒╪د╪ش╪╣╪ر') || ttl.contains('┘é┘è╪»')) {
+        ttl.contains('مراجعة') || ttl.contains('قيد')) {
       return 'time.svg';
     }
     if (t.contains('approved') || t.contains('accepted') || t.contains('confirm') ||
-        ttl.contains('┘à┘ê╪د┘┘é╪ر') || ttl.contains('┘é╪ذ┘ê┘')) {
+        ttl.contains('موافقة') || ttl.contains('قبول')) {
       return 'accept.svg';
     }
     if (t.contains('assigned') || t.contains('technician') ||
-        ttl.contains('╪ز╪╣┘è┘è┘')) {
+        ttl.contains('تعيين')) {
       return 'done.svg';
     }
     if (t.contains('ontheway') || t.contains('way') || t.contains('dispatched') ||
-        ttl.contains('╪╖╪▒┘è┘é')) {
+        ttl.contains('طريق')) {
       return 'trucks.svg';
     }
     if (t.contains('completed') || t.contains('done') || t.contains('finished') ||
-        ttl.contains('╪د┘â╪ز┘à┘') || ttl.contains('╪د┘╪ز┘ç┘ë')) {
+        ttl.contains('اكتمل') || ttl.contains('انتهى')) {
       return 'star.svg';
     }
     if (t.contains('rejected') || t.contains('cancel') || t.contains('failed') ||
-        ttl.contains('╪▒┘╪╢') || ttl.contains('┘à┘╪║')) {
+        ttl.contains('رفض') || ttl.contains('ملغ')) {
       return 'fales.svg';
     }
     return 'time.svg';
   }
 
-  /// Background color for icon circle ظ¤ matches original design exactly
+  /// Background color for icon circle — matches original design exactly
   Color get iconBackgroundColor {
     final t = type.toLowerCase();
     final ttl = title.toLowerCase();
     if (t.contains('pending') || t.contains('review') || t.contains('waiting') ||
-        ttl.contains('┘à╪▒╪د╪ش╪╣╪ر') || ttl.contains('┘é┘è╪»')) {
+        ttl.contains('مراجعة') || ttl.contains('قيد')) {
       return const Color(0xffFEF3C6);
     }
     if (t.contains('approved') || t.contains('accepted') || t.contains('confirm') ||
-        ttl.contains('┘à┘ê╪د┘┘é╪ر') || ttl.contains('┘é╪ذ┘ê┘')) {
+        ttl.contains('موافقة') || ttl.contains('قبول')) {
       return const Color(0xffDCFCE7);
     }
     if (t.contains('assigned') || t.contains('technician') ||
-        ttl.contains('╪ز╪╣┘è┘è┘')) {
+        ttl.contains('تعيين')) {
       return const Color(0xffDBEAFE);
     }
     if (t.contains('ontheway') || t.contains('way') || t.contains('dispatched') ||
-        ttl.contains('╪╖╪▒┘è┘é')) {
+        ttl.contains('طريق')) {
       return const Color(0xffF3E8FF);
     }
     if (t.contains('completed') || t.contains('done') || t.contains('finished') ||
-        ttl.contains('╪د┘â╪ز┘à┘') || ttl.contains('╪د┘╪ز┘ç┘ë')) {
+        ttl.contains('اكتمل') || ttl.contains('انتهى')) {
       return const Color(0xffFEF9C2);
     }
     if (t.contains('rejected') || t.contains('cancel') || t.contains('failed') ||
-        ttl.contains('╪▒┘╪╢') || ttl.contains('┘à┘╪║')) {
+        ttl.contains('رفض') || ttl.contains('ملغ')) {
       return const Color(0xffFFE2E2);
     }
     return const Color(0xffFEF3C6);
@@ -145,22 +145,22 @@ class AppNotification {
     }
     // Fallback by title keywords
     final ttl = title.toLowerCase();
-    if (ttl.contains('┘à╪▒╪د╪ش╪╣╪ر') || ttl.contains('review') || ttl.contains('┘é┘è╪»')) {
+    if (ttl.contains('مراجعة') || ttl.contains('review') || ttl.contains('قيد')) {
       return Icons.access_time_rounded;
     }
-    if (ttl.contains('┘à┘ê╪د┘┘é╪ر') || ttl.contains('approved') || ttl.contains('┘é╪ذ┘ê┘')) {
+    if (ttl.contains('موافقة') || ttl.contains('approved') || ttl.contains('قبول')) {
       return Icons.check_circle_outline_rounded;
     }
-    if (ttl.contains('┘┘┘è') && (ttl.contains('╪ز╪╣┘è┘è┘') || ttl.contains('assigned'))) {
+    if (ttl.contains('فني') && (ttl.contains('تعيين') || ttl.contains('assigned'))) {
       return Icons.person_outline_rounded;
     }
-    if (ttl.contains('╪╖╪▒┘è┘é') || ttl.contains('way') || ttl.contains('╪╖╪▒┘è┘é┘ç')) {
+    if (ttl.contains('طريق') || ttl.contains('way') || ttl.contains('طريقه')) {
       return Icons.local_shipping_outlined;
     }
-    if (ttl.contains('╪د┘â╪ز┘à┘') || ttl.contains('completed') || ttl.contains('╪د┘╪ز┘ç┘ë')) {
+    if (ttl.contains('اكتمل') || ttl.contains('completed') || ttl.contains('انتهى')) {
       return Icons.star_outline_rounded;
     }
-    if (ttl.contains('╪▒┘╪╢') || ttl.contains('rejected') || ttl.contains('┘à┘╪║')) {
+    if (ttl.contains('رفض') || ttl.contains('rejected') || ttl.contains('ملغ')) {
       return Icons.cancel_outlined;
     }
     return Icons.notifications_outlined;
@@ -189,12 +189,12 @@ class AppNotification {
     }
     // title fallback
     final ttl = title.toLowerCase();
-    if (ttl.contains('┘à╪▒╪د╪ش╪╣╪ر') || ttl.contains('┘é┘è╪»')) return const Color(0xffD97706);
-    if (ttl.contains('┘à┘ê╪د┘┘é╪ر') || ttl.contains('┘é╪ذ┘ê┘')) return const Color(0xff16A34A);
-    if (ttl.contains('┘┘┘è') && ttl.contains('╪ز╪╣┘è┘è┘')) return const Color(0xff2563EB);
-    if (ttl.contains('╪╖╪▒┘è┘é')) return const Color(0xff7C3AED);
-    if (ttl.contains('╪د┘â╪ز┘à┘') || ttl.contains('╪د┘╪ز┘ç┘ë')) return const Color(0xffCA8A04);
-    if (ttl.contains('╪▒┘╪╢') || ttl.contains('┘à┘╪║')) return const Color(0xffDC2626);
+    if (ttl.contains('مراجعة') || ttl.contains('قيد')) return const Color(0xffD97706);
+    if (ttl.contains('موافقة') || ttl.contains('قبول')) return const Color(0xff16A34A);
+    if (ttl.contains('فني') && ttl.contains('تعيين')) return const Color(0xff2563EB);
+    if (ttl.contains('طريق')) return const Color(0xff7C3AED);
+    if (ttl.contains('اكتمل') || ttl.contains('انتهى')) return const Color(0xffCA8A04);
+    if (ttl.contains('رفض') || ttl.contains('ملغ')) return const Color(0xffDC2626);
     return const Color(0xff2563EB);
   }
 
@@ -221,12 +221,12 @@ class AppNotification {
     }
     // title fallback
     final ttl = title.toLowerCase();
-    if (ttl.contains('┘à╪▒╪د╪ش╪╣╪ر') || ttl.contains('┘é┘è╪»')) return const Color(0xffFEF3C6);
-    if (ttl.contains('┘à┘ê╪د┘┘é╪ر') || ttl.contains('┘é╪ذ┘ê┘')) return const Color(0xffDCFCE7);
-    if (ttl.contains('┘┘┘è') && ttl.contains('╪ز╪╣┘è┘è┘')) return const Color(0xffDBEAFE);
-    if (ttl.contains('╪╖╪▒┘è┘é')) return const Color(0xffF3E8FF);
-    if (ttl.contains('╪د┘â╪ز┘à┘') || ttl.contains('╪د┘╪ز┘ç┘ë')) return const Color(0xffFEF9C2);
-    if (ttl.contains('╪▒┘╪╢') || ttl.contains('┘à┘╪║')) return const Color(0xffFFE2E2);
+    if (ttl.contains('مراجعة') || ttl.contains('قيد')) return const Color(0xffFEF3C6);
+    if (ttl.contains('موافقة') || ttl.contains('قبول')) return const Color(0xffDCFCE7);
+    if (ttl.contains('فني') && ttl.contains('تعيين')) return const Color(0xffDBEAFE);
+    if (ttl.contains('طريق')) return const Color(0xffF3E8FF);
+    if (ttl.contains('اكتمل') || ttl.contains('انتهى')) return const Color(0xffFEF9C2);
+    if (ttl.contains('رفض') || ttl.contains('ملغ')) return const Color(0xffFFE2E2);
     return const Color(0xffDBEAFE);
   }
 }

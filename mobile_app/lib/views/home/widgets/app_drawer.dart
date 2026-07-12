@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/views/login.dart';
@@ -40,7 +40,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    user?.name ?? '┘à╪│╪ز╪«╪»┘à',
+                    user?.name ?? 'مستخدم',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -69,13 +69,13 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.home_outlined,
-                    title: '╪د┘╪▒╪خ┘è╪│┘è╪ر',
+                    title: 'الرئيسية',
                     onTap: () => Navigator.pop(context),
                   ),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.history,
-                    title: '╪╖┘╪ذ╪د╪ز┘è',
+                    title: 'طلباتي',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -88,20 +88,20 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.account_balance_wallet_outlined,
-                    title: '╪د┘┘à╪ص┘╪╕╪ر',
+                    title: 'المحفظة',
                     onTap: () {},
                   ),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.notifications_none_outlined,
-                    title: '╪د┘╪ح╪┤╪╣╪د╪▒╪د╪ز',
+                    title: 'الإشعارات',
                     badgeCount: 3,
                     onTap: () {},
                   ),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.person_outline,
-                    title: '╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è',
+                    title: 'الملف الشخصي',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -114,7 +114,7 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.settings_outlined,
-                    title: '╪د┘╪ح╪╣╪»╪د╪»╪د╪ز',
+                    title: 'الإعدادات',
                     onTap: () {
                       Navigator.push(
                         context,
@@ -128,13 +128,13 @@ class AppDrawer extends StatelessWidget {
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.help_outline,
-                    title: '╪د┘┘à╪│╪د╪╣╪»╪ر ┘ê╪د┘╪»╪╣┘à',
+                    title: 'المساعدة والدعم',
                     onTap: () {},
                   ),
                   _buildDrawerItem(
                     context: context,
                     icon: Icons.info_outline,
-                    title: '╪╣┘ ╪د┘╪ز╪╖╪ذ┘è┘é',
+                    title: 'عن التطبيق',
                     onTap: () {},
                   ),
                 ],
@@ -161,7 +161,7 @@ class AppDrawer extends StatelessWidget {
                       const Icon(Icons.logout, color: AppTheme.errorColor),
                       const SizedBox(width: 16),
                       const Text(
-                        '╪ز╪│╪ش┘è┘ ╪د┘╪«╪▒┘ê╪ش',
+                        'تسجيل الخروج',
                         style: TextStyle(
                           color: AppTheme.errorColor,
                           fontSize: 16,

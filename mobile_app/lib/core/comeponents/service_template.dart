@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_image.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
@@ -86,11 +86,11 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
     final svcProvider = context.watch<ServicesProvider>();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
         : svcProvider.priceFor(
             serviceId: widget.serviceId,
             isArabic: s.isArabic,
-            fallback: widget.basePrice.isNotEmpty ? widget.basePrice : 'ظ¤',
+            fallback: widget.basePrice.isNotEmpty ? widget.basePrice : '—',
           );
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -158,7 +158,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          s.isArabic ? '╪د┘╪│╪╣╪▒ ╪د┘╪ث╪│╪د╪│┘è' : 'Base Price',
+                          s.isArabic ? 'السعر الأساسي' : 'Base Price',
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -183,7 +183,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
             
             // Options title
             Text(
-              s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+              s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -203,7 +203,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
             
             // Notes mapping
             Text(
-              s.isArabic ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)' : 'Additional Notes (Optional)',
+              s.isArabic ? 'ملاحظات إضافية (اختياري)' : 'Additional Notes (Optional)',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -280,7 +280,7 @@ class _ServiceTemplateState extends State<ServiceTemplate> {
               const Icon(Icons.location_on_rounded, size: 22),
               const SizedBox(width: 8),
               Text(
-                s.isArabic ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘┘à┘ê┘é╪╣' : 'Next: Set Details',
+                s.isArabic ? 'التالي: تحديد الموقع' : 'Next: Set Details',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

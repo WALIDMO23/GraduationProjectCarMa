@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
@@ -73,7 +73,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                         Icon(Icons.search, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(width: 8),
                         Text(
-                          '╪د╪ذ╪ص╪س ╪╣┘ ┘à┘ê┘é╪╣┘â...',
+                          'ابحث عن موقعك...',
                           style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 14),
                         ),
                       ],
@@ -161,7 +161,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   ),
                    SizedBox(height: 24),
                    Text(
-                    '╪ز╪ث┘â┘è╪» ┘à┘ê┘é╪╣┘â ╪د┘╪ص╪د┘┘è',
+                    'تأكيد موقعك الحالي',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 18,
@@ -195,7 +195,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:  [
                               Text(
-                                '╪د┘┘é╪د┘ç╪▒╪ر╪î ┘à╪╡╪▒',
+                                'القاهرة، مصر',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurface,
                                   fontWeight: FontWeight.bold,
@@ -204,7 +204,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                '╪د┘┘à╪╣╪د╪»┘è╪î ╪┤╪د╪▒╪╣ 9╪î ╪ذ╪ش┘ê╪د╪▒ ╪د┘┘à╪ص╪╖╪ر',
+                                'المعادي، شارع 9، بجوار المحطة',
                                 style: TextStyle(
                                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   fontSize: 13,
@@ -220,7 +220,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                   ),
                   const SizedBox(height: 24),
                   AppButton(
-                    text: '╪ز╪ث┘â┘è╪» ╪د┘┘à┘ê┘é╪╣ ┘ê╪د┘┘à╪ز╪د╪ذ╪╣╪ر',
+                    text: 'تأكيد الموقع والمتابعة',
                     onPressed: () {
                       Navigator.push(
                         context,

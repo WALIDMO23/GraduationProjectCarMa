@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/core/comeponents/app_input.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -62,41 +62,41 @@ class _CreateAccountState extends State<CreateAccount> {
     bool hasError = false;
 
     if (name.isEmpty) {
-      setState(() => _nameError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪د╪│┘à ╪د┘┘â╪د┘à┘');
+      setState(() => _nameError = 'الرجاء إدخال الاسم الكامل');
       hasError = true;
     }
 
     if (email.isEmpty) {
-      setState(() => _emailError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è');
+      setState(() => _emailError = 'الرجاء إدخال البريد الإلكتروني');
       hasError = true;
     } else if (!email.contains('@') || !email.contains('.')) {
-      setState(() => _emailError = '╪╡┘è╪║╪ر ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ╪║┘è╪▒ ╪╡╪ص┘è╪ص╪ر');
+      setState(() => _emailError = 'صيغة البريد الإلكتروني غير صحيحة');
       hasError = true;
     }
 
     if (phone.isEmpty) {
-      setState(() => _phoneError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ╪▒┘é┘à ╪د┘┘ç╪د╪ز┘');
+      setState(() => _phoneError = 'الرجاء إدخال رقم الهاتف');
       hasError = true;
     }
 
     if (password.isEmpty) {
-      setState(() => _passwordError = '╪د┘╪▒╪ش╪د╪ة ╪ح╪»╪«╪د┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒');
+      setState(() => _passwordError = 'الرجاء إدخال كلمة المرور');
       hasError = true;
     } else if (password.length < 4) {
-      setState(() => _passwordError = '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒ ┘è╪ش╪ذ ╪ث┘ ╪ز┘â┘ê┘ 4 ╪ث╪ص╪▒┘ ╪╣┘┘ë ╪د┘╪ث┘é┘');
+      setState(() => _passwordError = 'كلمة المرور يجب أن تكون 4 أحرف على الأقل');
       hasError = true;
     }
 
     if (confirmPassword.isEmpty) {
-      setState(() => _confirmPasswordError = '╪د┘╪▒╪ش╪د╪ة ╪ز╪ث┘â┘è╪» ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒');
+      setState(() => _confirmPasswordError = 'الرجاء تأكيد كلمة المرور');
       hasError = true;
     } else if (password != confirmPassword) {
-      setState(() => _confirmPasswordError = '┘â┘┘à╪ز╪د ╪د┘┘à╪▒┘ê╪▒ ╪║┘è╪▒ ┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘');
+      setState(() => _confirmPasswordError = 'كلمتا المرور غير متطابقتين');
       hasError = true;
     }
 
     if (!isChecked) {
-      setState(() => _generalError = '┘è╪ش╪ذ ╪د┘┘à┘ê╪د┘┘é╪ر ╪╣┘┘ë ╪د┘╪┤╪▒┘ê╪╖ ┘ê╪د┘╪ث╪ص┘â╪د┘à ╪ث┘ê┘╪د┘ï');
+      setState(() => _generalError = 'يجب الموافقة على الشروط والأحكام أولاً');
       hasError = true;
     }
 
@@ -122,15 +122,15 @@ class _CreateAccountState extends State<CreateAccount> {
       final error = auth.errorMessage ?? '';
 
       // Handles both English (new backend) and Arabic (legacy) messages
-      if (error.contains('┘à╪│╪ش┘ّ┘ ╪ذ╪د┘┘╪╣┘') || error.contains('EMAIL_EXISTS') ||
+      if (error.contains('مسجّل بالفعل') || error.contains('EMAIL_EXISTS') ||
           error.contains('Email already exists') || error.contains('already exists')) {
-        setState(() => _emailError = '┘ç╪░╪د ╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è ┘à╪│╪ش┘ّ┘ ╪ذ╪د┘┘╪╣┘╪î ┘è┘à┘â┘┘â ╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘');
-      } else if (error.contains('┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘') || error.contains('PASSWORD_MISMATCH')) {
-        setState(() => _confirmPasswordError = '┘â┘┘à╪ز╪د ╪د┘┘à╪▒┘ê╪▒ ╪║┘è╪▒ ┘à╪ز╪╖╪د╪ذ┘é╪ز┘è┘');
+        setState(() => _emailError = 'هذا البريد الإلكتروني مسجّل بالفعل، يمكنك تسجيل الدخول');
+      } else if (error.contains('متطابقتين') || error.contains('PASSWORD_MISMATCH')) {
+        setState(() => _confirmPasswordError = 'كلمتا المرور غير متطابقتين');
       } else if (error.contains('Connection') || error.contains('SocketException') || error.contains('Failed host')) {
-        setState(() => _generalError = '┘╪د ┘è┘à┘â┘ ╪د┘╪د╪ز╪╡╪د┘ ╪ذ╪د┘╪«╪د╪»┘à╪î ╪ز╪ث┘â╪» ┘à┘ ╪د╪ز╪╡╪د┘┘â ╪ذ╪د┘╪ح┘╪ز╪▒┘╪ز');
+        setState(() => _generalError = 'لا يمكن الاتصال بالخادم، تأكد من اتصالك بالإنترنت');
       } else {
-        setState(() => _generalError = error.isNotEmpty ? error : '┘╪┤┘ ╪ح┘╪┤╪د╪ة ╪د┘╪ص╪│╪د╪ذ╪î ╪ص╪د┘ê┘ ┘à╪▒╪ر ╪ث╪«╪▒┘ë');
+        setState(() => _generalError = error.isNotEmpty ? error : 'فشل إنشاء الحساب، حاول مرة أخرى');
       }
     }
   }
@@ -181,7 +181,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 const SizedBox(height: 24),
                 Center(
                   child: Text(
-                    '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ ╪ش╪»┘è╪»',
+                    'إنشاء حساب جديد',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontSize: 28,
@@ -199,8 +199,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _nameController,
-                    label: '╪د┘╪د╪│┘à ╪د┘┘â╪د┘à┘',
-                    hint: '╪ث╪»╪«┘ ╪د╪│┘à┘â ╪د┘┘â╪د┘à┘',
+                    label: 'الاسم الكامل',
+                    hint: 'أدخل اسمك الكامل',
                     keyboardType: TextInputType.name,
                     onChanged: (_) => setState(() => _nameError = null),
                   ),
@@ -209,7 +209,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _emailController,
-                    label: '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è',
+                    label: 'البريد الإلكتروني',
                     hint: 'example@email.com',
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (_) => setState(() => _emailError = null),
@@ -219,7 +219,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _phoneController,
-                    label: '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘',
+                    label: 'رقم الهاتف',
                     hint: '5xxxxxxxx',
                     keyboardType: TextInputType.phone,
                     withCuntryCode: false,
@@ -230,8 +230,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _passwordController,
-                    label: '┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
-                    hint: '╪ث╪»╪«┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+                    label: 'كلمة المرور',
+                    hint: 'أدخل كلمة المرور',
                     isPassword: true,
                     onChanged: (_) => setState(() => _passwordError = null),
                   ),
@@ -240,8 +240,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
                   AppInput(
                     controller: _confirmPasswordController,
-                    label: '╪ز╪ث┘â┘è╪» ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
-                    hint: '╪ث╪╣╪» ╪ح╪»╪«╪د┘ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒',
+                    label: 'تأكيد كلمة المرور',
+                    hint: 'أعد إدخال كلمة المرور',
                     isPassword: true,
                     onChanged: (_) => setState(() => _confirmPasswordError = null),
                   ),
@@ -268,14 +268,14 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                       const SizedBox(width: 12),
                       Text(
-                        '╪ث┘ê╪د┘┘é ╪╣┘┘ë ',
+                        'أوافق على ',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
                         ),
                       ),
                       const Text(
-                        '╪د┘╪┤╪▒┘ê╪╖ ┘ê╪د┘╪ث╪ص┘â╪د┘à',
+                        'الشروط والأحكام',
                         style: TextStyle(
                           color: AppTheme.carmaGold,
                           fontSize: 14,
@@ -292,7 +292,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return AppButton(
-                        text: '╪ح┘╪┤╪د╪ة ╪ص╪│╪د╪ذ',
+                        text: 'إنشاء حساب',
                         onPressed: _handleRegister,
                       );
                     },
@@ -303,7 +303,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '┘╪»┘è┘â ╪ص╪│╪د╪ذ ╪ذ╪د┘┘╪╣┘╪ا ',
+                        'لديك حساب بالفعل؟ ',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 14,
@@ -317,7 +317,7 @@ class _CreateAccountState extends State<CreateAccount> {
                           );
                         },
                         child: const Text(
-                          '╪ز╪│╪ش┘è┘ ╪»╪«┘ê┘',
+                          'تسجيل دخول',
                           style: TextStyle(
                             color: AppTheme.carmaGold,
                             fontSize: 14,
@@ -337,7 +337,7 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 }
 
-// ظ¤ظ¤ظ¤ Inline error under a field ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ─── Inline error under a field ──────────────────────────────────────────────
 class _InlineError extends StatelessWidget {
   final String message;
   const _InlineError({required this.message});
@@ -362,7 +362,7 @@ class _InlineError extends StatelessWidget {
   }
 }
 
-// ظ¤ظ¤ظ¤ General error banner ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ─── General error banner ─────────────────────────────────────────────────────
 class _ErrorBanner extends StatelessWidget {
   final String message;
   const _ErrorBanner({required this.message});

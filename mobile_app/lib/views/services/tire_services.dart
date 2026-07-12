@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 
 import 'package:graduation_project/logic/providers/locale_provider.dart';
@@ -43,8 +43,8 @@ class _TireServicesState extends State<TireServices> {
     final baseP = svcProvider.serviceById(3)?.price ?? 250.0;
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -55,7 +55,7 @@ class _TireServicesState extends State<TireServices> {
         resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed background image ──────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
@@ -68,13 +68,13 @@ class _TireServicesState extends State<TireServices> {
             ),
           ),
 
-          // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+          // ── CustomScrollView (transparent header + content card) ────
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               // SliverAppBar contains gradient + thumbnails
-              // They scroll with the header ظْ disappear behind card when scrolled up
+              // They scroll with the header → disappear behind card when scrolled up
               SliverAppBar(
                 expandedHeight: imageH - overlapH,
                 pinned: false,
@@ -108,7 +108,7 @@ class _TireServicesState extends State<TireServices> {
                         ),
                       ),
 
-                      // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                      // Thumbnails — inside FlexibleSpaceBar → scroll with header
                       Positioned(
                         bottom: 14,
                         left: 0,
@@ -177,7 +177,7 @@ class _TireServicesState extends State<TireServices> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Title + price ──────────────────────
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -231,7 +231,7 @@ class _TireServicesState extends State<TireServices> {
                               child: Column(
                                 children: [
                                   Text(
-                                    s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                    s.isArabic ? 'السعر' : 'Price',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context).colorScheme.primary,
@@ -260,9 +260,9 @@ class _TireServicesState extends State<TireServices> {
                         ),
                         const SizedBox(height: 16),
 
-                        // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Service Details ─────────────────────
                         Text(
-                          s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                          s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -275,10 +275,10 @@ class _TireServicesState extends State<TireServices> {
 
                         const SizedBox(height: 24),
 
-                        // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Notes ───────────────────────────────
                         Text(
                           s.isArabic
-                              ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                              ? 'ملاحظات إضافية (اختياري)'
                               : 'Additional Notes (Optional)',
                           style: TextStyle(
                             fontSize: 15,
@@ -293,7 +293,7 @@ class _TireServicesState extends State<TireServices> {
                           decoration: InputDecoration(
                             hintText:
                                 s.isArabic
-                                    ? '┘à╪س╪د┘: ╪╣╪»╪» ╪د┘╪ح╪╖╪د╪▒╪د╪ز╪î ┘à┘é╪د╪│ ╪د┘╪ح╪╖╪د╪▒╪î ╪ح┘╪«.'
+                                    ? 'مثال: عدد الإطارات، مقاس الإطار، إلخ.'
                                     : 'Example: Number of tires, tire size, etc.',
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
@@ -320,7 +320,7 @@ class _TireServicesState extends State<TireServices> {
 
                         const SizedBox(height: 28),
 
-                        // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                        // ── Book button (inside content → no keyboard issue) ─
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -335,12 +335,12 @@ class _TireServicesState extends State<TireServices> {
                             ),
                             onPressed: () {
                               final options = [
-                                s.isArabic ? '┘┘╪« ┘ê╪╢╪ذ╪╖ ╪╢╪║╪╖ ╪د┘╪ح╪╖╪د╪▒╪د╪ز' : 'Inflate & Adjust Pressure',
-                                s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪ح╪╖╪د╪▒' : 'Replace Tire',
-                                s.isArabic ? '┘╪ص╪د┘à ╪ح╪╖╪د╪▒' : 'Repair Tire Puncture',
+                                s.isArabic ? 'نفخ وضبط ضغط الإطارات' : 'Inflate & Adjust Pressure',
+                                s.isArabic ? 'تغيير إطار' : 'Replace Tire',
+                                s.isArabic ? 'لحام إطار' : 'Repair Tire Puncture',
                               ];
                               final selectedSub = options[_selectedServiceIndex];
-                              final currency = s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
                               final fullServiceName = '${s.tires}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
                               Navigator.push(
@@ -368,7 +368,7 @@ class _TireServicesState extends State<TireServices> {
                                 const SizedBox(width: 8),
                                 Text(
                                   s.isArabic
-                                      ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                      ? 'التالي: تحديد التفاصيل'
                                       : 'Next: Set Details',
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -389,7 +389,7 @@ class _TireServicesState extends State<TireServices> {
             ],
           ),
 
-          // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed back button (always visible) ─────────────────────
           Positioned(
             top: topPad + 8,
             left: 12,
@@ -418,16 +418,16 @@ class _TireServicesState extends State<TireServices> {
   List<Widget> _buildOptions(BuildContext context, AppStrings s, List<int> prices) {
     final options = [
       (
-        title: s.isArabic ? '┘┘╪« ┘ê╪╢╪ذ╪╖ ╪╢╪║╪╖ ╪د┘╪ح╪╖╪د╪▒╪د╪ز' : 'Inflate & Adjust Pressure',
-        sub: s.isArabic ? '╪╢╪ذ╪╖ ╪د┘╪╢╪║╪╖ ┘┘┘ê╪╡┘ê┘ ┘┘┘à╪│╪ز┘ê┘ë ╪د┘┘à╪س╪د┘┘è' : 'Adjust pressure to optimal level',
+        title: s.isArabic ? 'نفخ وضبط ضغط الإطارات' : 'Inflate & Adjust Pressure',
+        sub: s.isArabic ? 'ضبط الضغط للوصول للمستوى المثالي' : 'Adjust pressure to optimal level',
       ),
       (
-        title: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪ح╪╖╪د╪▒' : 'Replace Tire',
-        sub: s.isArabic ? '╪ز╪▒┘â┘è╪ذ ╪ح╪╖╪د╪▒ ╪د╪ص╪ز┘è╪د╪╖┘è ╪ث┘ê ╪ش╪»┘è╪»' : 'Install a spare or new tire',
+        title: s.isArabic ? 'تغيير إطار' : 'Replace Tire',
+        sub: s.isArabic ? 'تركيب إطار احتياطي أو جديد' : 'Install a spare or new tire',
       ),
       (
-        title: s.isArabic ? '┘╪ص╪د┘à ╪ح╪╖╪د╪▒' : 'Repair Tire Puncture',
-        sub: s.isArabic ? '╪ح╪╡┘╪د╪ص ╪د┘╪س┘é┘ê╪ذ ╪د┘╪ذ╪│┘è╪╖╪ر' : 'Repair minor punctures',
+        title: s.isArabic ? 'لحام إطار' : 'Repair Tire Puncture',
+        sub: s.isArabic ? 'إصلاح الثقوب البسيطة' : 'Repair minor punctures',
       ),
     ];
 
@@ -508,7 +508,7 @@ class _TireServicesState extends State<TireServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

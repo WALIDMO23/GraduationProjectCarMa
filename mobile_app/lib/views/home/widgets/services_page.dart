@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
@@ -152,7 +152,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
         ),
         body: Column(
           children: [
-            // ظ¤ظ¤ Filter Chips ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Filter Chips ──────────────────────────────────────
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: SizedBox(
@@ -252,7 +252,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
               ),
             ),
             const SizedBox(height: 4),
-            // ظ¤ظ¤ Services List ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Services List ─────────────────────────────────────
             Expanded(
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),

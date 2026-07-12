@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    auth.currentUser?.name ?? '┘à╪│╪ز╪«╪»┘à',
+                                    auth.currentUser?.name ?? 'مستخدم',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -237,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                           title: s.profile,
                           subtitle:
                               s.isArabic
-                                  ? '╪╣╪▒╪╢ ┘ê╪ز╪ص╪▒┘è╪▒ ┘à╪╣┘┘ê┘à╪د╪ز┘â'
+                                  ? 'عرض وتحرير معلوماتك'
                                   : 'View and edit your info',
                           svgAsset: 'assets/icons/person.svg',
                           backgroundColor:
@@ -262,7 +262,7 @@ class _HomePageState extends State<HomePage> {
                         title: s.settings,
                         subtitle:
                             s.isArabic
-                                ? '╪ز╪║┘è┘è╪▒ ┘â┘┘à╪ر ╪د┘┘à╪▒┘ê╪▒ ┘ê╪║┘è╪▒┘ç╪د'
+                                ? 'تغيير كلمة المرور وغيرها'
                                 : 'Change password and more',
                         svgAsset: 'assets/icons/setting.svg',
                         backgroundColor:
@@ -413,7 +413,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: Column(
                           children: [
-                            // ╪د┘╪╡┘ ╪د┘╪╣┘┘ê┘è (╪د┘╪ث┘è┘é┘ê┘╪د╪ز)
+                            // الصف العلوي (الأيقونات)
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -490,11 +490,11 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            // ╪د┘┘╪╡┘ê╪╡ ╪د┘╪ز╪▒╪ص┘è╪ذ┘è╪ر
+                            // النصوص الترحيبية
                             Consumer<AuthProvider>(
                               builder:
                                   (_, auth, __) => Text(
-                                    '${s.hello}╪î ${auth.currentUser?.name ?? ''} ≡اّï',
+                                    '${s.hello}، ${auth.currentUser?.name ?? ''} 👋',
                                     style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -520,13 +520,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                  // ╪د┘┘â╪د╪▒╪» ╪د┘┘à╪ز╪▒╪د┘â╪ذ
+                  // الكارد المتراكب
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 24.0),
                     child: ActiveOrderCard(),
                   ),
 
-                  // ╪ذ╪د┘é┘è ╪د┘┘à╪ص╪ز┘ê┘ë
+                  // باقي المحتوى
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
                     child: Column(

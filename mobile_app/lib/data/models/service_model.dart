@@ -1,4 +1,4 @@
-﻿/// Model representing a service fetched from the backend.
+/// Model representing a service fetched from the backend.
 class ServiceModel {
   final int id;
   final String name;
@@ -21,7 +21,7 @@ class ServiceModel {
     );
   }
 
-  /// Formatted price string, e.g. "150 ╪ش┘┘è┘ç" / "150 EGP"
+  /// Formatted price string, e.g. "150 جنيه" / "150 EGP"
   String formattedPrice(bool isArabic) =>
-      '${price.toStringAsFixed(0)} ${isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+      '${price.toStringAsFixed(0)} ${isArabic ? 'جنيه' : 'EGP'}';
 }

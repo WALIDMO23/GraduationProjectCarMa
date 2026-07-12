@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
@@ -36,8 +36,8 @@ class _DateTimePickerCardState extends State<DateTimePickerCard> {
     final s = appStrings(context.watch<LocaleProvider>().isArabic);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    String displayDate = s.isArabic ? '╪د╪«╪ز╪▒ ╪د┘┘è┘ê┘à' : 'Select Day';
-    String displayDay = s.isArabic ? '┘ê╪د┘┘ê┘é╪ز' : 'and Time';
+    String displayDate = s.isArabic ? 'اختر اليوم' : 'Select Day';
+    String displayDay = s.isArabic ? 'والوقت' : 'and Time';
     String displayTime = '--:--';
     
     if (selectedDate != null) {
@@ -117,7 +117,7 @@ class _DateTimePickerCardState extends State<DateTimePickerCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    s.isArabic ? '┘à┘ê╪╣╪» ╪د┘╪«╪»┘à╪ر' : 'SERVICE TIME',
+                    s.isArabic ? 'موعد الخدمة' : 'SERVICE TIME',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -141,7 +141,7 @@ class _DateTimePickerCardState extends State<DateTimePickerCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            selectedDate != null ? (s.isArabic ? '╪د┘┘à┘ê╪╣╪» ╪د┘┘à╪ص╪»╪»' : 'Selected Time') : (s.isArabic ? '┘┘à ┘è╪ز┘à ╪د┘╪ز╪ص╪»┘è╪»' : 'Not set'),
+                            selectedDate != null ? (s.isArabic ? 'الموعد المحدد' : 'Selected Time') : (s.isArabic ? 'لم يتم التحديد' : 'Not set'),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -199,7 +199,7 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
   late TimeOfDay selectedTime;
 
   final List<String> weekdaysEn = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  final List<String> weekdaysAr = ['╪ث╪ص╪»', '╪ح╪س┘┘è┘', '╪س┘╪د╪س╪د╪ة', '╪ث╪▒╪ذ╪╣╪د╪ة', '╪«┘à┘è╪│', '╪ش┘à╪╣╪ر', '╪│╪ذ╪ز'];
+  final List<String> weekdaysAr = ['أحد', 'إثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
 
   final List<TimeOfDay> timeSlots = [];
 
@@ -367,7 +367,7 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
                   child: Column(
                     children: [
                       Text(
-                        s.isArabic ? '╪د┘┘ê┘é╪ز' : 'Time',
+                        s.isArabic ? 'الوقت' : 'Time',
                         style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 12),
@@ -456,7 +456,7 @@ class _DateTimePickerDialogState extends State<_DateTimePickerDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          s.isArabic ? '╪ز╪ث┘â┘è╪» ╪د┘┘à┘ê╪╣╪»' : 'Confirm Service',
+                          s.isArabic ? 'تأكيد الموعد' : 'Confirm Service',
                           style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         Text(

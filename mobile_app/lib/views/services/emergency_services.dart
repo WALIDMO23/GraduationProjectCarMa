@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/services_provider.dart';
@@ -43,8 +43,8 @@ class _EmergencyServicesState extends State<EmergencyServices> {
     final baseP = svcProvider.serviceById(5)?.price ?? 450.0;
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -55,7 +55,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
         resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed background image ──────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
@@ -68,13 +68,13 @@ class _EmergencyServicesState extends State<EmergencyServices> {
             ),
           ),
 
-          // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+          // ── CustomScrollView (transparent header + content card) ────
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               // SliverAppBar contains gradient + thumbnails
-              // They scroll with the header ظْ disappear behind card when scrolled up
+              // They scroll with the header → disappear behind card when scrolled up
               SliverAppBar(
                 expandedHeight: imageH - overlapH,
                 pinned: false,
@@ -108,7 +108,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                         ),
                       ),
 
-                      // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                      // Thumbnails — inside FlexibleSpaceBar → scroll with header
                       Positioned(
                         bottom: 14,
                         left: 0,
@@ -177,7 +177,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Title + price ──────────────────────
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -231,7 +231,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                               child: Column(
                                 children: [
                                   Text(
-                                    s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                    s.isArabic ? 'السعر' : 'Price',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context).colorScheme.primary,
@@ -260,9 +260,9 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                         ),
                         const SizedBox(height: 16),
 
-                        // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Service Details ─────────────────────
                         Text(
-                          s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                          s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -275,10 +275,10 @@ class _EmergencyServicesState extends State<EmergencyServices> {
 
                         const SizedBox(height: 24),
 
-                        // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Notes ───────────────────────────────
                         Text(
                           s.isArabic
-                              ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                              ? 'ملاحظات إضافية (اختياري)'
                               : 'Additional Notes (Optional)',
                           style: TextStyle(
                             fontSize: 15,
@@ -293,7 +293,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                           decoration: InputDecoration(
                             hintText:
                                 s.isArabic
-                                    ? '╪د┘â╪ز╪ذ ┘à┘╪د╪ص╪╕╪د╪ز┘â ┘ê┘ê╪╡┘ ╪د┘╪╣╪╖┘ ┘ç┘╪د...'
+                                    ? 'اكتب ملاحظاتك ووصف العطل هنا...'
                                     : 'Write notes and describe the issue here...',
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
@@ -320,7 +320,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
 
                         const SizedBox(height: 28),
 
-                        // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                        // ── Book button (inside content → no keyboard issue) ─
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -335,12 +335,12 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                             ),
                             onPressed: () {
                               final options = [
-                                s.isArabic ? '┘à┘è┘â╪د┘┘è┘â╪د ┘ê┘â┘ç╪▒╪ذ╪د╪ة ╪│╪▒┘è╪╣╪ر' : 'Quick Mechanics & Electrical',
-                                s.isArabic ? '╪ز┘ê╪╡┘è┘ ┘ê┘é┘ê╪» (╪ذ┘╪▓┘è┘)' : 'Fuel Delivery',
-                                s.isArabic ? '┘╪ز╪ص ╪ث╪ذ┘ê╪د╪ذ ╪د┘╪│┘è╪د╪▒╪ر' : 'Unlock Car Doors',
+                                s.isArabic ? 'ميكانيكا وكهرباء سريعة' : 'Quick Mechanics & Electrical',
+                                s.isArabic ? 'توصيل وقود (بنزين)' : 'Fuel Delivery',
+                                s.isArabic ? 'فتح أبواب السيارة' : 'Unlock Car Doors',
                               ];
                               final selectedSub = options[_selectedServiceIndex];
-                              final currency = s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
                               final fullServiceName = '${s.emergency}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
                               Navigator.push(
@@ -368,7 +368,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
                                 const SizedBox(width: 8),
                                 Text(
                                   s.isArabic
-                                      ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                      ? 'التالي: تحديد التفاصيل'
                                       : 'Next: Set Details',
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -389,7 +389,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
             ],
           ),
 
-          // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed back button (always visible) ─────────────────────
           Positioned(
             top: topPad + 8,
             left: 12,
@@ -418,16 +418,16 @@ class _EmergencyServicesState extends State<EmergencyServices> {
   List<Widget> _buildOptions(BuildContext context, AppStrings s, List<int> prices) {
     final options = [
       (
-        title: s.isArabic ? '┘à┘è┘â╪د┘┘è┘â╪د ┘ê┘â┘ç╪▒╪ذ╪د╪ة ╪│╪▒┘è╪╣╪ر' : 'Quick Mechanics & Electrical',
-        sub: s.isArabic ? '╪ح╪╡┘╪د╪ص ╪د┘╪ث╪╣╪╖╪د┘ ╪د┘┘à┘è┘â╪د┘┘è┘â┘è╪ر ┘ê╪د┘┘â┘ç╪▒╪ذ╪د╪خ┘è╪ر' : 'Repair mechanical and electrical faults',
+        title: s.isArabic ? 'ميكانيكا وكهرباء سريعة' : 'Quick Mechanics & Electrical',
+        sub: s.isArabic ? 'إصلاح الأعطال الميكانيكية والكهربائية' : 'Repair mechanical and electrical faults',
       ),
       (
-        title: s.isArabic ? '╪ز┘ê╪╡┘è┘ ┘ê┘é┘ê╪» (╪ذ┘╪▓┘è┘)' : 'Fuel Delivery',
-        sub: s.isArabic ? '╪ز┘ê╪╡┘è┘ ╪د┘╪ذ┘╪▓┘è┘ ┘┘à┘ê┘é╪╣ ╪│┘è╪د╪▒╪ز┘â' : 'Deliver fuel to your location',
+        title: s.isArabic ? 'توصيل وقود (بنزين)' : 'Fuel Delivery',
+        sub: s.isArabic ? 'توصيل البنزين لموقع سيارتك' : 'Deliver fuel to your location',
       ),
       (
-        title: s.isArabic ? '┘╪ز╪ص ╪ث╪ذ┘ê╪د╪ذ ╪د┘╪│┘è╪د╪▒╪ر' : 'Unlock Car Doors',
-        sub: s.isArabic ? '╪╖┘ê╪د╪▒╪خ ┘╪│┘è╪د┘ ╪د┘┘à┘╪ز╪د╪ص ╪»╪د╪«┘ ╪د┘╪│┘è╪د╪▒╪ر' : 'Emergency unlocking if keys are inside',
+        title: s.isArabic ? 'فتح أبواب السيارة' : 'Unlock Car Doors',
+        sub: s.isArabic ? 'طوارئ نسيان المفتاح داخل السيارة' : 'Emergency unlocking if keys are inside',
       ),
     ];
 
@@ -508,7 +508,7 @@ class _EmergencyServicesState extends State<EmergencyServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

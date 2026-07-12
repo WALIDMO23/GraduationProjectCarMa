@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
@@ -60,7 +60,7 @@ class ProfilePage extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                // ظ¤ظ¤ Header ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                // ── Header ──────────────────────────────────────────
                 Container(
                   width: double.infinity,
                   decoration:  BoxDecoration(
@@ -93,7 +93,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        user?.name ?? 'ظ¤',
+                        user?.name ?? '—',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -119,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ظ¤ظ¤ Personal Info ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                      // ── Personal Info ────────────────────────────
                       Text(
                         s.personalInfo,
                         style: TextStyle(
@@ -129,16 +129,16 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _buildInfoField(context, Icons.person_outline, s.fullName, user?.name ?? 'ظ¤'),
+                      _buildInfoField(context, Icons.person_outline, s.fullName, user?.name ?? '—'),
                       const SizedBox(height: 12),
-                      _buildInfoField(context, Icons.email_outlined, s.email, user?.email ?? 'ظ¤'),
+                      _buildInfoField(context, Icons.email_outlined, s.email, user?.email ?? '—'),
                       const SizedBox(height: 12),
                       _buildInfoField(context, Icons.phone_android, s.phone,
-                          user?.phoneNumber.isNotEmpty == true ? user!.phoneNumber : 'ظ¤',
+                          user?.phoneNumber.isNotEmpty == true ? user!.phoneNumber : '—',
                           isPhone: true),
                       const SizedBox(height: 32),
 
-                      // ظ¤ظ¤ Stats ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                      // ── Stats ────────────────────────────────────
                       Text(
                         s.stats,
                         style: TextStyle(
@@ -157,7 +157,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
 
-                      // ظ¤ظ¤ Logout ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                      // ── Logout ───────────────────────────────────
                       InkWell(
                         onTap: () async {
                           await auth.logout();

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/comeponents/app_button.dart';
 import 'package:graduation_project/views/services/order_confirmation.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
@@ -15,24 +15,24 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
 
   final List<Map<String, dynamic>> _methods = [
     {
-      'title': '╪د┘╪»┘╪╣ ┘┘é╪»╪د┘ï',
+      'title': 'الدفع نقداً',
       'icon': Icons.money,
-      'desc': '╪د┘╪»┘╪╣ ┘┘╪│╪د╪خ┘é ╪╣┘╪» ╪د┘┘ê╪╡┘ê┘',
+      'desc': 'الدفع للسائق عند الوصول',
     },
     {
-      'title': '╪د┘╪ذ╪╖╪د┘é╪ر ╪د┘╪د╪خ╪ز┘à╪د┘┘è╪ر / ┘à╪»┘ë',
+      'title': 'البطاقة الائتمانية / مدى',
       'icon': Icons.credit_card,
       'desc': '**** **** **** 1234',
     },
     {
-      'title': '╪ث╪ذ┘ ╪ذ╪د┘è (Apple Pay)',
+      'title': 'أبل باي (Apple Pay)',
       'icon': Icons.apple,
-      'desc': '╪»┘╪╣ ╪│╪▒┘è╪╣ ┘ê╪ت┘à┘',
+      'desc': 'دفع سريع وآمن',
     },
     {
-      'title': '╪د┘┘à╪ص┘╪╕╪ر',
+      'title': 'المحفظة',
       'icon': Icons.account_balance_wallet,
-      'desc': '╪د┘╪▒╪╡┘è╪» ╪د┘┘à╪ز╪د╪ص: 250 ╪▒┘è╪د┘',
+      'desc': 'الرصيد المتاح: 250 ريال',
     },
   ];
 
@@ -42,7 +42,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
       appBar: AppBar(
-        title: const Text('╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣'),
+        title: const Text('طريقة الدفع'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -82,14 +82,14 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                '╪ح╪ش┘à╪د┘┘è ╪د┘┘à╪ذ┘╪║',
+                                'إجمالي المبلغ',
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
-                                '150 ╪▒┘è╪د┘',
+                                '150 ريال',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
@@ -105,14 +105,14 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: const [
                               Text(
-                                '╪د┘╪«╪»┘à╪ر:',
+                                'الخدمة:',
                                 style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 14,
                                 ),
                               ),
                               Text(
-                                '┘ê┘╪┤ ┘ç┘è╪»╪▒┘ê┘┘è┘â',
+                                'ونش هيدروليك',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -126,7 +126,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                     ),
                     const SizedBox(height: 32),
                     Text(
-                      '╪د╪«╪ز╪▒ ╪╖╪▒┘è┘é╪ر ╪د┘╪»┘╪╣',
+                      'اختر طريقة الدفع',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 18,
@@ -240,7 +240,7 @@ class _PaymentMethodsPageState extends State<PaymentMethodsPage> {
                 ],
               ),
               child: AppButton(
-                text: '╪ز╪ث┘â┘è╪» ╪د┘╪»┘╪╣ ┘ê╪د┘╪╖┘╪ذ',
+                text: 'تأكيد الدفع والطلب',
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,

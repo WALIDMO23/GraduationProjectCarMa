@@ -1,11 +1,11 @@
-﻿import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiClient {
-  // ظ£à Android Emulator  ظْ use: http://10.0.2.2:5000/api
-  // ظ£à Real Device (WiFi) ظْ use: http://192.168.1.2:5000/api
-  // ظ£à iOS Simulator     ظْ use: http://localhost:5000/api
+  // ✅ Android Emulator  → use: http://10.0.2.2:5000/api
+  // ✅ Real Device (WiFi) → use: http://192.168.1.2:5000/api
+  // ✅ iOS Simulator     → use: http://localhost:5000/api
   static const String _baseUrl =
       'https://carma-backend-api.onrender.com/api'; // Real Device (WiFi)
 

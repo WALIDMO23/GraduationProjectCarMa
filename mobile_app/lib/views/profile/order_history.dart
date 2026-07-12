@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/data/models/order_model.dart';
@@ -43,8 +43,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
             indicatorColor: AppTheme.primaryColor,
             labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             tabs: [
-              Tab(text: s.isArabic ? '╪د┘╪ص╪د┘┘è╪ر' : 'Active'),
-              Tab(text: s.isArabic ? '╪د┘╪│╪د╪ذ┘é╪ر' : 'Past'),
+              Tab(text: s.isArabic ? 'الحالية' : 'Active'),
+              Tab(text: s.isArabic ? 'السابقة' : 'Past'),
             ],
           ),
         ),
@@ -61,13 +61,13 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                     const Icon(Icons.wifi_off, size: 60, color: Colors.grey),
                     const SizedBox(height: 16),
                     Text(
-                      s.isArabic ? '╪ز╪╣╪░╪▒ ╪ز╪ص┘à┘è┘ ╪د┘╪╖┘╪ذ╪د╪ز' : 'Failed to load orders',
+                      s.isArabic ? 'تعذر تحميل الطلبات' : 'Failed to load orders',
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 12),
                     ElevatedButton(
                       onPressed: () => provider.fetchOrders(),
-                      child: Text(s.isArabic ? '╪ح╪╣╪د╪»╪ر ╪د┘┘à╪ص╪د┘ê┘╪ر' : 'Retry'),
+                      child: Text(s.isArabic ? 'إعادة المحاولة' : 'Retry'),
                     ),
                   ],
                 ),
@@ -90,7 +90,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   }
 }
 
-// ظ¤ظ¤ Order List ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ── Order List ─────────────────────────────────────────────────────────────
 
 class _OrderList extends StatelessWidget {
   final List<OrderModel> orders;
@@ -114,8 +114,8 @@ class _OrderList extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               isActive
-                  ? (s.isArabic ? '┘╪د ╪ز┘ê╪ش╪» ╪╖┘╪ذ╪د╪ز ╪ص╪د┘┘è╪ر' : 'No active orders')
-                  : (s.isArabic ? '┘╪د ╪ز┘ê╪ش╪» ╪╖┘╪ذ╪د╪ز ╪│╪د╪ذ┘é╪ر' : 'No past orders'),
+                  ? (s.isArabic ? 'لا توجد طلبات حالية' : 'No active orders')
+                  : (s.isArabic ? 'لا توجد طلبات سابقة' : 'No past orders'),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
                 fontSize: 16,
@@ -141,7 +141,7 @@ class _OrderList extends StatelessWidget {
   }
 }
 
-// ظ¤ظ¤ Order Card ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+// ── Order Card ──────────────────────────────────────────────────────────────
 
 class _OrderCard extends StatelessWidget {
   final OrderModel order;
@@ -159,10 +159,10 @@ class _OrderCard extends StatelessWidget {
 
   String _statusLabel(OrderModel o) {
     if (o.isCompleted)   return s.orderCompleted;
-    if (o.isRejected)    return s.isArabic ? '┘à╪▒┘┘ê╪╢' : 'Rejected';
+    if (o.isRejected)    return s.isArabic ? 'مرفوض' : 'Rejected';
     if (o.isInProgress)  return s.orderUnderProcess;
     if (o.isAccepted)    return s.orderOnTheWay;
-    return s.isArabic ? '┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر' : 'Pending';
+    return s.isArabic ? 'قيد المراجعة' : 'Pending';
   }
 
   IconData _icon(OrderModel o) {
@@ -200,12 +200,12 @@ class _OrderCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // ظ¤ظ¤ Header row ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Header row ──────────────────────────────────────
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${s.isArabic ? '╪د┘╪╖┘╪ذ' : 'Order'} #${order.id}',
+                  '${s.isArabic ? 'الطلب' : 'Order'} #${order.id}',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 14,
@@ -223,7 +223,7 @@ class _OrderCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          s.isArabic ? '┘à╪»┘┘ê╪╣' : 'Paid',
+                          s.isArabic ? 'مدفوع' : 'Paid',
                           style: const TextStyle(color: AppTheme.successColor, fontSize: 11, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -245,7 +245,7 @@ class _OrderCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            // ظ¤ظ¤ Body row ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Body row ─────────────────────────────────────────
             Row(
               children: [
                 Container(
@@ -284,7 +284,7 @@ class _OrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      '${order.price.toStringAsFixed(0)} ${s.isArabic ? '╪ش.┘à' : 'EGP'}',
+                      '${order.price.toStringAsFixed(0)} ${s.isArabic ? 'ج.م' : 'EGP'}',
                       style: const TextStyle(
                         color: AppTheme.primaryColor,
                         fontSize: 16,
@@ -303,7 +303,7 @@ class _OrderCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    s.isArabic ? '╪╣╪▒╪╢ ╪د┘╪ز┘╪د╪╡┘è┘ ┘ê╪ز╪ز╪ذ╪╣ ╪د┘╪╖┘╪ذ' : 'View details & track order',
+                    s.isArabic ? 'عرض التفاصيل وتتبع الطلب' : 'View details & track order',
                     style: const TextStyle(
                       color: AppTheme.primaryColor,
                       fontSize: 14,
@@ -323,7 +323,7 @@ class _OrderCard extends StatelessWidget {
 
   String _formatDate(DateTime dt, bool isArabic) {
     final months = isArabic
-        ? ['┘è┘╪د┘è╪▒', '┘╪ذ╪▒╪د┘è╪▒', '┘à╪د╪▒╪│', '╪ث╪ذ╪▒┘è┘', '┘à╪د┘è┘ê', '┘è┘ê┘┘è┘ê', '┘è┘ê┘┘è┘ê', '╪ث╪║╪│╪╖╪│', '╪│╪ذ╪ز┘à╪ذ╪▒', '╪ث┘â╪ز┘ê╪ذ╪▒', '┘┘ê┘┘à╪ذ╪▒', '╪»┘è╪│┘à╪ذ╪▒']
+        ? ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر']
         : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return '${dt.day} ${months[dt.month - 1]} ${dt.year}';
   }

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 
 class AppBackground extends StatelessWidget {

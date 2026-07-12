@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/logic/providers/locale_provider.dart';
 import 'package:graduation_project/logic/providers/services_provider.dart';
@@ -43,8 +43,8 @@ class _BatteryServicesState extends State<BatteryServices> {
     final baseP = svcProvider.serviceById(2)?.price ?? 500.0;
     final optionPrices = optMult.map((m) => (baseP * m).round()).toList();
     final displayPrice = svcProvider.isLoading
-        ? (s.isArabic ? '╪ش╪د╪▒┘è ╪د┘╪ز╪ص┘à┘è┘...' : 'Loading...')
-        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}';
+        ? (s.isArabic ? 'جاري التحميل...' : 'Loading...')
+        : '${optionPrices[_selectedServiceIndex]} ${s.isArabic ? 'جنيه' : 'EGP'}';
     final topPad = MediaQuery.of(context).padding.top;
     final imageH = 300.0 + topPad;
     const double overlapH = 50;
@@ -55,7 +55,7 @@ class _BatteryServicesState extends State<BatteryServices> {
         resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          // ظ¤ظ¤ Fixed background image ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed background image ──────────────────────────────────
           Positioned(
             top: 0,
             left: 0,
@@ -68,13 +68,13 @@ class _BatteryServicesState extends State<BatteryServices> {
             ),
           ),
 
-          // ظ¤ظ¤ CustomScrollView (transparent header + content card) ظ¤ظ¤ظ¤ظ¤
+          // ── CustomScrollView (transparent header + content card) ────
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             slivers: [
               // SliverAppBar contains gradient + thumbnails
-              // They scroll with the header ظْ disappear behind card when scrolled up
+              // They scroll with the header → disappear behind card when scrolled up
               SliverAppBar(
                 expandedHeight: imageH - overlapH,
                 pinned: false,
@@ -108,7 +108,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                         ),
                       ),
 
-                      // Thumbnails ظ¤ inside FlexibleSpaceBar ظْ scroll with header
+                      // Thumbnails — inside FlexibleSpaceBar → scroll with header
                       Positioned(
                         bottom: 14,
                         left: 0,
@@ -177,7 +177,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // ظ¤ظ¤ Title + price ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Title + price ──────────────────────
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -231,7 +231,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                               child: Column(
                                 children: [
                                   Text(
-                                    s.isArabic ? '╪د┘╪│╪╣╪▒' : 'Price',
+                                    s.isArabic ? 'السعر' : 'Price',
                                     style: TextStyle(
                                       fontSize: 11,
                                       color: Theme.of(context).colorScheme.primary,
@@ -260,9 +260,9 @@ class _BatteryServicesState extends State<BatteryServices> {
                         ),
                         const SizedBox(height: 16),
 
-                        // ظ¤ظ¤ Service Details ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Service Details ─────────────────────
                         Text(
-                          s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                          s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
@@ -275,10 +275,10 @@ class _BatteryServicesState extends State<BatteryServices> {
 
                         const SizedBox(height: 24),
 
-                        // ظ¤ظ¤ Notes ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+                        // ── Notes ───────────────────────────────
                         Text(
                           s.isArabic
-                              ? '┘à┘╪د╪ص╪╕╪د╪ز ╪ح╪╢╪د┘┘è╪ر (╪د╪«╪ز┘è╪د╪▒┘è)'
+                              ? 'ملاحظات إضافية (اختياري)'
                               : 'Additional Notes (Optional)',
                           style: TextStyle(
                             fontSize: 15,
@@ -293,7 +293,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                           decoration: InputDecoration(
                             hintText:
                                 s.isArabic
-                                    ? '┘à╪س╪د┘: ┘┘ê╪╣ ╪د┘╪│┘è╪د╪▒╪ر╪î ┘à┘ê╪»┘è┘ ╪د┘╪ذ╪╖╪د╪▒┘è╪ر ╪د┘┘à╪╖┘┘ê╪ذ╪î ╪ح┘╪«.'
+                                    ? 'مثال: نوع السيارة، موديل البطارية المطلوب، إلخ.'
                                     : 'Example: Car type, Battery model, etc.',
                             filled: true,
                             fillColor: Theme.of(context).colorScheme.surface,
@@ -320,7 +320,7 @@ class _BatteryServicesState extends State<BatteryServices> {
 
                         const SizedBox(height: 28),
 
-                        // ظ¤ظ¤ Book button (inside content ظْ no keyboard issue) ظ¤
+                        // ── Book button (inside content → no keyboard issue) ─
                         SizedBox(
                           width: double.infinity,
                           height: 56,
@@ -335,12 +335,12 @@ class _BatteryServicesState extends State<BatteryServices> {
                             ),
                             onPressed: () {
                               final options = [
-                                s.isArabic ? '╪┤╪ص┘ ╪ذ╪╖╪د╪▒┘è╪ر' : 'Charge Battery',
-                                s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪ذ╪╖╪د╪▒┘è╪ر' : 'Replace Battery',
-                                s.isArabic ? '╪┤╪▒╪د╪ة ╪ذ╪╖╪د╪▒┘è╪ر ╪ش╪»┘è╪»╪ر' : 'Buy New Battery',
+                                s.isArabic ? 'شحن بطارية' : 'Charge Battery',
+                                s.isArabic ? 'تغيير بطارية' : 'Replace Battery',
+                                s.isArabic ? 'شراء بطارية جديدة' : 'Buy New Battery',
                               ];
                               final selectedSub = options[_selectedServiceIndex];
-                              final currency = s.isArabic ? '╪ش┘┘è┘ç' : 'EGP';
+                              final currency = s.isArabic ? 'جنيه' : 'EGP';
                               final fullServiceName = '${s.battery}\n$selectedSub - ${optionPrices[_selectedServiceIndex]} $currency';
 
                               Navigator.push(
@@ -368,7 +368,7 @@ class _BatteryServicesState extends State<BatteryServices> {
                                 const SizedBox(width: 8),
                                 Text(
                                   s.isArabic
-                                      ? '╪د┘╪ز╪د┘┘è: ╪ز╪ص╪»┘è╪» ╪د┘╪ز┘╪د╪╡┘è┘'
+                                      ? 'التالي: تحديد التفاصيل'
                                       : 'Next: Set Details',
                                   style: const TextStyle(
                                     fontSize: 18,
@@ -389,7 +389,7 @@ class _BatteryServicesState extends State<BatteryServices> {
             ],
           ),
 
-          // ظ¤ظ¤ Fixed back button (always visible) ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+          // ── Fixed back button (always visible) ─────────────────────
           Positioned(
             top: topPad + 8,
             left: 12,
@@ -418,16 +418,16 @@ class _BatteryServicesState extends State<BatteryServices> {
   List<Widget> _buildOptions(BuildContext context, AppStrings s, List<int> prices) {
     final options = [
       (
-        title: s.isArabic ? '╪┤╪ص┘ ╪ذ╪╖╪د╪▒┘è╪ر' : 'Charge Battery',
-        sub: s.isArabic ? '╪ح╪╣╪د╪»╪ر ╪┤╪ص┘ ╪د┘╪ذ╪╖╪د╪▒┘è╪ر ╪د┘╪ص╪د┘┘è╪ر' : 'Recharge the current battery',
+        title: s.isArabic ? 'شحن بطارية' : 'Charge Battery',
+        sub: s.isArabic ? 'إعادة شحن البطارية الحالية' : 'Recharge the current battery',
       ),
       (
-        title: s.isArabic ? '╪ز╪║┘è┘è╪▒ ╪ذ╪╖╪د╪▒┘è╪ر' : 'Replace Battery',
-        sub: s.isArabic ? '╪ز╪▒┘â┘è╪ذ ╪ذ╪╖╪د╪▒┘è╪ر ┘à┘ ╪╣┘╪»┘â' : 'Install a battery you provide',
+        title: s.isArabic ? 'تغيير بطارية' : 'Replace Battery',
+        sub: s.isArabic ? 'تركيب بطارية من عندك' : 'Install a battery you provide',
       ),
       (
-        title: s.isArabic ? '╪┤╪▒╪د╪ة ╪ذ╪╖╪د╪▒┘è╪ر ╪ش╪»┘è╪»╪ر' : 'Buy New Battery',
-        sub: s.isArabic ? '╪┤╪▒╪د╪ة ┘ê╪ز╪▒┘â┘è╪ذ ╪ذ╪╖╪د╪▒┘è╪ر ╪ث╪╡┘┘è╪ر' : 'Buy and install a genuine battery',
+        title: s.isArabic ? 'شراء بطارية جديدة' : 'Buy New Battery',
+        sub: s.isArabic ? 'شراء وتركيب بطارية أصلية' : 'Buy and install a genuine battery',
       ),
     ];
 
@@ -508,7 +508,7 @@ class _BatteryServicesState extends State<BatteryServices> {
               ),
               const SizedBox(width: 8),
               Text(
-                '${prices[index]}\n${s.isArabic ? '╪ش┘┘è┘ç' : 'EGP'}',
+                '${prices[index]}\n${s.isArabic ? 'جنيه' : 'EGP'}',
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,

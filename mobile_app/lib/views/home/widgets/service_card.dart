@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:graduation_project/core/localization/app_strings.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
@@ -144,7 +144,7 @@ class _ServiceCardState extends State<ServiceCard> {
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        s.isArabic ? '╪ز┘╪د╪╡┘è┘ ╪د┘╪«╪»┘à╪ر' : 'Service Details',
+                        s.isArabic ? 'تفاصيل الخدمة' : 'Service Details',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontSize: 10,
@@ -171,7 +171,7 @@ class _ServiceCardState extends State<ServiceCard> {
                         ),
                         alignment: Alignment.center,
                         child: Text(
-                          s.isArabic ? '╪د╪ذ╪»╪ث' : 'Start',
+                          s.isArabic ? 'ابدأ' : 'Start',
                           style: TextStyle(
                             color:
                                 isDark

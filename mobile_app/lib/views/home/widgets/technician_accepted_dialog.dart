@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:graduation_project/core/theme/app_theme.dart';
 import 'package:graduation_project/data/models/order_model.dart';
 
@@ -27,7 +27,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ظ¤ظ¤ Success animation circle ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Success animation circle ──────────────────────
             Container(
               width: 80,
               height: 80,
@@ -43,15 +43,15 @@ class TechnicianAcceptedDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // ظ¤ظ¤ Title ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Title ─────────────────────────────────────────
             const Text(
-              '╪ز┘à ┘é╪ذ┘ê┘ ╪╖┘╪ذ┘â! ظ£à',
+              'تم قبول طلبك! ✅',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              '╪ز┘à ╪ز╪╣┘è┘è┘ ┘┘┘è ╪╡┘è╪د┘╪ر ┘ê┘ç┘ê ┘┘è ╪د┘╪╖╪▒┘è┘é ╪ح┘┘è┘â ╪د┘╪ت┘',
+              'تم تعيين فني صيانة وهو في الطريق إليك الآن',
               style: TextStyle(
                 color: theme.colorScheme.onSurfaceVariant,
                 fontSize: 14,
@@ -60,7 +60,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // ظ¤ظ¤ Technician Card ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── Technician Card ───────────────────────────────
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -88,7 +88,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              order.technicianName ?? '╪د┘┘┘┘è',
+                              order.technicianName ?? 'الفني',
                               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 4),
@@ -97,7 +97,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                                 const Icon(Icons.star, color: Colors.amber, size: 16),
                                 const SizedBox(width: 4),
                                 Text(
-                                  order.technicianRating?.toStringAsFixed(1) ?? 'ظ¤',
+                                  order.technicianRating?.toStringAsFixed(1) ?? '—',
                                   style: TextStyle(color: theme.colorScheme.onSurfaceVariant, fontSize: 13),
                                 ),
                               ],
@@ -112,8 +112,8 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                   // Phone
                   _InfoRow(
                     icon: Icons.phone_android,
-                    label: '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘',
-                    value: order.technicianPhone ?? 'ظ¤',
+                    label: 'رقم الهاتف',
+                    value: order.technicianPhone ?? '—',
                     isPhone: true,
                   ),
                   const SizedBox(height: 10),
@@ -122,8 +122,8 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                   if (order.estimatedArrival != null)
                     _InfoRow(
                       icon: Icons.access_time_rounded,
-                      label: '┘ê┘é╪ز ╪د┘┘ê╪╡┘ê┘ ╪د┘┘à╪ز┘ê┘é╪╣',
-                      value: '${order.estimatedArrival} ╪»┘é┘è┘é╪ر',
+                      label: 'وقت الوصول المتوقع',
+                      value: '${order.estimatedArrival} دقيقة',
                       highlightColor: AppTheme.successColor,
                     ),
                 ],
@@ -131,7 +131,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // ظ¤ظ¤ OK Button ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤ظ¤
+            // ── OK Button ─────────────────────────────────────
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -142,7 +142,7 @@ class TechnicianAcceptedDialog extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text('╪ص╪│┘╪د┘ï╪î ╪┤┘â╪▒╪د┘ï ┘┘â', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                child: const Text('حسناً، شكراً لك', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
