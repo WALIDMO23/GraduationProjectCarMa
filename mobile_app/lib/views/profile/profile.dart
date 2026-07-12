@@ -10,15 +10,34 @@ import 'package:graduation_project/views/profile/order_history.dart';
 import 'package:graduation_project/core/comeponents/app_background.dart';
 import 'package:provider/provider.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch orders for the current user to show real stats
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final auth = context.read<AuthProvider>();
+      final orders = context.read<OrdersProvider>();
+      if (auth.currentUser != null && orders.orders.isEmpty) {
+        orders.fetchOrders(userId: auth.currentUser!.id);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer3<AuthProvider, LocaleProvider, OrdersProvider>(
-      builder: (context, auth, locale, orders, _) {
+      builder: (context, auth, locale, ordersProvider, _) {
         final user = auth.currentUser;
         final s = appStrings(locale.isArabic);
+        final totalOrders = ordersProvider.orders.length;
 
         return AppBackground(
           child: Scaffold(
@@ -95,16 +114,6 @@ class ProfilePage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        user?.createdAt != null
-                            ? '${s.memberSince} ${user!.createdAt!.substring(0, 7)}'
-                            : s.memberSince,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.8),
-                          fontSize: 14,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -129,7 +138,7 @@ class ProfilePage extends StatelessWidget {
                       _buildInfoField(context, Icons.email_outlined, s.email, user?.email ?? '—'),
                       const SizedBox(height: 12),
                       _buildInfoField(context, Icons.phone_android, s.phone,
-                          user?.phoneNumber.isNotEmpty == true ? user!.phoneNumber : '—',
+                          (user?.phoneNumber != null && user!.phoneNumber.isNotEmpty) ? user.phoneNumber : '—',
                           isPhone: true),
                       const SizedBox(height: 32),
 
@@ -151,7 +160,7 @@ class ProfilePage extends StatelessWidget {
                             child: _buildStatCard(
                               context,
                               s.orders,
-                              '${orders.orders.length}',
+                              '$totalOrders',
                               Icons.task_alt,
                               AppTheme.successColor,
                             ),

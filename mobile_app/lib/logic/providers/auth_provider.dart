@@ -68,6 +68,9 @@ class AuthProvider extends ChangeNotifier {
           final cacheMap = Map<String, dynamic>.from(userMap)..remove('token');
           await prefs.setString('user_data', jsonEncode(cacheMap));
 
+          // Fetch fresh profile data to get phone number and other missing details
+          await fetchProfile();
+
           _isLoading = false;
           notifyListeners();
           return true;
@@ -193,6 +196,89 @@ class AuthProvider extends ChangeNotifier {
         _errorMessage = e.response?.data['message'] ?? e.message ?? 'فشل تحديث البيانات';
       } else {
         _errorMessage = e.message ?? 'فشل تحديث البيانات';
+      }
+    } catch (e) {
+      _errorMessage = e.toString();
+    }
+
+    _isLoading = false;
+    notifyListeners();
+    return false;
+  }
+
+
+  // ─── CHANGE PASSWORD ──────────────────────────────────────────────────────
+  // Backend: POST /api/change-password/ChangePassword
+  // DTO: { currentPassword, newPassword, confirmPassword }
+  
+  // Fetch fresh profile data to get phone number and other missing details
+  Future<void> fetchProfile() async {
+    try {
+      final response = await _apiClient.dio.get('/profile/me');
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (_currentUser != null) {
+          _currentUser = _currentUser!.copyWith(
+            name: data['name'] ?? _currentUser!.name,
+            phoneNumber: data['phoneNumber'] ?? _currentUser!.phoneNumber,
+          );
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString(
+            'user_data',
+            jsonEncode({
+              'id': _currentUser!.id,
+              'name': _currentUser!.name,
+              'email': _currentUser!.email,
+              'role': _currentUser!.role,
+              'phoneNumber': _currentUser!.phoneNumber,
+            }),
+          );
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      // Ignore errors for silent background fetch
+    }
+  }
+
+  Future<bool> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final response = await _apiClient.dio.post(
+        '/change-password/ChangePassword',
+        data: {
+          'currentPassword': currentPassword,
+          'newPassword': newPassword,
+          'confirmPassword': confirmPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      _errorMessage = 'فشل تغيير كلمة المرور';
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        final data = e.response?.data;
+        if (data is String) {
+          _errorMessage = data;
+        } else if (data is Map<String, dynamic>) {
+          _errorMessage = data['message'] ?? 'فشل تغيير كلمة المرور';
+        } else {
+          _errorMessage = 'فشل تغيير كلمة المرور';
+        }
+      } else {
+        _errorMessage = e.message ?? 'فشل تغيير كلمة المرور';
       }
     } catch (e) {
       _errorMessage = e.toString();

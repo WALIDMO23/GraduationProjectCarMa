@@ -24,6 +24,8 @@ import 'package:provider/provider.dart';
 import 'package:graduation_project/logic/providers/orders_provider.dart';
 import 'package:graduation_project/logic/providers/auth_provider.dart';
 import 'package:graduation_project/logic/providers/notification_provider.dart';
+import 'package:graduation_project/logic/providers/cars_provider.dart';
+import 'package:graduation_project/logic/providers/settings_provider.dart';
 import 'package:graduation_project/views/login.dart';
 import 'package:graduation_project/views/profile/order_history.dart';
 
@@ -49,6 +51,10 @@ class _HomePageState extends State<HomePage> {
       Provider.of<NotificationProvider>(context, listen: false).init();
       // Fetch services for dynamic pricing early
       Provider.of<ServicesProvider>(context, listen: false).fetchServices();
+      // Fetch user's cars
+      Provider.of<CarsProvider>(context, listen: false).fetchCars();
+      // Fetch user settings from backend
+      Provider.of<SettingsProvider>(context, listen: false).fetchSettings();
     });
   }
 
