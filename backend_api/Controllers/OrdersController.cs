@@ -153,7 +153,7 @@ namespace CarMaintenance.Controllers
                 Price = service.Price,
                 OrderStatus = OrderStatus.Pending,
                 PaymentMethod = dto.PaymentMethod,
-                NeededServiceTime = dto.NeededServiceTime,
+                NeededServiceTime = dto.NeededServiceTime?.ToUniversalTime(),
                 CreatedAt = DateTime.UtcNow,
                 IsPaid = false,
 
