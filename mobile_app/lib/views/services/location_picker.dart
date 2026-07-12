@@ -23,6 +23,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   List<dynamic> _searchResults = [];
   bool _isSearching = false;
   bool _showResults = false;
+  bool _isAnimatingToSelection = false;
   Timer? _debounce;
 
   final Dio _dio = Dio(BaseOptions(
@@ -180,18 +181,33 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
     return null;
   }
 
-  void _onResultSelected(dynamic result) {
-    final position = _extractPosition(result);
+  Future<void> _onResultSelected(dynamic result) async {
+    // Try extracting position directly from the result
+    LatLng? position = _extractPosition(result);
+
+    // Fallback: resolve via PlaceId if Position is missing (countries, regions, etc.)
+    if (position == null) {
+      final placeId = result['PlaceId'] as String?;
+      if (placeId != null) {
+        debugPrint('[LocationPicker] Position missing, resolving via PlaceId: $placeId');
+        position = await _resolvePositionByPlaceId(placeId);
+      }
+    }
+
     if (position == null) {
       debugPrint('[LocationPicker] Could not extract position from result: $result');
       return;
     }
 
     final label = _getResultLabel(result);
+    final subtitle = _getResultSubtitle(result);
+    // Use the combined label+subtitle as the display address for richer context
+    final displayAddress = subtitle.isNotEmpty ? '$label, $subtitle' : label;
 
     setState(() {
-      _currentCenter = position;
-      _currentAddress = label;
+      _isAnimatingToSelection = true;
+      _currentCenter = position!;
+      _currentAddress = displayAddress;
       _searchResults = [];
       _showResults = false;
       _searchController.text = label;
@@ -201,8 +217,44 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
 
     // Move camera to selected location
     mapController?.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(target: _currentCenter, zoom: 16),
+      CameraPosition(target: position, zoom: 16),
     ));
+
+    // Wait for animation to complete before allowing reverse geocoding again.
+    // This prevents onCameraIdle from overwriting the search result address.
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (mounted) {
+        setState(() => _isAnimatingToSelection = false);
+      }
+    });
+  }
+
+  /// Resolve coordinates from a PlaceId when the search result doesn't include Position.
+  Future<LatLng?> _resolvePositionByPlaceId(String placeId) async {
+    try {
+      final url =
+          'https://places.geo.${AppConstants.amazonLocationRegion}.amazonaws.com/v2/get-place';
+      final response = await _dio.post(
+        url,
+        queryParameters: {'key': AppConstants.amazonLocationApiKey},
+        data: {'PlaceId': placeId},
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+      if (response.statusCode == 200) {
+        final pos = response.data['Position'];
+        if (pos is List && pos.length >= 2) {
+          final lng = (pos[0] as num).toDouble();
+          final lat = (pos[1] as num).toDouble();
+          debugPrint('[LocationPicker] PlaceId resolved → ($lat, $lng)');
+          return LatLng(lat, lng);
+        }
+      }
+    } on DioException catch (e) {
+      debugPrint('[LocationPicker] PlaceId resolve error: ${e.message}');
+    } catch (e) {
+      debugPrint('[LocationPicker] PlaceId resolve unexpected: $e');
+    }
+    return null;
   }
 
   void _onMapCreated(MapLibreMapController controller) {
@@ -249,6 +301,9 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
   }
 
   void _onCameraIdle() {
+    // Skip reverse geocoding while the camera is animating to a search result
+    // to prevent the carefully-set search address from being overwritten.
+    if (_isAnimatingToSelection) return;
     _reverseGeocode(_currentCenter);
   }
 
@@ -325,7 +380,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
                             if (v.trim().isNotEmpty) _searchPlaces(v.trim());
                           },
                           decoration: InputDecoration(
-                            hintText: 'ابحث عن موقعك... (القاهرة، الإسكندرية)',
+                            hintText: 'ابحث عن أي مكان... (Tokyo, Paris, القاهرة)',
                             hintStyle: TextStyle(
                               color: Theme.of(context).colorScheme.onSurfaceVariant,
                               fontSize: 13,

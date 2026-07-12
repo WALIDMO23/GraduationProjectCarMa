@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 /// InstaPay, Fawry, Vodafone Cash and Apple Pay are displayed as "قريباً".
 class PaymentMethodScreen extends StatefulWidget {
   /// The pre-built DTO carrying all order data from the form.
-  final CreateOrderDto orderDto;
+  final CreateOrderDto? orderDto;
 
   /// Service visual identity (used in the waiting/success screen).
   final IconData serviceIcon;
@@ -22,9 +22,9 @@ class PaymentMethodScreen extends StatefulWidget {
 
   const PaymentMethodScreen({
     super.key,
-    required this.orderDto,
-    required this.serviceIcon,
-    required this.serviceColor,
+    this.orderDto,
+    this.serviceIcon = Icons.payments_rounded,
+    this.serviceColor = AppTheme.primaryColor,
   });
 
   @override
@@ -190,6 +190,20 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
 
   // ── Submit order ───────────────────────────────────────────────
   Future<void> _confirmOrder(AppStrings s, String paymentMethodId) async {
+    if (widget.orderDto == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            s.isArabic
+                ? 'هذه شاشة معاينة لطرق الدفع.'
+                : 'This is a preview screen for payment methods.',
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
+
     final orders = context.read<OrdersProvider>();
 
     orders.onOrderAccepted = (order) {
@@ -197,14 +211,14 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen>
     };
 
     if (paymentMethodId == 'cash') {
-      widget.orderDto.paymentMethod = 1;
+      widget.orderDto!.paymentMethod = 1;
     } else if (paymentMethodId == 'instapay') {
-      widget.orderDto.paymentMethod = 3;
+      widget.orderDto!.paymentMethod = 3;
     } else {
-      widget.orderDto.paymentMethod = 2; // wallets
+      widget.orderDto!.paymentMethod = 2; // wallets
     }
 
-    final newOrder = await orders.createOrder(widget.orderDto);
+    final newOrder = await orders.createOrder(widget.orderDto!);
     if (!mounted) return;
 
     if (newOrder != null) {

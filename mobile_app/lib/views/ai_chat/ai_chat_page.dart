@@ -11,7 +11,7 @@ import 'package:graduation_project/views/services/battery_services.dart';
 import 'package:graduation_project/views/services/tire_services.dart';
 import 'package:graduation_project/views/services/oil_services.dart';
 import 'package:graduation_project/views/services/location_picker.dart';
-import 'package:graduation_project/views/services/payment_methods.dart';
+import 'package:graduation_project/views/services/payment_method_screen.dart';
 import 'package:graduation_project/views/profile/profile.dart';
 import 'package:graduation_project/views/profile/order_history.dart';
 import 'package:graduation_project/views/chat/chat_page.dart';
@@ -104,7 +104,7 @@ class _AiChatPageState extends State<AiChatPage> with TickerProviderStateMixin {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const LocationPickerPage()));
           break;
         case 'open_payment':
-          Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentMethodsPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentMethodScreen()));
           break;
         case 'open_profile':
           Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfilePage()));
